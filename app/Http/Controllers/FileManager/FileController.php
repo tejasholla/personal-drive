@@ -27,8 +27,6 @@ class FileController extends Controller
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 400);
         }
-        // You can implement the logic to get the files here
-        // 
         
         $files = File::getFilesForUserInPath($user->id,$path);
         return Inertia::render('FileManager/Index', [
@@ -36,21 +34,5 @@ class FileController extends Controller
         ]);
     }
 
-    public function search(Request $request): JsonResponse
-    {
-        $user = Auth::user();
-        $searchQuery = $request->get('query') ?? '/'; // Retrieve 'path' from the request
 
-
-        $validator = Validator::make($request->all(), [
-            'query' => 'string',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 400);
-        }
-        
-        $files = File::searchFiles($user->id,$searchQuery);
-        return response()->json(['files' => $files], 200);
-    }
 }

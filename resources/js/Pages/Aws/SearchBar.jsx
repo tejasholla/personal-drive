@@ -1,7 +1,7 @@
 export default function SearchBar({handleSearch}) {
     return (
-    <div className="flex space-x-2 items-center">
-        <form action="">
+    <div >
+        <form className="flex space-x-2 items-center" action="">
             <input type="text" id="searchbox"
                    className="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-700"
                    placeholder="Type to search..."/>

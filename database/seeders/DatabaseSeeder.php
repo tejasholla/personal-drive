@@ -22,9 +22,6 @@ class DatabaseSeeder extends Seeder
         ]);
 
 
-        File::factory()->count(10)->create(
-            ['user_id' => User::first()->id ]
-        );
     }
     
     

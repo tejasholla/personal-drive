@@ -20,7 +20,8 @@ class File extends Model
     public static function searchFiles($userId, $searchQuery)
     {
         return static::where('user_id', $userId)
-            ->where('name', 'like', '%'.$searchQuery.'%')
+            ->where('fileName', 'like', $searchQuery.'%')
             ->get();
     }
+
 }
