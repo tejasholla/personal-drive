@@ -48,3 +48,11 @@ add file search to the application - laravel + react
 -[ ] File manager backend (controllers for file operations)
 -[ ] SSO and advanced authentication for sharing (future)
 -[x] File search logic (integrated with React)
+
+
+
+### Features 
+- list multiple buckets
+- Ability to index all files of a bucket
+- Search a bucket recursively
+- browse a bucket in a fact react file manager

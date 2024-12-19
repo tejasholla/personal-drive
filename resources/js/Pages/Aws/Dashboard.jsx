@@ -3,7 +3,6 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 import {Head, Link} from "@inertiajs/react";
 import RefreshButton from "@/Pages/Aws/Components/RefreshButton.jsx";
 import {useEffect, useState} from "react";
-import * as response from "autoprefixer";
 
 export default function Dashboard({bucketStats = {}, error=""}) {
     console.log('bucketStats', bucketStats);

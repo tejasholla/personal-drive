@@ -25,15 +25,24 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/files',[FileController::class,'index'])->name('files');
-    Route::post('/search-files',[S3Controller\SearchFilesController::class,'index'])->name('search-files');
-    Route::post('/refresh-bucket-stats',[S3Controller\BucketController::class,'index'])->name('refresh-bucket-stats');
+    Route::post('/search-files', [S3Controller\SearchFilesController::class, 'index'])->name('search-files');
+    Route::post('/refresh-bucket-stats', [S3Controller\BucketController::class, 'index'])->name('refresh-bucket-stats');
 
-    Route::get('/s3dashboard',[S3Controller\DashboardController::class,'index'])->name('s3dashboard');
-//    Route::get('/bucket/{bucket}',[S3Controller::class,'bucket'])->name('bucket');
+    Route::get('/s3dashboard', [S3Controller\DashboardController::class, 'index'])->name('s3dashboard');
     Route::get('/bucket/{bucket}/{path?}', [S3Controller\FileManagerController::class, 'index'])
         ->where('path', '.*')
         ->name('bucket');
+
+    Route::post('/s3/upload', [S3Controller\UploadController::class, 'store'])->name('s3.upload');
+    Route::post('/s3/create-folder', [S3Controller\UploadController::class, 'createFolder'])->name('s3.upload');
+    Route::post('/s3/delete-files', [S3Controller\DeleteController::class, 'deleteFiles'])->name('s3.delete');
+
+    // test
+    Route::get('test', [S3Controller\TestController::class, 'index']);
 });
 
-require __DIR__.'/auth.php';
+Route::get('/s3autherror', function () {
+    return Inertia::render('Aws/S3ErrorPage');
+})->name('s3autherror');
+
+require __DIR__ . '/auth.php';

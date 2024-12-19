@@ -17,9 +17,9 @@ class FileFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->word().'.'.$this->faker->fileExtension(),
+            'name' => $this->faker->word() . '.' . $this->faker->fileExtension(),
             'path' => $this->faker->filePath(),
-            'bucket' => $this->faker->word().'_bucket',
+            'bucket' => $this->faker->word() . '_bucket',
             'size' => $this->faker->numberBetween(1024, 1048576), // size in bytes (1KB to 1MB)
             'mime_type' => $this->faker->mimeType(),
             'created_at' => now(),

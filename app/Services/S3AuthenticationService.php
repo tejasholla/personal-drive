@@ -2,17 +2,14 @@
 
 namespace App\Services;
 
+use App\Exceptions\S3AuthenticationException;
 use Aws\Credentials\Credentials;
 use Aws\S3\S3Client;
 use Aws\Exception\AwsException;
+use Inertia\Inertia;
 
 class S3AuthenticationService
 {
-    /**
-     * Sign in to AWS S3 and return the S3Client instance.
-     *
-     * @throws \Exception
-     */
     public function signIn(): S3Client
     {
         $provider = new Credentials(
@@ -25,11 +22,10 @@ class S3AuthenticationService
             'credentials' => $provider
         ]);
         try {
-            // Perform a simple operation to ensure the credentials are correct
             $b = $s3Client->listBuckets();
         } catch (AwsException $e) {
-            // Handle authentication error
-            throw new \Exception('AWS S3 authentication failed: '.$e->getMessage());
+            throw new S3AuthenticationException('AWS S3 authentication failed: ' . $e->getMessage());
+
         }
         return $s3Client;
     }

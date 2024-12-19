@@ -1,13 +1,13 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
-import {Head} from '@inertiajs/react';
+import { Head } from '@inertiajs/react';
 import FileList from './FileList.jsx';
-import SearchBar from './SearchBar.jsx';
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 
-export default function FileManager({files, bucketName}) {
+export default function FileManager({ files, bucketName, path }) {
     const [currentPath, setCurrentPath] = useState('/');
     const [selectedItem, setSelectedItem] = useState(null);
     const [currentFiles, setCurrentFiles] = useState([]);
+    const [isSearch, setIsSearch] = useState(false);
 
 
     useEffect(() => {
@@ -25,10 +25,10 @@ export default function FileManager({files, bucketName}) {
 
     const handleSearch = async (e, searchText) => {
         e.preventDefault();
-        const response = await axios.post('/search-files', {query: searchText});
-        // console.log(response.data.files);
+        const response = await axios.post('/search-files', { query: searchText });
         if (response && response.data.files) {
             setCurrentFiles(response.data.files);
+            setIsSearch(true);
         }
     }
 
@@ -42,7 +42,7 @@ export default function FileManager({files, bucketName}) {
                 </div>
             }
         >
-            <Head title="File manager"/>
+            <Head title="File manager" />
             <div className="max-w-7xl mx-auto  bg-gray-800 text-gray-200">
                 <FileList
                     files={currentFiles}
@@ -50,6 +50,8 @@ export default function FileManager({files, bucketName}) {
                     selectedItem={selectedItem}
                     handleSearch={handleSearch}
                     bucketName={bucketName}
+                    isSearch={isSearch}
+                    path={path}
                 />
             </div>
         </AuthenticatedLayout>
