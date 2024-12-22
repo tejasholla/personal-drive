@@ -26,7 +26,7 @@ class S3UploadService
     {
         $key = $this->getFileKey($file, $path);
         $source = fopen($file->getPathname(), 'rb');
-        $this->uploadS3Object($bucketName, $key, $source);
+        $this->putS3Object($bucketName, $key, $source);
     }
 
     public function getFileKey(UploadedFile $file, string $path): string
@@ -42,7 +42,7 @@ class S3UploadService
     /**
      * @throws Exception
      */
-    public function uploadS3Object(string $bucketName, string $key, $source): void
+    public function putS3Object(string $bucketName, string $key, $source): void
     {
         $uploader = new ObjectUploader(
             $this->s3Client,
@@ -68,6 +68,6 @@ class S3UploadService
     {
         $key = $path . '/' . $folderName . '/';
         $source = fopen('php://temp', 'rb');
-        $this->uploadS3Object($bucketName, $key, $source);
+        $this->putS3Object($bucketName, $key, $source);
     }
 }

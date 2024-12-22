@@ -34,8 +34,9 @@ Route::middleware('auth')->group(function () {
         ->name('bucket');
 
     Route::post('/s3/upload', [S3Controller\UploadController::class, 'store'])->name('s3.upload');
-    Route::post('/s3/create-folder', [S3Controller\UploadController::class, 'createFolder'])->name('s3.upload');
+    Route::post('/s3/create-folder', [S3Controller\UploadController::class, 'createFolder'])->name('s3.create-folder');
     Route::post('/s3/delete-files', [S3Controller\DeleteController::class, 'deleteFiles'])->name('s3.delete');
+    Route::post('/s3/download-files', [S3Controller\DownloadController::class, 'index'])->name('s3.download');
 
     // test
     Route::get('test', [S3Controller\TestController::class, 'index']);

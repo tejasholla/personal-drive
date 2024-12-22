@@ -25,14 +25,6 @@ class UploadController extends Controller
 
     public function store(Request $request): JsonResponse
     {
-        $validator = Validator::make($request->all(), [
-            'files' => 'required|array',
-            'files.*' => 'file'
-        ]);
-        // Check if validation fails
-        if ($validator->fails()) {
-            return $this->errorResponse($validator->errors(), 422);
-        }
         $files = $request->file('files');
 
         $bucketName = $request->bucketName;

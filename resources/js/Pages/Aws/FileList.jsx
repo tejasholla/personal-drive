@@ -1,7 +1,7 @@
 import FileItem from './Components/FileItem.jsx';
 import FolderItem from './Components/FolderItem.jsx';
 import {Link, router} from "@inertiajs/react";
-import {CircleArrowLeft, DeleteIcon, DownloadIcon, HomeIcon} from 'lucide-react';
+import {DeleteIcon, DownloadIcon, HomeIcon} from 'lucide-react';
 import SearchBar from "./Components/SearchBar.jsx";
 import UploadMenu from "./Components/UploadMenu.jsx";
 import AlertBox from "./Components/AlertBox.jsx";
@@ -27,21 +27,53 @@ const FileList = ({files, onSelect, onSelectFolder, selectedItem, handleSearch, 
         });
     }
 
+    function handleStatus(response, failMessage,  successMessage ) {
+        setStatusMessage(`${failMessage}: ${(response.data && response.data.message) || 'Unknown error'}`);
+        setStatus(false);
+        if (response.data && response.data.ok) {
+            setStatusMessage(successMessage);
+            setStatus(true);
+            reloadFiles();
+        }
+    }
+
     async function downloadFiles() {
-        const response = await axios.post('/s3/create-folder', {fileList: selectedFiles});
+        let response = await selectFileOperation('/s3/download-files');
+
+        console.log('response' , response);
+        if (response.data && response.data.ok){
+            for (const url of response.data.urls) {
+                window.location.href = url;
+            }
+        }
+        handleStatus(response, `Download failed`, 'Download successful');
+
 
     }
 
+    const aFunc = () => {}
+    const aFunc2 = (param,callback) => ( param)
+
+    aFunc2(1,()=>{return 1} );
+
+
     async function deleteFiles() {
-        const response = await axios.post('/s3/delete-files', {
-            fileList: selectedFiles,
-            bucketName: bucketName,
-            path: path,
-        });
-        console.log('response: ', response);
+        let response = await selectFileOperation('/s3/delete-files');
+        handleStatus(response, 'delete failed', 'delete successful');
+    }
+
+    function reloadFiles() {
         router.visit(window.location.href, {
             only: ['files'],
             preserveState: true,
+        });
+    }
+
+    async function selectFileOperation(targetUrl) {
+        return await axios.post(targetUrl, {
+            fileList: selectedFiles,
+            bucketName: bucketName,
+            path: path,
         });
     }
 
@@ -62,8 +94,8 @@ const FileList = ({files, onSelect, onSelectFolder, selectedItem, handleSearch, 
                         <span className={`mx-1`}>All Buckets</span>
                     </Link>
                     {
-                        selectedFiles.length > 0 &&
-                        <button className="p-2 rounded-md flex items-center w-auto bg-green-800">
+                        Object.entries(selectedFiles).length > 0 &&
+                        <button className="p-2 rounded-md flex items-center w-auto bg-green-800" onClick={downloadFiles}>
                             <DownloadIcon className={`text-green-500 inline`} size={22}/>
                             <span className={`mx-1 text-gray-200`}>Download</span>
                         </button>

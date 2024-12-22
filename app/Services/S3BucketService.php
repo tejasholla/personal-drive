@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Helpers\FileSizeFormatter;
 use App\Models\Bucket;
 use App\Models\File;
 use App\Repositories\BucketRepository;
@@ -58,12 +59,7 @@ class S3BucketService
             'Bucket' => $bucket['s3Name'],
             'Prefix' => $path,
         ];
-
-        $totalSize = 0;
-        $totalNumFiles = 0;
         $filesArr = [];
-
-
         File::deleteOldFiles($bucket['id'], $path);
 
         do {
@@ -73,17 +69,17 @@ class S3BucketService
 
             if (isset($s3Objects['Contents'])) {
                 foreach ($s3Objects['Contents'] as $s3Object) {
-                    $totalSize += $s3Object['Size'];
-                    $totalNumFiles++;
                     $this->transformFiles($s3Object, $bucket, $filesArr);
                 }
                 File::insertOrIgnore($filesArr);
             }
-
             $args['ContinuationToken'] = $s3Objects['NextContinuationToken'] ?? null;
         } while (isset($s3Objects['NextContinuationToken']));
 
-        return ['totalSize' => round(($totalSize / 1024) / 1024) . ' MB', 'totalNumFiles' => $totalNumFiles];
+        return [
+            'totalSize' => FileSizeFormatter::format($this->bucketRepository->getBucketSize($bucket['id'])),
+            'totalNumFiles' => $this->bucketRepository->getBucketFilesCount($bucket['id'])
+        ];
     }
 
     private function transformFiles(array $s3Object, array $bucket, array &$filesArr): void
