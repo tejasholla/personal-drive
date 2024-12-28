@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\S3Controller;
+use App\Http\Controllers\AdminController\AdminConfigController;
 use App\Http\Controllers\FileManager\FileController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\S3Controller;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -28,6 +29,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/search-files', [S3Controller\SearchFilesController::class, 'index'])->name('search-files');
     Route::post('/refresh-bucket-stats', [S3Controller\BucketController::class, 'index'])->name('refresh-bucket-stats');
 
+    Route::get('/admin-config', [AdminConfigController::class, 'index'])->name('admin-config');
+    Route::post('/admin-config/update', [AdminConfigController::class, 'update'])->name('admin-config.update');
+
     Route::get('/s3dashboard', [S3Controller\DashboardController::class, 'index'])->name('s3dashboard');
     Route::get('/bucket/{bucket}/{path?}', [S3Controller\FileManagerController::class, 'index'])
         ->where('path', '.*')
@@ -41,6 +45,11 @@ Route::middleware('auth')->group(function () {
     // test
     Route::get('test', [S3Controller\TestController::class, 'index']);
 });
+
+Route::get('/stopwatch', function () {
+    return Inertia::render('JS/Stopwatch');
+});
+
 
 Route::get('/s3autherror', function () {
     return Inertia::render('Aws/S3ErrorPage');

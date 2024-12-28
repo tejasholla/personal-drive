@@ -95,7 +95,7 @@ const FileList = ({files, onSelect, onSelectFolder, selectedItem, handleSearch, 
                     </Link>
                     {
                         Object.entries(selectedFiles).length > 0 &&
-                        <button className="p-2 rounded-md flex items-center w-auto bg-green-800" onClick={downloadFiles}>
+                        <button className="p-2 rounded-md flex items-center w-auto bg-green-800 bg-" onClick={downloadFiles}>
                             <DownloadIcon className={`text-green-500 inline`} size={22}/>
                             <span className={`mx-1 text-gray-200`}>Download</span>
                         </button>
