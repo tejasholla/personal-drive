@@ -14,5 +14,12 @@ class Setting extends Model
         return $setting ? $setting->value : '';
     }
 
+    public static function updateSetting($key, $value)
+    {
+        return Setting::updateOrCreate(
+            ['key' => $key],
+            ['value' => $value]
+        );
+    }
 
 }

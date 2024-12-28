@@ -3,24 +3,19 @@
 namespace App\Http\Controllers\S3Controller;
 
 use App\Http\Controllers\Controller;
-use App\Models\Bucket;
 use App\Services\FileValidationService;
-use App\Services\S3BucketService;
-use App\Services\S3UploadService;
+use App\Services\LocalFolderService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class UploadController extends Controller
 {
-    protected S3UploadService $s3UploadService;
-    protected S3BucketService $s3BucketService;
+    protected LocalFolderService $localFolderService;
 
-    public function __construct(S3UploadService $s3UploadService, S3BucketService $s3BucketService)
+    public function __construct(LocalFolderService $localFolderService)
     {
-        $this->s3UploadService = $s3UploadService;
-        $this->s3BucketService = $s3BucketService;
+        $this->localFolderService = $localFolderService;
     }
 
     public function store(Request $request): JsonResponse
@@ -55,8 +50,7 @@ class UploadController extends Controller
         $path .= '/';
         $folderName = $request->folderName;
         try {
-            $this->s3UploadService->createFolder($bucketName, $path, $folderName);
-            $this->s3BucketService->updateBucketStatsFromBucketName($bucketName, $path);
+            $this->localFolderService->createFolder($bucketName, $path, $folderName);
             return $this->successResponse('Files uploaded successfully');
         } catch (\Exception $e) {
             Log::info('Create folder failed | ' . $e->getMessage());

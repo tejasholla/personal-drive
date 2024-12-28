@@ -4,11 +4,20 @@ namespace App\Http\Controllers\AdminController;
 
 use App\Http\Controllers\Controller;
 use App\Models\Setting;
+use App\Services\LocalFolderService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class AdminConfigController extends Controller
 {
+    protected LocalFolderService $localFolderService;
+
+    public function __construct(LocalFolderService $localFolderService)
+    {
+        $this->localFolderService = $localFolderService;
+    }
+
     public function index()
     {
         $settings = Setting::pluck('value', 'key')->toArray();
@@ -20,25 +29,29 @@ class AdminConfigController extends Controller
         ]);
     }
 
-    public function update(Request $request)
+    public function update(Request $request): RedirectResponse
     {
-//        $request->validate([
-//            'storage_path' => 'required|string|max:255',
-//        ]);
-
-        $updateResult = Setting::updateOrCreate(
-            ['key' => 'storage_path'],
-            ['value' => $request->input('storage_path')]
-        );
-
-        if ($updateResult->wasRecentlyCreated || $updateResult->wasChanged()) {
-            $message = 'Storage path updated successfully.';
-            $status = true;
-        } else {
-            $message = 'No changes were made.';
-            $status = false;
+        $storagePath = $request->input('storage_path');
+        $storageUuid = Setting::getSettingByKeyName('uuid');
+        if (!$storageUuid) {
+            $this->updateResponse('no uuid found ! ', false);
         }
 
+        if (!$this->localFolderService->makeFolder($storagePath . '/' . $storageUuid)) {
+            return $this->updateResponse('could not make storage path directory', false);
+        }
+
+        $updateResult = Setting::updateSetting('storage_path', $request->input('storage_path'));
+
+        if ($updateResult->wasRecentlyCreated || $updateResult->wasChanged()) {
+            return $this->updateResponse('Storage path updated successfully.', true);
+        }
+
+        return $this->updateResponse('No changes were made.', false);
+    }
+
+    public function updateResponse(string $message, bool $status): RedirectResponse
+    {
         return to_route('admin-config')->with([
             'message' => $message,
             'status' => $status

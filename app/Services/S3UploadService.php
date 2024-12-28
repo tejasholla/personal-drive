@@ -2,15 +2,15 @@
 
 namespace App\Services;
 
-use App\Models\Bucket;
-use App\Models\File;
-use Aws\S3\S3Client;
-use Aws\S3\ObjectUploader;
-use Exception;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Http\UploadedFile;
+    use App\Models\Bucket;
+    use App\Models\File;
+    use Aws\S3\S3Client;
+    use Aws\S3\ObjectUploader;
+    use Exception;
+    use Illuminate\Support\Facades\Log;
+    use Illuminate\Http\UploadedFile;
 
-class S3UploadService
+    class S3UploadService
 {
     protected S3Client $s3Client;
 
