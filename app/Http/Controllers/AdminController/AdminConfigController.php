@@ -29,9 +29,13 @@ class AdminConfigController extends Controller
         ]);
     }
 
+    /**
+     * Update settings: storage_path,
+     */
     public function update(Request $request): RedirectResponse
     {
         $storagePath = $request->input('storage_path');
+        // get check uuid
         $storageUuid = Setting::getSettingByKeyName('uuid');
         if (!$storageUuid) {
             $this->updateResponse('no uuid found ! ', false);
