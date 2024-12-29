@@ -5,7 +5,6 @@ import RefreshButton from "@/Pages/Aws/Components/RefreshButton.jsx";
 import {useEffect, useState} from "react";
 
 export default function Dashboard({bucketStats = {}, error=""}) {
-    console.log('bucketStats', bucketStats);
     const [currentBucketStats, setCurrentBucketStats] = useState({});
     useEffect(() => {
         setCurrentBucketStats(bucketStats);

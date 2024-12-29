@@ -3,18 +3,19 @@
 namespace App\Http\Controllers\S3Controller;
 
 use App\Http\Controllers\Controller;
-use App\Models\File;
+use App\Models\LocalFile;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Inertia\Inertia;
 
 class SearchFilesController extends Controller
 {
-    public function index(Request $request): JsonResponse
+    public function index(Request $request): \Inertia\Response
     {
         $user = Auth::user();
-        $searchQuery = $request->get('query') ?? '/'; // Retrieve 'path' from the request
+        $searchQuery = $request->post('query') ?? '/'; // Retrieve 'path' from the request
 
         $validator = Validator::make(
             $request->all(),
@@ -24,11 +25,17 @@ class SearchFilesController extends Controller
         );
 
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 400);
+            return Inertia::render('Aws/FileManager', [
+                'files' => [],
+                'searchResults' => true
+            ]);
         }
 
-        $files = File::searchFiles($user->id, $searchQuery);
-        //        dd($files);
-        return response()->json(['files' => $files, 'searchResults' => true], 200);
+        $files = LocalFile::searchFiles($user->id, $searchQuery);
+
+        return Inertia::render('Aws/FileManager', [
+            'files' => $files,
+            'searchResults' => true
+        ]);
     }
 }

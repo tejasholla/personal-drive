@@ -22,4 +22,9 @@ class Setting extends Model
         );
     }
 
+    public static function getUUID(): string
+    {
+        $storageUuid = Setting::getSettingByKeyName('uuid');
+        return $storageUuid ?: '';
+    }
 }

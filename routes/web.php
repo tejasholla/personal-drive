@@ -27,24 +27,27 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::post('/search-files', [S3Controller\SearchFilesController::class, 'index'])->name('search-files');
-    Route::post('/refresh-bucket-stats', [S3Controller\BucketController::class, 'index'])->name('refresh-bucket-stats');
+    Route::get('/search-files', fn() => redirect('/drive'));
+
+//    Route::post('/refresh-bucket-stats', [S3Controller\BucketController::class, 'index'])->name('refresh-bucket-stats');
 
     Route::get('/admin-config', [AdminConfigController::class, 'index'])->name('admin-config');
     Route::post('/admin-config/update', [AdminConfigController::class, 'update'])->name('admin-config.update');
 
-    Route::get('/s3dashboard', [S3Controller\DashboardController::class, 'index'])->name('s3dashboard');
-    Route::get('/bucket/{bucket}/{path?}', [S3Controller\FileManagerController::class, 'index'])
-        ->where('path', '.*')
-        ->name('bucket');
-
+//    Route::get('/s3dashboard', [S3Controller\DashboardController::class, 'index'])->name('s3dashboard');
+    Route::get('/drive/{path?}', [S3Controller\FileManagerController::class, 'index'])->where('path', '.*');
     Route::post('/s3/upload', [S3Controller\UploadController::class, 'store'])->name('s3.upload');
     Route::post('/s3/create-folder', [S3Controller\UploadController::class, 'createFolder'])->name('s3.create-folder');
     Route::post('/s3/delete-files', [S3Controller\DeleteController::class, 'deleteFiles'])->name('s3.delete');
     Route::post('/s3/download-files', [S3Controller\DownloadController::class, 'index'])->name('s3.download');
 
+    Route::post('/resync', [S3Controller\ReSyncController::class, 'index']);
+
     // test
+
     Route::get('test', [S3Controller\TestController::class, 'index']);
 });
+
 
 Route::get('/stopwatch', function () {
     return Inertia::render('JS/Stopwatch');

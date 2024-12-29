@@ -3,8 +3,6 @@ import ReactDOM from 'react-dom';
 
 const Modal = ({ isOpen, onClose, title, children }) => {
     if (!isOpen) return null;
-    console.log('onClose', onClose);
-    console.log('isopen', isOpen);
 
     return ReactDOM.createPortal(
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 text-gray-300" onClick={() => onClose(false)}>

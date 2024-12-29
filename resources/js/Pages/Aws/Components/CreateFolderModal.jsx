@@ -17,6 +17,7 @@ const CreateFolderModal = ({isModalOpen, setIsModalOpen, setStatusMessage, bucke
             setIsModalOpen(false);
 
             const response = await axios.post('/s3/create-folder', formPostData);
+            console.log(response);
             setStatus(false);
             setStatusMessage(`Error creating folder`);
             if (response.data.ok) {
@@ -24,6 +25,8 @@ const CreateFolderModal = ({isModalOpen, setIsModalOpen, setStatusMessage, bucke
                 setStatus(true);
                 router.visit(window.location.href, {
                     only: ['files'],
+                    preserveState: true,
+
                 });
             }
         } catch (error) {

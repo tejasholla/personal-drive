@@ -23,3 +23,10 @@ The S3 logic is as follow:
 "basedir/folder/" ->get from /basedir/folder"
 
 So beginning is "/" always implied
+
+
+instrucitons:
+
+resync from local . If you added files manually to your storage folder. Its important to resync -> click here
+
+file permissions strict: adjust after checking section on laravel docs: "Local files and visibility"

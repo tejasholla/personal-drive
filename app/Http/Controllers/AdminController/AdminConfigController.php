@@ -36,12 +36,12 @@ class AdminConfigController extends Controller
     {
         $storagePath = $request->input('storage_path');
         // get check uuid
-        $storageUuid = Setting::getSettingByKeyName('uuid');
+        $storageUuid = Setting::getUUID();
         if (!$storageUuid) {
             $this->updateResponse('no uuid found ! ', false);
         }
 
-        if (!$this->localFolderService->makeFolder($storagePath . '/' . $storageUuid)) {
+        if (!$this->localFolderService->makeFolder($storagePath . DIRECTORY_SEPARATOR . $storageUuid)) {
             return $this->updateResponse('could not make storage path directory', false);
         }
 

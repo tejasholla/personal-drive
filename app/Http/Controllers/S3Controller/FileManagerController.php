@@ -6,7 +6,10 @@ use App\Factories\S3AuthenticationServiceFactory;
 use App\Factories\S3ServiceFactory;
 use App\Http\Controllers\Controller;
 use App\Models\File;
+use App\Models\LocalFile;
 use App\Repositories\BucketRepository;
+use App\Services\LocalFileFetcher;
+use App\Services\LocalFolderService;
 use App\Services\S3AuthenticationService;
 use App\Services\S3FileService;
 use App\Services\S3Service;
@@ -26,20 +29,19 @@ use Inertia\Response;
 
 class FileManagerController extends Controller
 {
-    protected S3FileService $s3FileService;
+    protected LocalFileFetcher $localFileFetcher;
 
-
-    public function __construct(S3FileService $s3FileService)
+    public function __construct(LocalFileFetcher $localFileFetcher)
     {
-        $this->s3FileService = $s3FileService;
+        $this->localFileFetcher = $localFileFetcher;
     }
 
-    public function index(Request $request, $bucket, $path = ''): Response
+
+    public function index($path = ''): Response
     {
-        $bucketFiles = $this->s3FileService->getFilesOfPathLocal($bucket, $path);
+        $pathFiles = LocalFile::getFilesForPublicPath($path);
         return Inertia::render('Aws/FileManager', [
-            'files' => $bucketFiles,
-            'bucketName' => $bucket,
+            'files' => $pathFiles,
             'path' => $path,
         ]);
     }

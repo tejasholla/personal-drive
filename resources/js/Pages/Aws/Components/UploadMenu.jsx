@@ -8,7 +8,7 @@ import  CreateFolderModal  from './CreateFolderModal.jsx'
 
 
 
-const UploadMenu = ({ bucketName, path, setStatus, setStatusMessage }) => {
+const UploadMenu = ({  path, setStatus, setStatusMessage }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
 
     const fileInputRef = useRef(null)
@@ -41,7 +41,6 @@ const UploadMenu = ({ bucketName, path, setStatus, setStatusMessage }) => {
             const fileName = isFolder ? file.webkitRelativePath : file.name;
             formData.append('files[]', file, fileName);
         });
-        formData.append('bucketName', bucketName);
         formData.append('path', path);
 
         try {
@@ -114,7 +113,7 @@ const UploadMenu = ({ bucketName, path, setStatus, setStatusMessage }) => {
                 </div>
             )}
 
-            <CreateFolderModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} setStatusMessage={setStatusMessage}  bucketName={bucketName} path={path} setStatus={setStatus} />
+            <CreateFolderModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} setStatusMessage={setStatusMessage}  path={path} setStatus={setStatus} />
             <div className="relative inline-block">
 
                 <input

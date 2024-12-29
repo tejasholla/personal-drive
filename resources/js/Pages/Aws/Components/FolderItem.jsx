@@ -1,13 +1,13 @@
 import { Folder } from 'lucide-react';
 import { Link } from '@inertiajs/react'
-export default function FileItem({ file, onSelect, isSelected, bucketName, isSearch }) {
+export default function FileItem({ file,  isSelected,  isSearch }) {
     return (
-        <Link href={'/bucket/' + bucketName + (file.path ? ('/' + file.path) : '') + '/' + file.fileName}
+        <Link href={'/drive' + (file.public_path ? ('/' + file.public_path) : '') + '/' + file.filename}
             className={`p-4 flex items-center  hover:bg-gray-900 ${isSelected ? 'bg-blue-100' : ''
                 }`}
         >
             <Folder className={`mr-2 text-yellow-600`} size={20} />
-            <span>{(isSearch ? file.path + '/' : '') + file.fileName}</span>
+            <span>{(isSearch ? file.public_path + '/' : '') + file.filename}</span>
         </Link>
     );
 }

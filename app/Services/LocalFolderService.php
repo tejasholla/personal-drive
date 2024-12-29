@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Models\Bucket;
 use App\Models\File;
+use App\Models\LocalFile;
+use App\Models\Setting;
 use Aws\S3\S3Client;
 use Aws\S3\ObjectUploader;
 use Exception;
@@ -12,9 +14,6 @@ use Illuminate\Http\UploadedFile;
 
 class LocalFolderService
 {
-    public function createFolder(string $privatePath, mixed $folderName)
-    {
-    }
 
     public function makeFolder(string $path, int $permission = 0755): bool
     {
@@ -30,4 +29,5 @@ class LocalFolderService
             return false;
         }
     }
+
 }

@@ -5,6 +5,7 @@ const AlertBox = ({message, type = 'default'}) => {
     let status = '';
     let icon;
     let bgStatus = 'bg-gray-500';
+    console.log('message in alertbox ', message);
 
     switch (type) {
         case 'error':
