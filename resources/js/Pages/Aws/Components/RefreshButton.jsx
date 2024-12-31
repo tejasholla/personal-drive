@@ -1,16 +1,21 @@
 'use client'
 
-import {useState} from 'react'
-import axios from 'axios'
+import {useEffect, useState} from 'react'
+import {usePage} from "@inertiajs/react";
 
 export default function RefreshButton({handleRefreshBucketButton}) {
-    const [isLoading, setIsLoading] = useState(false)
+    // console.log('render refresh button');
+    const {flash} = usePage().props
 
+    const [isLoading, setIsLoading] = useState(false)
     const handleClick = async (e) => {
         e.preventDefault();
         setIsLoading(true)
-        const f = await handleRefreshBucketButton();
-        setIsLoading(false);
+        await handleRefreshBucketButton(() => {
+            setIsLoading(false);
+            console.log('flash', flash.message);
+            console.log('stat', flash.status)
+        });
     }
 
     return (<div className='relative  m-0 p-0'>

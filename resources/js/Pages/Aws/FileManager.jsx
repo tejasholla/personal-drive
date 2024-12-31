@@ -3,8 +3,8 @@ import {Head, router} from '@inertiajs/react';
 import FileList from './FileList.jsx';
 import {useEffect, useState} from "react";
 
-export default function FileManager({files, path}) {
-    const [selectedItem, setSelectedItem] = useState(null);
+export default function FileManager({files, path, token}) {
+    console.log('render filemanager');
     const [currentFiles, setCurrentFiles] = useState([]);
     const [isSearch, setIsSearch] = useState(false);
 
@@ -36,10 +36,10 @@ export default function FileManager({files, path}) {
         <div className="max-w-7xl mx-auto  bg-gray-800 text-gray-200">
             <FileList
                 files={currentFiles}
-                selectedItem={selectedItem}
                 handleSearch={handleSearch}
                 isSearch={isSearch}
                 path={path}
+                token={token}
             />
         </div>
     </AuthenticatedLayout>);

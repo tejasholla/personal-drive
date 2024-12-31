@@ -62,4 +62,9 @@ class LPathService
         }
         return '';
     }
+
+    public function getPrivatePathNameForFile(LocalFile $file)
+    {
+        return $file->private_path . DIRECTORY_SEPARATOR . $file->filename;
+    }
 }

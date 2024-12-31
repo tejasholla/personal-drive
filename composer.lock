@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "490de49ec7bad4d936e5cfc5ceb90a2c",
+    "content-hash": "47042e352c79a52b96beca0c65fce5ba",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -2122,6 +2122,83 @@
             "time": "2024-09-21T08:32:55+00:00"
         },
         {
+            "name": "maennchen/zipstream-php",
+            "version": "3.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/maennchen/ZipStream-PHP.git",
+                "reference": "6187e9cc4493da94b9b63eb2315821552015fca9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/maennchen/ZipStream-PHP/zipball/6187e9cc4493da94b9b63eb2315821552015fca9",
+                "reference": "6187e9cc4493da94b9b63eb2315821552015fca9",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "ext-zlib": "*",
+                "php-64bit": "^8.1"
+            },
+            "require-dev": {
+                "ext-zip": "*",
+                "friendsofphp/php-cs-fixer": "^3.16",
+                "guzzlehttp/guzzle": "^7.5",
+                "mikey179/vfsstream": "^1.6",
+                "php-coveralls/php-coveralls": "^2.5",
+                "phpunit/phpunit": "^10.0",
+                "vimeo/psalm": "^5.0"
+            },
+            "suggest": {
+                "guzzlehttp/psr7": "^2.4",
+                "psr/http-message": "^2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "ZipStream\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Paul Duncan",
+                    "email": "pabs@pablotron.org"
+                },
+                {
+                    "name": "Jonatan Männchen",
+                    "email": "jonatan@maennchen.ch"
+                },
+                {
+                    "name": "Jesse Donat",
+                    "email": "donatj@gmail.com"
+                },
+                {
+                    "name": "András Kolesár",
+                    "email": "kolesar@kolesar.hu"
+                }
+            ],
+            "description": "ZipStream is a library for dynamically streaming dynamic zip files from PHP without writing to the disk at all on the server.",
+            "keywords": [
+                "stream",
+                "zip"
+            ],
+            "support": {
+                "issues": "https://github.com/maennchen/ZipStream-PHP/issues",
+                "source": "https://github.com/maennchen/ZipStream-PHP/tree/3.1.1"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/maennchen",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-10-10T12:33:01+00:00"
+        },
+        {
             "name": "monolog/monolog",
             "version": "3.8.0",
             "source": {
@@ -2289,6 +2366,79 @@
                 "source": "https://github.com/jmespath/jmespath.php/tree/2.8.0"
             },
             "time": "2024-09-04T18:46:31+00:00"
+        },
+        {
+            "name": "nelexa/zip",
+            "version": "4.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Ne-Lexa/php-zip.git",
+                "reference": "88a1b6549be813278ff2dd3b6b2ac188827634a7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Ne-Lexa/php-zip/zipball/88a1b6549be813278ff2dd3b6b2ac188827634a7",
+                "reference": "88a1b6549be813278ff2dd3b6b2ac188827634a7",
+                "shasum": ""
+            },
+            "require": {
+                "ext-zlib": "*",
+                "php": "^7.4 || ^8.0",
+                "psr/http-message": "*",
+                "symfony/finder": "*"
+            },
+            "require-dev": {
+                "ext-bz2": "*",
+                "ext-dom": "*",
+                "ext-fileinfo": "*",
+                "ext-iconv": "*",
+                "ext-openssl": "*",
+                "ext-xml": "*",
+                "friendsofphp/php-cs-fixer": "^3.4.0",
+                "guzzlehttp/psr7": "^1.6",
+                "phpunit/phpunit": "^9",
+                "symfony/http-foundation": "*",
+                "symfony/var-dumper": "*",
+                "vimeo/psalm": "^4.6"
+            },
+            "suggest": {
+                "ext-bz2": "Needed to support BZIP2 compression",
+                "ext-fileinfo": "Needed to get mime-type file",
+                "ext-iconv": "Needed to support convert zip entry name to requested character encoding",
+                "ext-openssl": "Needed to support encrypt zip entries or use ext-mcrypt"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PhpZip\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ne-Lexa",
+                    "email": "alexey@nelexa.ru",
+                    "role": "Developer"
+                }
+            ],
+            "description": "PhpZip is a php-library for extended work with ZIP-archives. Open, create, update, delete, extract and get info tool. Supports appending to existing ZIP files, WinZip AES encryption, Traditional PKWARE Encryption, BZIP2 compression, external file attributes and ZIP64 extensions. Alternative ZipArchive. It does not require php-zip extension.",
+            "homepage": "https://github.com/Ne-Lexa/php-zip",
+            "keywords": [
+                "archive",
+                "extract",
+                "unzip",
+                "winzip",
+                "zip",
+                "ziparchive"
+            ],
+            "support": {
+                "issues": "https://github.com/Ne-Lexa/php-zip/issues",
+                "source": "https://github.com/Ne-Lexa/php-zip/tree/4.0.2"
+            },
+            "time": "2022-06-17T11:17:46+00:00"
         },
         {
             "name": "nesbot/carbon",
@@ -6044,6 +6194,69 @@
                 "source": "https://github.com/webmozarts/assert/tree/1.11.0"
             },
             "time": "2022-06-03T18:03:27+00:00"
+        },
+        {
+            "name": "zanysoft/laravel-zip",
+            "version": "1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zanysoft/laravel-zip.git",
+                "reference": "466663746c92154c48a2d490efc6724f9f6e9652"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zanysoft/laravel-zip/zipball/466663746c92154c48a2d490efc6724f9f6e9652",
+                "reference": "466663746c92154c48a2d490efc6724f9f6e9652",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.0|^5.0",
+                "scrutinizer/ocular": "^1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "Zip": "ZanySoft\\Zip\\ZipFacade"
+                    },
+                    "providers": [
+                        "ZanySoft\\Zip\\ZipServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "ZanySoft\\Zip\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Zany Soft",
+                    "email": "info@zanysoft.co",
+                    "homepage": "http://www.zanysoft.co"
+                }
+            ],
+            "description": "ZipArchive toolbox",
+            "homepage": "http://www.zanysoft.co",
+            "keywords": [
+                "merge",
+                "multiple",
+                "unzip",
+                "zip",
+                "ziparchive"
+            ],
+            "support": {
+                "issues": "https://github.com/zanysoft/laravel-zip/issues",
+                "source": "https://github.com/zanysoft/laravel-zip/tree/1.0.3"
+            },
+            "time": "2017-10-10T03:22:41+00:00"
         }
     ],
     "packages-dev": [
@@ -9503,7 +9716,8 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^8.2"
+        "php": "^8.2",
+        "ext-zip": "*"
     },
     "platform-dev": [],
     "plugin-api-version": "2.3.0"

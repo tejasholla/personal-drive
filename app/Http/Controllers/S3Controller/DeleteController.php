@@ -2,32 +2,63 @@
 
 namespace App\Http\Controllers\S3Controller;
 
-use App\Services\S3BucketService;
-use App\Services\S3FileService;
+use App\Helpers\ResponseHelper;
+use App\Models\LocalFile;
+use App\Services\LocalFileStatsService;
+use App\Services\LPathService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class DeleteController
 {
-    protected S3BucketService $s3BucketService;
-    protected S3FileService $s3FileService;
+    protected LocalFileStatsService $localFileStatsService;
+    protected LPathService $pathService;
 
-    public function __construct(S3FileService $s3FileService, S3BucketService $s3BucketService)
-    {
-        $this->s3BucketService = $s3BucketService;
-        $this->s3FileService = $s3FileService;
+    public function __construct(
+        LocalFileStatsService $localFileStatsService,
+        LPathService $pathService
+    ) {
+        $this->localFileStatsService = $localFileStatsService;
+        $this->pathService = $pathService;
     }
+
 
     public function deleteFiles(Request $request): JsonResponse
     {
         $fileList = $request->fileList;
-        $bucketName = $request->bucketName;
-        $path = $request->path ?: '';
-        $response = $this->s3FileService->deleteFiles($bucketName, $fileList);
-        $this->s3BucketService->updateBucketStatsFromBucketName($bucketName, $path);
-        return response()->json([
-            'ok' => true,
-            'message' => "okay"
-        ], 200);
+        $fileKeyArray = [];
+        if ($fileList) {
+            $fileKeyArray = json_decode($fileList, true);
+        }        $filesInDB = LocalFile::whereIn('id', array_keys($fileKeyArray));
+        $rootPath = $this->pathService->getRootPath();
+        if (!$filesInDB->count()) {
+            return ResponseHelper::json(' No Files found ');
+        }
+
+        $filesDeleted = 0;
+
+        foreach ($filesInDB->get() as $file) {
+            $filePath = $file->getPrivatePathNameForFile();
+
+            if ($file->is_dir === 1 && file_exists($filePath) && is_dir($filePath) && strstr($filePath, $rootPath)) {
+                File::deleteDirectory($filePath);
+            }
+            if (!file_exists($filePath)) {
+                continue;
+            }
+
+            if (unlink($filePath)) {
+                $filesDeleted++;
+            }
+        }
+
+        $response = $filesInDB->delete();
+
+        if (!$response || !$filesDeleted) {
+            return ResponseHelper::json(' Could not delete files ');
+        }
+        $this->localFileStatsService->generateStats();
+        return ResponseHelper::json(' Deleted ' . $filesDeleted . ' files ');
     }
 }

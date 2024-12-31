@@ -10,9 +10,21 @@ class LocalFile extends Model
 {
 //    protected $guarded = ['private_path', 'user_id'];
     protected $hidden = ['private_path', 'user_id'];
-    public static function getPrivatePath(string $publicPath, string $fileName): string
+
+    public static function getByIds(array $fileIds): Collection
     {
-        return self::where('public_path', $publicPath)->where('filename', $fileName)->value('private_path');
+        return self::whereIn('id', $fileIds)->get();
+    }
+
+    public static function getPrivatePathNameForFileId(int $fileId): string
+    {
+        $file = self::where('id', $fileId)->first();
+        return $file->getPrivatePathNameForFile();
+    }
+
+    public function getPrivatePathNameForFile(): string
+    {
+        return $this->private_path . DIRECTORY_SEPARATOR . $this->filename;
     }
 
     public static function getPublicPath(string $publicPath): string
@@ -31,15 +43,6 @@ class LocalFile extends Model
         return self::formatFilesSize($fileItems);
     }
 
-
-    public static function searchFiles($userId, $searchQuery)
-    {
-        $fileItems = static::where('user_id', $userId)
-            ->where('filename', 'like', $searchQuery . '%')
-            ->get();
-        return self::formatFilesSize($fileItems);
-    }
-
     public static function formatFilesSize($fileItems)
     {
         return $fileItems->map(function ($item) {
@@ -50,4 +53,11 @@ class LocalFile extends Model
         });
     }
 
+    public static function searchFiles($userId, $searchQuery)
+    {
+        $fileItems = static::where('user_id', $userId)
+            ->where('filename', 'like', $searchQuery . '%')
+            ->get();
+        return self::formatFilesSize($fileItems);
+    }
 }

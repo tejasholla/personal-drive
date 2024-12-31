@@ -10,12 +10,11 @@ class FileSizeFormatter
             return '1 KB';
         }
 
-        $units = ['KB', 'KB',  'MB', 'GB'];
+        $units = ['KB', 'KB', 'MB', 'GB'];
         for ($i = 0; $bytes >= 1024; $i++) {
-
             $bytes /= 1024;
         }
 
-        return round($bytes, ($i === 0 ? 0 : 2)) . ' ' . $units[$i];
+        return round($bytes, ($i < 2 ? 0 : 2)) . ' ' . $units[$i];
     }
 }

@@ -16,16 +16,13 @@ use Illuminate\Support\Facades\Storage;
 
 class UploadController extends Controller
 {
-    protected LocalFolderService $localFolderService;
     protected LPathService $lPathService;
     protected LocalFileStatsService $localFileStatsService;
 
     public function __construct(
-        LocalFolderService $localFolderService,
         LPathService $lPathService,
         LocalFileStatsService $localFileStatsService
     ) {
-        $this->localFolderService = $localFolderService;
         $this->localFileStatsService = $localFileStatsService;
         $this->lPathService = $lPathService;
     }
@@ -41,12 +38,8 @@ class UploadController extends Controller
         foreach ($files as $file) {
             $fileNameWithDir = UploadFileHelper::getUploadedFileFullPath($file);
             $directory = dirname($privatePath . $fileNameWithDir);
-
-//            dd($privatePath, $fileNameWithDir, $directory);
-            // Create directory if it does not exist
-//            dd($directory, file_exists($directory), Storage::makeDirectory($directory));
             if (!file_exists($directory)) {
-                $this->localFolderService->makeFolder($directory);
+                UploadFileHelper::makeFolder($directory);
             }
 
             if (!File::put($privatePath . $fileNameWithDir, $file->getContent())) {
@@ -84,7 +77,7 @@ class UploadController extends Controller
         $folderName = $request->folderName;
         try {
             $privatePath = $this->lPathService->genPrivatePathWithPublic($publicPath);
-            $makeFolderRes = $this->localFolderService->makeFolder($privatePath . $folderName);
+            $makeFolderRes = UploadFileHelper::makeFolder($privatePath . $folderName);
             $this->localFileStatsService->addFolderPathStat($folderName, $publicPath);
             if ($makeFolderRes) {
                 return $this->successResponse('Created folder successfully');

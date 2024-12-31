@@ -2,30 +2,36 @@
 
 namespace App\Http\Controllers\AdminController;
 
+use App\Helpers\UploadFileHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Setting;
-use App\Services\LocalFolderService;
+use App\Services\AdminConfigService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class AdminConfigController extends Controller
 {
-    protected LocalFolderService $localFolderService;
+    protected AdminConfigService $adminConfigService;
 
-    public function __construct(LocalFolderService $localFolderService)
+    public function __construct(AdminConfigService $adminConfigService)
     {
-        $this->localFolderService = $localFolderService;
+        $this->adminConfigService = $adminConfigService;
     }
 
-    public function index()
+    public function index(): Response
     {
-        $settings = Setting::pluck('value', 'key')->toArray();
+        $settings = Setting::getAllSettings();
         $message = session('message');
         $status = session('status');
 
         return Inertia::render('Admin/Config', [
-            'settings' => $settings, 'message' => $message, 'status' => $status
+            'settings' => $settings,
+            'message' => $message,
+            'status' => $status,
+            'php_max_upload_size' => $this->adminConfigService->getPhpMaxUploadSize(),
+            'php_post_max_size' => $this->adminConfigService->getPhpPostMaxUploadSize(),
         ]);
     }
 
@@ -35,23 +41,16 @@ class AdminConfigController extends Controller
     public function update(Request $request): RedirectResponse
     {
         $storagePath = $request->input('storage_path');
-        // get check uuid
-        $storageUuid = Setting::getUUID();
-        if (!$storageUuid) {
+        $uuid = Setting::getUUID();
+        if (!$uuid) {
             $this->updateResponse('no uuid found ! ', false);
         }
 
-        if (!$this->localFolderService->makeFolder($storagePath . DIRECTORY_SEPARATOR . $storageUuid)) {
-            return $this->updateResponse('could not make storage path directory', false);
-        }
-
-        $updateResult = Setting::updateSetting('storage_path', $request->input('storage_path'));
-
-        if ($updateResult->wasRecentlyCreated || $updateResult->wasChanged()) {
-            return $this->updateResponse('Storage path updated successfully.', true);
-        }
-
-        return $this->updateResponse('No changes were made.', false);
+        $updateStoragePathRes = $this->adminConfigService->updateStoragePath(
+            $storagePath . DIRECTORY_SEPARATOR . $uuid,
+            $request->input('storage_path')
+        );
+        return $this->updateResponse(json_encode($updateStoragePathRes[1]), $updateStoragePathRes[0]);
     }
 
     public function updateResponse(string $message, bool $status): RedirectResponse

@@ -5,7 +5,7 @@ const AlertBox = ({message, type = 'default'}) => {
     let status = '';
     let icon;
     let bgStatus = 'bg-gray-500';
-    console.log('message in alertbox ', message);
+    // console.log('message in alertbox ', message);
 
     switch (type) {
         case 'error':
@@ -60,7 +60,7 @@ const AlertBox = ({message, type = 'default'}) => {
             </svg>)
     }
     return (
-        <div role="alert" className={`-mt-3 ease-in-out transition-all duration-300 absolute  left-1/2 -translate-x-1/2 
+        <div role="alert" className={`-mt-3  absolute  left-1/2 -translate-x-1/2 
              rounded-lg  text-gray-700 flex  p-3 px-5 ${bgStatus}         
              ${message ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-4 scale-95'}`}
         >

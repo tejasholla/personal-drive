@@ -16,14 +16,15 @@ class ReSyncController extends Controller
     ) {
         $this->localFileStatsService = $localFileStatsService;
     }
+
     public function index(Request $request): void
     {
         $redirectPath = (string) $request->redirect;
-//        dd($publicPath, $redirect);
         try {
-            $this->localFileStatsService->generateStats('');
-            session()->flash('message', 'ReSync successfully');
-            session()->flash('status', true);
+            $this->localFileStatsService->generateStats();
+            Log::info('ReSync succ | ');
+            session()->flash('status');
+            session()->flash('message', 'Sync successful');
             redirect('/drive/' . $redirectPath);
         } catch (\Exception $e) {
             Log::info('ReSync failed | ' . $e->getMessage());
