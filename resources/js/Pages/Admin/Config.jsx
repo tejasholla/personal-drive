@@ -3,9 +3,19 @@ import {Head, router} from "@inertiajs/react";
 import {useState} from "react";
 import AlertBox from "@/Pages/Aws/Components/AlertBox.jsx";
 
-export default function Dashboard({settings = {}, message = '', status = false, php_max_upload_size, php_post_max_size}) {
+export default function Dashboard({
+                                      settings = {},
+                                      message = '',
+                                      status = false,
+                                      php_max_upload_size,
+                                      php_post_max_size,
+                                      php_max_file_uploads
+                                  }) {
     const [formData, setFormData] = useState({
-        storage_path: settings.storage_path, php_max_upload_size: php_max_upload_size, php_post_max_size: php_post_max_size
+        storage_path: settings.storage_path,
+        php_max_upload_size: php_max_upload_size,
+        php_post_max_size: php_post_max_size,
+        php_max_file_uploads: php_max_file_uploads
     })
 
     function handleChange(e) {
@@ -69,7 +79,7 @@ export default function Dashboard({settings = {}, message = '', status = false, 
 
                         <div className=" mb-0 flex  mx-auto items-baseline gap-x-2 w-full">
                             <p className="  font-bold ">
-                                 Max upload size:
+                                Max upload size:
                             </p>
                             <p className="text-lg text-gray-200 text-right mt-1">
                                 {formData.php_max_upload_size}
@@ -83,6 +93,14 @@ export default function Dashboard({settings = {}, message = '', status = false, 
                                 {formData.php_post_max_size}
                             </p>
                         </div>
+                        <div className=" flex  mx-auto items-baseline gap-x-2 w-full">
+                            <p className="  font-bold ">
+                                Max File Uploads:
+                            </p>
+                            <p className="text-lg text-gray-200 text-right mt-1">
+                                {formData.php_max_file_uploads}
+                            </p>
+                        </div>
 
                         <p className="text-lg text-blue-200 mt-10 mb-5 font-bold">Ensure PHP settings are
 
@@ -91,19 +109,21 @@ export default function Dashboard({settings = {}, message = '', status = false, 
                             If you are on a VPS and using php-fpm. Edit the www.conf file. restart php-fpm
                             <pre className="mt-1 mb-5 text-sm text-gray-400">
                                 {`php_value[upload_max_filesize] = 64M
-php_value[post_max_size] = 64M`}
+php_value[post_max_size] = 64M
+php_value[php_max_file_uploads] = 10000`}
                             </pre>
                             If you are on a VPS and can edit the ini file. Set these 2 variables
                             <pre className="mt-1 mb-5 text-sm text-gray-400">
                                 {`upload_max_filesize = 1G
-post_max_size = 1G`}
+post_max_size = 1G
+max_file_uploads = 10000`}
                             </pre>
 
                             If you are running apache, try editing the .htaccess file in /public directory
                             <pre className="mt-1 mb-5 text-sm text-gray-400">
                                 {`php_value upload_max_filesize 64M
 php_value post_max_size 64M
-`}
+php_value max_file_uploads 10000`}
                             </pre>
                         </div>
                     </div>

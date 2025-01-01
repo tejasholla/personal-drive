@@ -30,7 +30,8 @@ class DeleteController
         $fileKeyArray = [];
         if ($fileList) {
             $fileKeyArray = json_decode($fileList, true);
-        }        $filesInDB = LocalFile::whereIn('id', array_keys($fileKeyArray));
+        }
+        $filesInDB = LocalFile::whereIn('id', array_keys($fileKeyArray));
         $rootPath = $this->pathService->getRootPath();
         if (!$filesInDB->count()) {
             return ResponseHelper::json(' No Files found ');

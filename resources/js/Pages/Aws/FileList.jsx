@@ -1,47 +1,44 @@
 import FileFolderRows from './Components/FileFolderRows.jsx';
 import {Link, router} from "@inertiajs/react";
-import {DeleteIcon, DownloadIcon, HomeIcon} from 'lucide-react';
+import {DeleteIcon, HomeIcon} from 'lucide-react';
 import SearchBar from "./Components/SearchBar.jsx";
 import UploadMenu from "./Components/UploadMenu.jsx";
 import AlertBox from "./Components/AlertBox.jsx";
+import DownloadButton from "./Components/DownloadButton.jsx";
 import {usePage} from '@inertiajs/react'
 import {useState, useEffect, useRef, useCallback} from "react";
-import Cookies from 'js-cookie';
 
 
 import RefreshButton from "@/Pages/Aws/Components/RefreshButton.jsx";
+import DeleteButton from "@/Pages/Aws/Components/DeleteButton.jsx";
+import Breadcrumb from "@/Pages/Aws/Components/Breadcrumb.jsx";
 
 
 const FileList = ({files, handleSearch, isSearch, path, token}) => {
-    console.log('rendering filelist ', files);
-    const {flash} = usePage().props
+    console.log('filelist path ', path.split('/'));
+
 
     const [statusMessage, setStatusMessage] = useState('')
     const [status, setStatus] = useState(false)
-    const [hasSelectedFiles, setHasSelectedFiles] = useState(false)
-    // let hasSelectedFiles = false;
     const [selectedFiles, setSelectedFiles] = useState(new Map());
+    console.log('filelist selectedFiles ', selectedFiles);
 
-
-    // useEffect(() => {
-    //     if (flash && flash.message ) {
-    //         setStatusMessage(flash.message);
-    //         console.log('stat set' , flash.message);
-    //     }
-    // }, []);
-
-    function selectFile(file) {
+    function selectFile(file, hasSelectAllMode = '') {
         setSelectedFiles(prevSelectedFiles => {
             const newSelectedFiles = new Map(prevSelectedFiles);
-            if (newSelectedFiles.has(file.id)) {
-                newSelectedFiles.delete(file.id);
+            if (hasSelectAllMode === '1') {
+                newSelectedFiles.set(file.id, file.is_dir); // Select all
+            } else if (hasSelectAllMode === '0') {
+                newSelectedFiles.delete(file.id); // Deselect all
             } else {
-                newSelectedFiles.set(file.id, file.is_dir);
+                newSelectedFiles.has(file.id)
+                    ? newSelectedFiles.delete(file.id) // Toggle off
+                    : newSelectedFiles.set(file.id, file.is_dir); // Toggle on
             }
+            console.log('newSelectedFiles ', newSelectedFiles, hasSelectAllMode);
             return newSelectedFiles;
         });
     }
-
 
     const selectFileMemo = useCallback(selectFile, [])
 
@@ -55,72 +52,61 @@ const FileList = ({files, handleSearch, isSearch, path, token}) => {
         }
     }
 
-    async function deleteFiles() {
-        let response = await selectFileOperation('/s3/delete-files');
+    async function deleteFiles(deleteFilesComponentHandler) {
+        let response = await deleteFilesComponentHandler();
+        setSelectedFiles(new Map());
+        console.log('response' , response );
         handleStatus(response, 'delete failed', 'delete successful');
     }
+    const deleteFilesMemo = useCallback(deleteFiles, [])
+
+
 
     function reloadFiles() {
         router.visit(window.location.href, {
-            only: ['files'], preserveState: true,
+            only: ['files'], preserveState: true, preserveScroll: true
         });
     }
 
-    async function selectFileOperation(targetUrl) {
-        console.log('selectedFiles', Object.fromEntries(selectedFiles))
-        let axiosResponse = await axios.post(targetUrl, {
-            fileList: JSON.stringify(Object.fromEntries(selectedFiles)), path: path,
-        });
-        setSelectedFiles(new Map());
-        return axiosResponse;
-    }
-
-
-    function handleRefreshBucketButton(onSuccess) {
-        router.post('/resync', {
+    async function handleRefreshBucketButton(onSuccess) {
+        let response = await axios.post('/resync', {
             redirect: path
-        }, {onSuccess: onSuccess})
+        });
+        onSuccess()
+        handleStatus(response, 'Resync failed', 'Resync successful');
+
     }
 
     return (<div className="my-12 p-5">
         <div className="rounded-md gap-x-2 flex items-start relative ">
-            <AlertBox message={flash.message || statusMessage}
-                      type={flash.status || status ? 'success' : 'warning'}/>
+            <AlertBox message={statusMessage}
+                      type={status ? 'success' : 'warning'}/>
         </div>
         <div className="rounded-md gap-x-2 flex items-start mb-6  justify-between">
             <div className="p-2 gap-2 flex ">
-                <Link className="p-2 rounded-md inline-flex w-auto bg-gray-700" href='/drive'>
-                    <HomeIcon className={`text-gray-500 inline`} size={22}/>
-                    <span className={`mx-1`}>Go to base dir</span>
-                </Link>
+
                 <RefreshButton handleRefreshBucketButton={handleRefreshBucketButton}/>
-                {selectedFiles.size > 0 && <form method="post" action='/s3/download-files'>
-                    <input type="hidden" name="_token" value={token}/>
-                    <input type="hidden" name="fileList" value={JSON.stringify(Object.fromEntries(selectedFiles))}/>
-                    <button type="submit" className="p-2 rounded-md flex items-center w-auto bg-green-800 bg-"
-                    >
-                        <DownloadIcon className={`text-green-500 inline`} size={22}/>
-                        <span className={`mx-1 text-gray-200`}>Download</span>
-                    </button>
-
-                </form>
-
+                {selectedFiles.size > 0 &&
+                    <DownloadButton selectedFiles={selectedFiles} setStatusMessage={setStatusMessage}/>
                 }
             </div>
             <div className="p-2 gap-x-2 flex ">
                 {selectedFiles.size > 0 &&
-                    <button className="p-2 rounded-md flex items-center w-auto bg-red-950" onClick={deleteFiles}>
-                        <DeleteIcon className={`text-red-500 inline`} size={22}/>
-                        <span className={`mx-1 text-gray-200`}>Delete</span>
-                    </button>}
+                    <DeleteButton deleteFiles={deleteFilesMemo} selectedFiles={selectedFiles}/>
+                }
                 <UploadMenu path={path} setStatus={setStatus}
                             setStatusMessage={setStatusMessage}/>
                 <SearchBar handleSearch={handleSearch}/>
             </div>
         </div>
-        <hr className=" mx-2 text-gray-500 border-gray-600"/>
-        <FileFolderRows files={files} path={path} isSearch={isSearch} selectFile={selectFileMemo}/>
-    </div>);
-};
+        <div className="rounded-md gap-x-2 flex items-start mt-3  justify-center">
+            <Breadcrumb path={path}/>
+        </div>
+            <hr className=" mx-2 text-gray-500 border-gray-600"/>
+            <FileFolderRows files={files} path={path} isSearch={isSearch} selectFile={selectFileMemo}
+                            deleteFiles={deleteFilesMemo} token={token} setStatusMessage={setStatusMessage}/>
+        </div>
+        );
+        };
 
-export default FileList;
+        export default FileList;

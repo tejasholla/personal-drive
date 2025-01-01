@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import ReactDOM from 'react-dom';
 import  Modal  from './Modal.jsx'
 import {router} from "@inertiajs/react";
 

@@ -20,13 +20,18 @@ class AdminConfigService
         return [true, 'Storage path updated successfully'];
     }
 
-    public function getPhpMaxUploadSize(): false|string
+    public function getPhpUploadMaxFilesize(): false|string
     {
         return ini_get('upload_max_filesize');
     }
 
-    public function getPhpPostMaxUploadSize(): false|string
+    public function getPhpPostMaxSize(): false|string
     {
         return ini_get('post_max_size');
+    }
+
+    public function getPhpMaxFileUploads(): false|string
+    {
+        return ini_get('max_file_uploads');
     }
 }

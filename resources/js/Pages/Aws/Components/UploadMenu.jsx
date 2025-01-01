@@ -87,9 +87,7 @@ const UploadMenu = ({  path, setStatus, setStatusMessage }) => {
                     <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                         <button
                             onClick={() => {
-                                console.log('create folder');
                                 setIsModalOpen(true) ;
-                                console.log('isModalOpen', isModalOpen);
                             }}
                             className="text-left block w-full px-4 py-2 text-sm bg-gray-700 "
                             role="menuitem"

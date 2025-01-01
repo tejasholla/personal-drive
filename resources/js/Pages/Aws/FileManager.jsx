@@ -4,17 +4,9 @@ import FileList from './FileList.jsx';
 import {useEffect, useState} from "react";
 
 export default function FileManager({files, path, token}) {
-    console.log('render filemanager');
-    const [currentFiles, setCurrentFiles] = useState([]);
+    console.log('render filemanager ', files);
+    const [currentFiles, setCurrentFiles] = useState([...files]);
     const [isSearch, setIsSearch] = useState(false);
-
-
-    useEffect(() => {
-        if (currentFiles !== files) {
-            setCurrentFiles(files);
-        }
-    }, [files]);
-
 
     const handleSearch = async (e, searchText) => {
         e.preventDefault();
@@ -35,7 +27,7 @@ export default function FileManager({files, path, token}) {
         <Head title="File manager"/>
         <div className="max-w-7xl mx-auto  bg-gray-800 text-gray-200">
             <FileList
-                files={currentFiles}
+                files={files}
                 handleSearch={handleSearch}
                 isSearch={isSearch}
                 path={path}

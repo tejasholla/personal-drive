@@ -13,8 +13,7 @@ export default function RefreshButton({handleRefreshBucketButton}) {
         setIsLoading(true)
         await handleRefreshBucketButton(() => {
             setIsLoading(false);
-            console.log('flash', flash.message);
-            console.log('stat', flash.status)
+            console.log('setIsLoading');
         });
     }
 

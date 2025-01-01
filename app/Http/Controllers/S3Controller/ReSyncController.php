@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\S3Controller;
 
+use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;
 use App\Services\LocalFileStatsService;
 use Illuminate\Support\Facades\Log;
@@ -17,20 +18,24 @@ class ReSyncController extends Controller
         $this->localFileStatsService = $localFileStatsService;
     }
 
-    public function index(Request $request): void
+    public function index(Request $request): \Illuminate\Http\JsonResponse
     {
         $redirectPath = (string) $request->redirect;
         try {
             $this->localFileStatsService->generateStats();
             Log::info('ReSync succ | ');
-            session()->flash('status');
-            session()->flash('message', 'Sync successful');
-            redirect('/drive/' . $redirectPath);
+            return ResponseHelper::json('Sync successful');
+
+//            session()->flash('status');
+//            session()->flash('message', 'Sync successful');
+//            redirect('/drive/' . $redirectPath);
         } catch (\Exception $e) {
             Log::info('ReSync failed | ' . $e->getMessage());
-            session()->flash('message', 'ReSync failed. check logs');
-            session()->flash('status', false);
-            redirect('/drive/' . $redirectPath);
+            return ResponseHelper::json('ReSync failed. check logs');
+
+//            session()->flash('message', 'ReSync failed. check logs');
+//            session()->flash('status', false);
+//            redirect('/drive/' . $redirectPath);
         }
     }
 }

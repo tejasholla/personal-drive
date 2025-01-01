@@ -35,14 +35,14 @@ class UploadController extends Controller
 
         $successWrite = true;
 
-        foreach ($files as $file) {
-            $fileNameWithDir = UploadFileHelper::getUploadedFileFullPath($file);
+        foreach ($files as $index => $file) {
+            $fileNameWithDir = UploadFileHelper::getUploadedFileFullPath($index);
             $directory = dirname($privatePath . $fileNameWithDir);
             if (!file_exists($directory)) {
                 UploadFileHelper::makeFolder($directory);
             }
 
-            if (!File::put($privatePath . $fileNameWithDir, $file->getContent())) {
+            if ($file->getContent() && !File::put($privatePath . $fileNameWithDir, $file->getContent())) {
                 $successWrite = false;
             }
         }

@@ -8,14 +8,9 @@ use Illuminate\Support\Facades\Log;
 
 class UploadFileHelper
 {
-    public static function getUploadedFileFullPath(UploadedFile $file): string
+    public static function getUploadedFileFullPath($fileIndex): string
     {
-        $fileName = $file->getClientOriginalName();
-        $fileIndex = array_search($file->getClientOriginalName(), $_FILES['files']['name']);
-        if ($fileIndex !== false) {
-            $fileName = $_FILES['files']['full_path'][$fileIndex];
-        }
-        return $fileName;
+        return $_FILES['files']['full_path'][$fileIndex];
     }
 
     public static function makeFolder(string $path, int $permission = 0755): bool

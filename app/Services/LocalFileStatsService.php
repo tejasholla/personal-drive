@@ -2,17 +2,9 @@
 
 namespace App\Services;
 
-use App\Models\Bucket;
-use App\Models\File;
 use App\Models\LocalFile;
-use App\Models\Setting;
-use Aws\S3\S3Client;
-use Aws\S3\ObjectUploader;
-use Exception;
 use FilesystemIterator;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Http\UploadedFile;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
@@ -43,21 +35,21 @@ class LocalFileStatsService
     private function populateLocalFileWithStats(string $privatePath, int $rootPathLen): void
     {
         $insertArr = [];
-        $folderSizes = [];
+        $dirSizes = [];
         $iterator = $this->createFileIterator($privatePath);
         foreach ($iterator as $item) {
             $itemPrivatePathname = $item->getPath();
             $currentDir = dirname($item->getPathname());
             if (!$item->isDir()) {
-                $folderSizes[$currentDir] = array_key_exists(
+                $dirSizes[$currentDir] = array_key_exists(
                     $currentDir,
-                    $folderSizes
-                ) ? $folderSizes[$currentDir] + $item->getSize() : $item->getSize();
-            } else {
-                $folderSizes[$currentDir] = array_key_exists(
+                    $dirSizes
+                ) ? $dirSizes[$currentDir] + $item->getSize() : $item->getSize();
+            } elseif (array_key_exists($item->getPathname(), $dirSizes)) {
+                $dirSizes[$currentDir] = array_key_exists(
                     $currentDir,
-                    $folderSizes
-                ) ? $folderSizes[$currentDir] + $folderSizes[$item->getPathname()] : $folderSizes[$item->getPathname()];
+                    $dirSizes
+                ) ? $dirSizes[$currentDir] + $dirSizes[$item->getPathname()] : $dirSizes[$item->getPathname()];
             }
             $publicPathname = substr($itemPrivatePathname, $rootPathLen);
             $insertArr[] = [
@@ -65,7 +57,7 @@ class LocalFileStatsService
                 'is_dir' => $item->isDir(),
                 'public_path' => $publicPathname,
                 'private_path' => $itemPrivatePathname,
-                'size' => $item->isDir() ? $folderSizes[$item->getPathname()] ?? '' : $item->getSize(),
+                'size' => $item->isDir() ? $dirSizes[$item->getPathname()] ?? '' : $item->getSize(),
                 'user_id' => Auth::user()->id, // Set the appropriate user ID
             ];
             // Insert in chunks of 100

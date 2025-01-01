@@ -47,7 +47,7 @@ class LocalFile extends Model
     {
         return $fileItems->map(function ($item) {
             if ($item->size) {
-                $item->size = FileSizeFormatter::format((int) $item->size);
+                $item->sizeText = FileSizeFormatter::format((int) $item->size);
             }
             return $item;
         });

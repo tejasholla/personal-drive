@@ -1,58 +1,158 @@
 import FolderItem from "@/Pages/Aws/Components/FolderItem.jsx";
 import FileItem from "@/Pages/Aws/Components/FileItem.jsx";
-import { memo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {memo, useEffect, useRef, useState} from 'react';
+import {useNavigate} from 'react-router-dom';
+import {HomeIcon, StepBackIcon} from "lucide-react";
 
 
-const FileFolderRows = memo(({files,path, isSearch, selectFile}) => {
-    console.log(' filefolder rows', files,path, isSearch, );
+const FileFolderRows = memo(({files, path, isSearch, selectFile, token, deleteFiles, setStatusMessage}) => {
+
+    const [allSelected, setAllSelected] = useState(false);
+    console.log(' filefolderrows allsel', allSelected);
+
+    const [filesCopy, setFilesCopy] = useState([...files]);
+    // console.log(' filefolderrows',  filesCopy, path, isSearch);
     const navigate = useNavigate();
 
+    const [checkboxStates, setCheckboxStates] = useState({});
+    const selectAllMode = useRef(true);
 
-    return (
-        <div className=" rounded-md overflow-hidden p-2 ">
-            <table className="w-full ">
-                <thead>
-                <tr className="text-left text-gray-400 border-b border-b-gray-600">
-                    <th className="p-2 px-6 w-20 text-center">Select</th>
-                    <th className="p-2 px-4">Name</th>
-                    <th className="p-2  px-4">Size</th>
-                </tr>
-                </thead>
-                <tbody className="border-spacing-y-4">
-                {(path || isSearch) && <tr className="cursor-pointer hover:bg-gray-700 " title="Go back">
-                    <td className="p-4 px-9" colSpan={3} onClick={() => navigate(-1)}>..
-                    </td>
-                </tr>}
-                {files.map((file) => (<tr key={file.id} className="cursor-pointer hover:bg-gray-700">
-                    <td title="Select" className="px-1 hover:bg-gray-900 justify-center text-center"
-                        onClick={(e) => {
-                            selectFile(file);
-                            const input = e.target === 'input' ? e.target : e.target.querySelector('input');
-                            if (input) {
-                                input.checked = !input.checked;
-                            }
-                        }}>
-                        <input type="checkbox" checked={false}/>
-                    </td>
-                    <td className="p-4">
-                        {file.is_dir ? <FolderItem
-                            file={file}
-                            // isSelected={selectedItem && selectedItem.id === file.id}
-                            isSearch={isSearch}
-                        /> : <FileItem
-                            file={file}
-                            isSearch={isSearch}
-                        />}
-                    </td>
-                    <td className="p-4">
-                        {file.size}
-                    </td>
-                </tr>))}
-                </tbody>
-            </table>
-        </div>
-    );
+    // Sync filesCopy with files whenever files changes
+    useEffect(() => {
+        console.log(' filefolderrows checkboxes', checkboxStates);
+        setCheckboxStates({})
+        setAllSelected(false);
+        setFilesCopy([...files]);
+        selectAllMode.current = true;
+    }, [files]);  // Dependency array makes sure this runs when `files` changes
+
+
+    let sortDetails = useRef({key: 'filename', order: 'desc'});
+
+    function sortArrayByKey(arr, key, direction) {
+        return [...arr].sort((a, b) => {
+            const valA = a[key]?.toLowerCase?.() || a[key];
+            const valB = b[key]?.toLowerCase?.() || b[key];
+
+            if (direction === 'desc') {
+                return valA > valB ? -1 : valA < valB ? 1 : 0;
+            } else {
+                return valA < valB ? -1 : valA > valB ? 1 : 0;
+            }
+        });
+    }
+
+    function sortCol(key) {
+        let sortDirectionToSet = (key === sortDetails.key ? sortDetails.order : 'desc');
+        let sortedFiles = sortArrayByKey(filesCopy, key, sortDirectionToSet);
+        setFilesCopy(sortedFiles);
+        sortDetails.key = key;
+        sortDetails.order = sortDirectionToSet === 'desc' ? 'asc' : 'desc';
+    }
+
+    function selectCheckbox(e, file) {
+        console.log('checkboxStates in select ', checkboxStates)
+        selectFile(file);
+        const newStates = {...checkboxStates, [file.id]: !checkboxStates[file.id]};
+        setCheckboxStates(newStates);
+    }
+
+    function selectAllFiles() {
+        let checkboxStates = {};
+        for (const file of filesCopy) {
+            selectFile(file, selectAllMode.current ? '1' : '0');
+            checkboxStates[file.id] = selectAllMode.current;
+        }
+        selectAllMode.current = !selectAllMode.current;
+        setCheckboxStates(checkboxStates);
+        setAllSelected(prevState => !prevState);
+    }
+
+    return (<div className=" rounded-md overflow-hidden px-2 ">
+        <table className="w-full ">
+            <thead>
+            {filesCopy.length > 0  && <tr className="text-left text-gray-400 border-b border-b-gray-600">
+                <th className="p-2 px-6 w-20 text-center hover:bg-gray-900 hover:cursor-pointer "
+                    onClick={(e) => selectAllFiles(e)}>
+                    <input type="checkbox" checked={allSelected}
+                           readOnly/>
+                </th>
+                <th onClick={(e) => sortCol('filename')}
+                    className={`p-2 px-4 hover:bg-gray-900 hover:cursor-pointer ${sortDetails.key === 'filename' ? 'text-blue-400' : ''}`}>
+                    <span>Name</span>
+                    <svg
+                        className="w-3 h-3 ms-1.5 inline-block "
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor"
+                        viewBox="0 0 24 24">
+                        <path
+                            d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z"/>
+                    </svg>
+                </th>
+                <th onClick={(e) => sortCol('size')}
+                    className={`p-2 px-4 w-32  hover:bg-gray-900  hover:cursor-pointer ${sortDetails.key === 'size' ? 'text-blue-400' : ''}`}>
+                    <span>Size</span>
+                    <svg
+                        className="w-3 h-3 ms-1.5 inline-block "
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor"
+                        viewBox="0 0 24 24">
+                        <path
+                            d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z"/>
+                    </svg>
+                </th>
+            </tr>
+            }
+            </thead>
+            <tbody className="border-spacing-y-4">
+            {(path || isSearch) && filesCopy.length > 0  && <tr className="cursor-pointer hover:bg-gray-700 " title="Go back">
+                <td className="p-4 px-9" colSpan={3} onClick={() => navigate(-1)}>..
+                </td>
+            </tr>}
+
+            {filesCopy.length === 0 && <tr>
+                <td className="py-20 px-9 text-center" colSpan={3}>
+                    <div className="flex items-center justify-center gap-x-4 "> <span className="text-xl">Empty Results</span>
+                        <button className="p-2 rounded-md inline-flex w-auto bg-gray-700" onClick={() => navigate(-1)}>
+                            <StepBackIcon className={`text-gray-500 inline`} size={22}/>
+                            <span className={`mx-1`}>Go Back</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>}
+            {filesCopy.map((file) => (<tr key={file.id} className="cursor-pointer hover:bg-gray-700 group">
+                <td title="Select" className="px-1 hover:bg-gray-900 justify-center text-center"
+                    onClick={(e) => selectCheckbox(e, file)}>
+                    <input type="checkbox" checked={!!checkboxStates[file.id]} onChange={(e) => {
+                    }}
+                    />
+                </td>
+                <td className="">
+                    {file.is_dir ? <FolderItem
+                        file={file}
+                        // isSelected={selectedItem && selectedItem.id === file.id}
+                        isSearch={isSearch}
+                        token={token}
+                        deleteFiles={deleteFiles}
+                        setStatusMessage={setStatusMessage}
+                    /> : <FileItem
+                        file={file}
+                        isSearch={isSearch}
+                        token={token}
+                        deleteFiles={deleteFiles}
+                        setStatusMessage={setStatusMessage}
+                    />}
+                </td>
+                <td className="p-4 text-right">
+                    {file.sizeText}
+                    {checkboxStates[file.id]}
+                </td>
+            </tr>))}
+            </tbody>
+        </table>
+    </div>);
 });
 
 export default FileFolderRows;

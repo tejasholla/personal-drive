@@ -30,8 +30,9 @@ class AdminConfigController extends Controller
             'settings' => $settings,
             'message' => $message,
             'status' => $status,
-            'php_max_upload_size' => $this->adminConfigService->getPhpMaxUploadSize(),
-            'php_post_max_size' => $this->adminConfigService->getPhpPostMaxUploadSize(),
+            'php_max_upload_size' => $this->adminConfigService->getPhpUploadMaxFilesize(),
+            'php_post_max_size' => $this->adminConfigService->getPhpPostMaxSize(),
+            'php_max_file_uploads' => $this->adminConfigService->getPhpMaxFileUploads(),
         ]);
     }
 
