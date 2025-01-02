@@ -15,7 +15,7 @@ export default function Breadcrumb({path}) {
         <ol className="flex items-center flex-wrap h-10">
             <li className="flex items-center">
                 {path  &&
-                    <Link className="p-2 rounded-md inline-flex w-auto bg-gray-700" href='/drive'>
+                    <Link className="hover:bg-gray-600 p-2 rounded-md inline-flex w-auto bg-gray-700" href='/drive'>
                         <HomeIcon className={`text-gray-500 inline`} size={22}/>
                         <span className={`mx-1`}>Go to base dir</span>
                     </Link>

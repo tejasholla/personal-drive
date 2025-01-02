@@ -208,10 +208,10 @@ const FileFolderRows = memo(({files, path, isSearch, selectFile, token, deleteFi
             )}
 
             {filesCopy.length === 0 && (
-                <div className="py-20 px-9 text-center w-full">
+                <div className="py-20 w-full">
                     <div className="flex items-center justify-center gap-x-4 ">
                         <span className="text-xl">Empty Results</span>
-                        <button className="p-2 rounded-md inline-flex w-auto bg-gray-700" onClick={() => navigate(-1)}>
+                        <button className="p-2 rounded-md bg-gray-700 hover:bg-gray-600" onClick={() => navigate(-1)}>
                             <StepBackIcon className={`text-gray-500 inline`} size={22}/>
                             <span className={`mx-1`}>Go Back</span>
                         </button>
@@ -221,8 +221,8 @@ const FileFolderRows = memo(({files, path, isSearch, selectFile, token, deleteFi
 
             {filesCopy.map((file) => (
                 <div key={file.id}
-                     className="cursor-pointer hover:bg-gray-700 group flex flex-col sm:flex-row w-full">
-                    <div className="p-2 px-6 w-20 items-center flex hover:bg-gray-900 justify-center text-center"
+                     className="cursor-pointer hover:bg-gray-700 group flex flex-row w-full">
+                    <div className="p-2 px-6 w-20 items-center flex hover:bg-gray-900 justify-center "
                          onClick={(e) => selectCheckbox(e, file)}>
                         <input type="checkbox" checked={!!checkboxStates[file.id]} onChange={() => {
                         }}/>
