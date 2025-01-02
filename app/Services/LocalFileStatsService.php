@@ -38,6 +38,8 @@ class LocalFileStatsService
         $dirSizes = [];
         $iterator = $this->createFileIterator($privatePath);
         foreach ($iterator as $item) {
+            $mimeType = mime_content_type($item->getPathname());
+
             $itemPrivatePathname = $item->getPath();
             $currentDir = dirname($item->getPathname());
             if (!$item->isDir()) {
@@ -59,6 +61,7 @@ class LocalFileStatsService
                 'private_path' => $itemPrivatePathname,
                 'size' => $item->isDir() ? $dirSizes[$item->getPathname()] ?? '' : $item->getSize(),
                 'user_id' => Auth::user()->id, // Set the appropriate user ID
+                'file_type' => $this->getFileType($mimeType)
             ];
             // Insert in chunks of 100
             if (count($insertArr) === 100) {
@@ -96,5 +99,18 @@ class LocalFileStatsService
             'size' => '',
             'user_id' => Auth::user()->id, // Set the appropriate user ID
         ]);
+    }
+
+    private function getFileType(string $mimeType): string
+    {
+        $fileType = '';
+        if (str_starts_with($mimeType, 'image/')) {
+            $fileType = 'image';
+        } elseif (str_starts_with($mimeType, 'video/')) {
+            $fileType = 'video';
+        } elseif ($mimeType === 'application/pdf') {
+            $fileType = 'pdf';
+        }
+        return $fileType;
     }
 }

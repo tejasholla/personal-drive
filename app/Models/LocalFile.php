@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Helpers\FileSizeFormatter;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Crypt;
 
 class LocalFile extends Model
 {
@@ -40,14 +41,17 @@ class LocalFile extends Model
     public static function getFilesForPublicPath(string $publicPath): Collection
     {
         $fileItems = self::where('public_path', $publicPath)->get();
-        return self::formatFilesSize($fileItems);
+        return self::modifyFileCollection($fileItems);
     }
 
-    public static function formatFilesSize($fileItems)
+    public static function modifyFileCollection($fileItems)
     {
         return $fileItems->map(function ($item) {
             if ($item->size) {
                 $item->sizeText = FileSizeFormatter::format((int) $item->size);
+            }
+            if ($item->id) {
+                $item->hash = Crypt::encryptString($item->id);
             }
             return $item;
         });
@@ -58,6 +62,6 @@ class LocalFile extends Model
         $fileItems = static::where('user_id', $userId)
             ->where('filename', 'like', $searchQuery . '%')
             ->get();
-        return self::formatFilesSize($fileItems);
+        return self::modifyFileCollection($fileItems);
     }
 }

@@ -1,11 +1,10 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
 import {Head, router} from '@inertiajs/react';
 import FileList from './FileList.jsx';
-import {useEffect, useState} from "react";
+import {useState} from "react";
 
 export default function FileManager({files, path, token}) {
     console.log('render filemanager ', files);
-    const [currentFiles, setCurrentFiles] = useState([...files]);
     const [isSearch, setIsSearch] = useState(false);
 
     const handleSearch = async (e, searchText) => {

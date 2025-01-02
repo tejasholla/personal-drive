@@ -5,6 +5,12 @@
     "description": "The skeleton application for the Laravel framework.",
     "keywords": ["laravel", "framework"],
     "license": "MIT",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@github:gyaaniguy/laravel-video.git"
+        }
+    ],
     "require": {
         "php": "^8.2",
         "ext-zip": "*",
@@ -16,7 +22,9 @@
         "maennchen/zipstream-php": "^3.1",
         "nelexa/zip": "^4.0",
         "tightenco/ziggy": "^2.0",
-        "zanysoft/laravel-zip": "^1.0"
+        "zanysoft/laravel-zip": "^1.0",
+        "imanghafoori/laravel-video": "*",
+        "ext-fileinfo": "*"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.14",
@@ -79,6 +87,6 @@
             "php-http/discovery": true
         }
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "prefer-stable": true
 }

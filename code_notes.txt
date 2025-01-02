@@ -47,3 +47,4 @@ checked bugs - select folder, file together | unselect after delete
 breadcrumbs
 download status
 sync bug, empty subdirectory
+video, img start

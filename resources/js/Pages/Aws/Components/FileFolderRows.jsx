@@ -2,38 +2,54 @@ import FolderItem from "@/Pages/Aws/Components/FolderItem.jsx";
 import FileItem from "@/Pages/Aws/Components/FileItem.jsx";
 import {memo, useEffect, useRef, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
-import {HomeIcon, StepBackIcon} from "lucide-react";
-
+import {StepBackIcon} from "lucide-react";
+import MediaViewer from "./FileList/MediaViewer.jsx";
 
 const FileFolderRows = memo(({files, path, isSearch, selectFile, token, deleteFiles, setStatusMessage}) => {
 
     const [allSelected, setAllSelected] = useState(false);
-    console.log(' filefolderrows allsel', allSelected);
-
     const [filesCopy, setFilesCopy] = useState([...files]);
-    // console.log(' filefolderrows',  filesCopy, path, isSearch);
     const navigate = useNavigate();
-
     const [checkboxStates, setCheckboxStates] = useState({});
     const selectAllMode = useRef(true);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
-    // Sync filesCopy with files whenever files changes
+    const [selectedFileIndex, setSelectedFileIndex] = useState(null);
+    const [selectedFileType, setSelectedFileType] = useState(null);
+    let previewAbleFiles = files.filter(file => file.file_type);
+
+    for (let i = 0; i < previewAbleFiles.length; i++) {
+        previewAbleFiles[i]['next'] = previewAbleFiles[i + 1]?.hash || null;
+        previewAbleFiles[i]['prev'] = previewAbleFiles[i - 1]?.hash || null;
+    }
+
     useEffect(() => {
-        console.log(' filefolderrows checkboxes', checkboxStates);
         setCheckboxStates({})
         setAllSelected(false);
         setFilesCopy([...files]);
         selectAllMode.current = true;
-    }, [files]);  // Dependency array makes sure this runs when `files` changes
+    }, [files]);
 
 
     let sortDetails = useRef({key: 'filename', order: 'desc'});
+
+
+    function selectFileForPreview(file) {
+        setSelectedFileIndex(file.hash);
+        setSelectedFileType(file.file_type);
+    }
+
+    function handleFileClick(file) {
+        if (file.file_type) {
+            setIsModalOpen(true);
+            selectFileForPreview(file);
+        }
+    }
 
     function sortArrayByKey(arr, key, direction) {
         return [...arr].sort((a, b) => {
             const valA = a[key]?.toLowerCase?.() || a[key];
             const valB = b[key]?.toLowerCase?.() || b[key];
-
             if (direction === 'desc') {
                 return valA > valB ? -1 : valA < valB ? 1 : 0;
             } else {
@@ -51,7 +67,6 @@ const FileFolderRows = memo(({files, path, isSearch, selectFile, token, deleteFi
     }
 
     function selectCheckbox(e, file) {
-        console.log('checkboxStates in select ', checkboxStates)
         selectFile(file);
         const newStates = {...checkboxStates, [file.id]: !checkboxStates[file.id]};
         setCheckboxStates(newStates);
@@ -68,10 +83,14 @@ const FileFolderRows = memo(({files, path, isSearch, selectFile, token, deleteFi
         setAllSelected(prevState => !prevState);
     }
 
+
     return (<div className=" rounded-md overflow-hidden px-2 ">
+        <MediaViewer selectedFileHash={selectedFileIndex} selectedFileType={selectedFileType} isModalOpen={isModalOpen}
+                     setIsModalOpen={setIsModalOpen} selectFileForPreview={selectFileForPreview}
+                     previewAbleFiles={previewAbleFiles}/>
         <table className="w-full ">
             <thead>
-            {filesCopy.length > 0  && <tr className="text-left text-gray-400 border-b border-b-gray-600">
+            {filesCopy.length > 0 && <tr className="text-left text-gray-400 border-b border-b-gray-600">
                 <th className="p-2 px-6 w-20 text-center hover:bg-gray-900 hover:cursor-pointer "
                     onClick={(e) => selectAllFiles(e)}>
                     <input type="checkbox" checked={allSelected}
@@ -107,14 +126,16 @@ const FileFolderRows = memo(({files, path, isSearch, selectFile, token, deleteFi
             }
             </thead>
             <tbody className="border-spacing-y-4">
-            {(path || isSearch) && filesCopy.length > 0  && <tr className="cursor-pointer hover:bg-gray-700 " title="Go back">
-                <td className="p-4 px-9" colSpan={3} onClick={() => navigate(-1)}>..
-                </td>
-            </tr>}
+            {(path || isSearch) && filesCopy.length > 0 &&
+                <tr className="cursor-pointer hover:bg-gray-700 " title="Go back">
+                    <td className="p-4 px-9" colSpan={3} onClick={() => navigate(-1)}>..
+                    </td>
+                </tr>}
 
             {filesCopy.length === 0 && <tr>
                 <td className="py-20 px-9 text-center" colSpan={3}>
-                    <div className="flex items-center justify-center gap-x-4 "> <span className="text-xl">Empty Results</span>
+                    <div className="flex items-center justify-center gap-x-4 "><span
+                        className="text-xl">Empty Results</span>
                         <button className="p-2 rounded-md inline-flex w-auto bg-gray-700" onClick={() => navigate(-1)}>
                             <StepBackIcon className={`text-gray-500 inline`} size={22}/>
                             <span className={`mx-1`}>Go Back</span>
@@ -137,12 +158,14 @@ const FileFolderRows = memo(({files, path, isSearch, selectFile, token, deleteFi
                         token={token}
                         deleteFiles={deleteFiles}
                         setStatusMessage={setStatusMessage}
+
                     /> : <FileItem
                         file={file}
                         isSearch={isSearch}
                         token={token}
                         deleteFiles={deleteFiles}
                         setStatusMessage={setStatusMessage}
+                        handleFileClick={handleFileClick}
                     />}
                 </td>
                 <td className="p-4 text-right">

@@ -42,6 +42,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/s3/download-files', [S3Controller\DownloadController::class, 'index'])->name('s3.download');
 
     Route::post('/resync', [S3Controller\ReSyncController::class, 'index']);
+    Route::get('/fetch-file/{hash}', [S3Controller\FetchFileController::class, 'index']);
+
 
     // test
 

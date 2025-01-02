@@ -30,8 +30,8 @@ class UploadController extends Controller
     public function store(Request $request): JsonResponse
     {
         $files = $request->file('files');
-        $path = $request->path ?: '';
-        $privatePath = $this->lPathService->genPrivatePathWithPublic($path);
+        $publicPath = $request->path ?: '';
+        $privatePath = $this->lPathService->genPrivatePathWithPublic($publicPath);
 
         $successWrite = true;
 

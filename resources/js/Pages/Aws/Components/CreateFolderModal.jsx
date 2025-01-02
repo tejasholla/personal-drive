@@ -35,7 +35,7 @@ const CreateFolderModal = ({isModalOpen, setIsModalOpen, setStatusMessage, bucke
     }
 
     return (
-        <Modal isOpen={isModalOpen} onClose={setIsModalOpen} title="Create Folder">
+        <Modal isOpen={isModalOpen} onClose={setIsModalOpen} title="Create Folder" classes="max-w-md ">
             <div className="space-y-4">
                 <form onSubmit={handleSubmit} className="space-y-4 text-gray-300">
                     <div>
