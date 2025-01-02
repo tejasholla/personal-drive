@@ -88,93 +88,170 @@ const FileFolderRows = memo(({files, path, isSearch, selectFile, token, deleteFi
         <MediaViewer selectedFileHash={selectedFileIndex} selectedFileType={selectedFileType} isModalOpen={isModalOpen}
                      setIsModalOpen={setIsModalOpen} selectFileForPreview={selectFileForPreview}
                      previewAbleFiles={previewAbleFiles}/>
-        <table className="w-full ">
-            <thead>
-            {filesCopy.length > 0 && <tr className="text-left text-gray-400 border-b border-b-gray-600">
-                <th className="p-2 px-6 w-20 text-center hover:bg-gray-900 hover:cursor-pointer "
-                    onClick={(e) => selectAllFiles(e)}>
-                    <input type="checkbox" checked={allSelected}
-                           readOnly/>
-                </th>
-                <th onClick={(e) => sortCol('filename')}
-                    className={`p-2 px-4 hover:bg-gray-900 hover:cursor-pointer ${sortDetails.key === 'filename' ? 'text-blue-400' : ''}`}>
-                    <span>Name</span>
-                    <svg
-                        className="w-3 h-3 ms-1.5 inline-block "
-                        aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="currentColor"
-                        viewBox="0 0 24 24">
-                        <path
-                            d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z"/>
-                    </svg>
-                </th>
-                <th onClick={(e) => sortCol('size')}
-                    className={`p-2 px-4 w-32  hover:bg-gray-900  hover:cursor-pointer ${sortDetails.key === 'size' ? 'text-blue-400' : ''}`}>
-                    <span>Size</span>
-                    <svg
-                        className="w-3 h-3 ms-1.5 inline-block "
-                        aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="currentColor"
-                        viewBox="0 0 24 24">
-                        <path
-                            d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z"/>
-                    </svg>
-                </th>
-            </tr>
-            }
-            </thead>
-            <tbody className="border-spacing-y-4">
-            {(path || isSearch) && filesCopy.length > 0 &&
-                <tr className="cursor-pointer hover:bg-gray-700 " title="Go back">
-                    <td className="p-4 px-9" colSpan={3} onClick={() => navigate(-1)}>..
-                    </td>
-                </tr>}
+        {/*<table className="w-full ">*/}
+        {/*    <thead>*/}
+        {/*    {filesCopy.length > 0 && <tr className="text-left text-gray-400 border-b border-b-gray-600">*/}
+        {/*        <th className="p-2 px-6 w-20 text-center hover:bg-gray-900 hover:cursor-pointer "*/}
+        {/*            onClick={(e) => selectAllFiles(e)}>*/}
+        {/*            <input type="checkbox" checked={allSelected} readOnly/>*/}
+        {/*        </th>*/}
+        {/*        <th onClick={(e) => sortCol('filename')}*/}
+        {/*            className={`p-2 px-4 hover:bg-gray-900 hover:cursor-pointer ${sortDetails.key === 'filename' ? 'text-blue-400' : ''}`}>*/}
+        {/*            <span>Name</span>*/}
+        {/*            <svg*/}
+        {/*                className="w-3 h-3 ms-1.5 inline-block "*/}
+        {/*                aria-hidden="true"*/}
+        {/*                xmlns="http://www.w3.org/2000/svg"*/}
+        {/*                fill="currentColor"*/}
+        {/*                viewBox="0 0 24 24">*/}
+        {/*                <path*/}
+        {/*                    d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z"/>*/}
+        {/*            </svg>*/}
+        {/*        </th>*/}
+        {/*        <th onClick={(e) => sortCol('size')}*/}
+        {/*            className={`p-2 px-4 w-32  hover:bg-gray-900  hover:cursor-pointer ${sortDetails.key === 'size' ? 'text-blue-400' : ''}`}>*/}
+        {/*            <span>Size</span>*/}
+        {/*            <svg*/}
+        {/*                className="w-3 h-3 ms-1.5 inline-block "*/}
+        {/*                aria-hidden="true"*/}
+        {/*                xmlns="http://www.w3.org/2000/svg"*/}
+        {/*                fill="currentColor"*/}
+        {/*                viewBox="0 0 24 24">*/}
+        {/*                <path*/}
+        {/*                    d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z"/>*/}
+        {/*            </svg>*/}
+        {/*        </th>*/}
+        {/*    </tr>}*/}
+        {/*    </thead>*/}
+        {/*    <tbody className="border-spacing-y-4">*/}
+        {/*    {(path || isSearch) && filesCopy.length > 0 &&*/}
+        {/*        <tr className="cursor-pointer hover:bg-gray-700 " title="Go back">*/}
+        {/*            <td className="p-4 px-9" colSpan={3} onClick={() => navigate(-1)}>..*/}
+        {/*            </td>*/}
+        {/*        </tr>}*/}
 
-            {filesCopy.length === 0 && <tr>
-                <td className="py-20 px-9 text-center" colSpan={3}>
-                    <div className="flex items-center justify-center gap-x-4 "><span
-                        className="text-xl">Empty Results</span>
+        {/*    {filesCopy.length === 0 && <tr>*/}
+        {/*        <td className="py-20 px-9 text-center" colSpan={3}>*/}
+        {/*            <div className="flex items-center justify-center gap-x-4 "><span*/}
+        {/*                className="text-xl">Empty Results</span>*/}
+        {/*                <button className="p-2 rounded-md inline-flex w-auto bg-gray-700" onClick={() => navigate(-1)}>*/}
+        {/*                    <StepBackIcon className={`text-gray-500 inline`} size={22}/>*/}
+        {/*                    <span className={`mx-1`}>Go Back</span>*/}
+        {/*                </button>*/}
+        {/*            </div>*/}
+        {/*        </td>*/}
+        {/*    </tr>}*/}
+        {/*    {filesCopy.map((file) => (<tr key={file.id} className="cursor-pointer hover:bg-gray-700 group">*/}
+        {/*        <td title="Select" className="px-1 hover:bg-gray-900 justify-center text-center"*/}
+        {/*            onClick={(e) => selectCheckbox(e, file)}>*/}
+        {/*            <input type="checkbox" checked={!!checkboxStates[file.id]} onChange={(e) => {*/}
+        {/*            }}*/}
+        {/*            />*/}
+        {/*        </td>*/}
+        {/*        <td className="">*/}
+        {/*            {file.is_dir ? <FolderItem*/}
+        {/*                file={file}*/}
+        {/*                // isSelected={selectedItem && selectedItem.id === file.id}*/}
+        {/*                isSearch={isSearch}*/}
+        {/*                token={token}*/}
+        {/*                deleteFiles={deleteFiles}*/}
+        {/*                setStatusMessage={setStatusMessage}*/}
+
+        {/*            /> : <FileItem*/}
+        {/*                file={file}*/}
+        {/*                isSearch={isSearch}*/}
+        {/*                token={token}*/}
+        {/*                deleteFiles={deleteFiles}*/}
+        {/*                setStatusMessage={setStatusMessage}*/}
+        {/*                handleFileClick={handleFileClick}*/}
+        {/*            />}*/}
+        {/*        </td>*/}
+        {/*        <td className="p-4 text-right">*/}
+        {/*            {file.sizeText}*/}
+        {/*            {checkboxStates[file.id]}*/}
+        {/*        </td>*/}
+        {/*    </tr>))}*/}
+        {/*    </tbody>*/}
+        {/*</table>*/}
+
+        <div className="w-full flex flex-wrap ">
+            {filesCopy.length > 0 && (
+                <div className="flex items-center justify-between text-gray-400 border-b border-b-gray-600 w-full">
+                    <div className="p-2 px-6 w-20 text-center hover:bg-gray-900 hover:cursor-pointer"
+                         onClick={(e) => selectAllFiles(e)}>
+                        <input type="checkbox" checked={allSelected} readOnly/>
+                    </div>
+                    <div onClick={(e) => sortCol('filename')}
+                         className={`text-left w-full p-2 px-4 hover:bg-gray-900 hover:cursor-pointer ${sortDetails.key === 'filename' ? 'text-blue-400' : ''}`}>
+                        <span>Name</span>
+                        <svg className="w-3 h-3 ms-1.5 inline-block " aria-hidden="true"
+                             xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z"/>
+                        </svg>
+                    </div>
+                    <div onClick={(e) => sortCol('size')}
+                         className={`p-2 px-4 w-32 hover:bg-gray-900  hover:cursor-pointer ${sortDetails.key === 'size' ? 'text-blue-400' : ''}`}>
+                        <span>Size</span>
+                        <svg className="w-3 h-3 ms-1.5 inline-block " aria-hidden="true"
+                             xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M8.574 11.024h6.852a2.075 2.075 0 0 0 1.847-1.086 1.9 1.9 0 0 0-.11-1.986L13.736 2.9a2.122 2.122 0 0 0-3.472 0L6.837 7.952a1.9 1.9 0 0 0-.11 1.986 2.074 2.074 0 0 0 1.847 1.086Zm6.852 1.952H8.574a2.072 2.072 0 0 0-1.847 1.087 1.9 1.9 0 0 0 .11 1.985l3.426 5.05a2.123 2.123 0 0 0 3.472 0l3.427-5.05a1.9 1.9 0 0 0 .11-1.985 2.074 2.074 0 0 0-1.846-1.087Z"/>
+                        </svg>
+                    </div>
+                </div>
+            )}
+
+            {(path || isSearch) && filesCopy.length > 0 && (
+                <div className="cursor-pointer hover:bg-gray-700 p-4 px-8 w-full" title="Go back"
+                     onClick={() => navigate(-1)}>..</div>
+            )}
+
+            {filesCopy.length === 0 && (
+                <div className="py-20 px-9 text-center w-full">
+                    <div className="flex items-center justify-center gap-x-4 ">
+                        <span className="text-xl">Empty Results</span>
                         <button className="p-2 rounded-md inline-flex w-auto bg-gray-700" onClick={() => navigate(-1)}>
                             <StepBackIcon className={`text-gray-500 inline`} size={22}/>
                             <span className={`mx-1`}>Go Back</span>
                         </button>
                     </div>
-                </td>
-            </tr>}
-            {filesCopy.map((file) => (<tr key={file.id} className="cursor-pointer hover:bg-gray-700 group">
-                <td title="Select" className="px-1 hover:bg-gray-900 justify-center text-center"
-                    onClick={(e) => selectCheckbox(e, file)}>
-                    <input type="checkbox" checked={!!checkboxStates[file.id]} onChange={(e) => {
-                    }}
-                    />
-                </td>
-                <td className="">
-                    {file.is_dir ? <FolderItem
-                        file={file}
-                        // isSelected={selectedItem && selectedItem.id === file.id}
-                        isSearch={isSearch}
-                        token={token}
-                        deleteFiles={deleteFiles}
-                        setStatusMessage={setStatusMessage}
+                </div>
+            )}
 
-                    /> : <FileItem
-                        file={file}
-                        isSearch={isSearch}
-                        token={token}
-                        deleteFiles={deleteFiles}
-                        setStatusMessage={setStatusMessage}
-                        handleFileClick={handleFileClick}
-                    />}
-                </td>
-                <td className="p-4 text-right">
-                    {file.sizeText}
-                    {checkboxStates[file.id]}
-                </td>
-            </tr>))}
-            </tbody>
-        </table>
+            {filesCopy.map((file) => (
+                <div key={file.id}
+                     className="cursor-pointer hover:bg-gray-700 group flex flex-col sm:flex-row w-full">
+                    <div className="p-2 px-6 w-20 items-center flex hover:bg-gray-900 justify-center text-center"
+                         onClick={(e) => selectCheckbox(e, file)}>
+                        <input type="checkbox" checked={!!checkboxStates[file.id]} onChange={() => {
+                        }}/>
+                    </div>
+                    <div className="w-full">
+                        {file.is_dir ? (
+                            <FolderItem
+                                file={file}
+                                isSearch={isSearch}
+                                token={token}
+                                deleteFiles={deleteFiles}
+                                setStatusMessage={setStatusMessage}
+                            />
+                        ) : (
+                            <FileItem
+                                file={file}
+                                isSearch={isSearch}
+                                token={token}
+                                deleteFiles={deleteFiles}
+                                setStatusMessage={setStatusMessage}
+                                handleFileClick={handleFileClick}
+                            />
+                        )}
+                    </div>
+                    <div className="p-4 text-right w-32">{file.sizeText}</div>
+                </div>
+            ))}
+        </div>
+
     </div>);
 });
 
