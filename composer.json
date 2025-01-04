@@ -13,18 +13,21 @@
     ],
     "require": {
         "php": "^8.2",
+        "ext-fileinfo": "*",
+        "ext-gd": "*",
         "ext-zip": "*",
         "aws/aws-sdk-php": "^3.331",
+        "imanghafoori/laravel-video": "*",
         "inertiajs/inertia-laravel": "^1.0",
         "laravel/framework": "^11.31",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
         "maennchen/zipstream-php": "^3.1",
         "nelexa/zip": "^4.0",
+        "php-ffmpeg/php-ffmpeg": "^1.3",
+        "spatie/image": "^3.7",
         "tightenco/ziggy": "^2.0",
-        "zanysoft/laravel-zip": "^1.0",
-        "imanghafoori/laravel-video": "*",
-        "ext-fileinfo": "*"
+        "zanysoft/laravel-zip": "^1.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.14",

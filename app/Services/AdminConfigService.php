@@ -7,13 +7,21 @@ use App\Models\Setting;
 
 class AdminConfigService
 {
-    public function updateStoragePath(string $storagePathWIthUuid, string $storagePath): array
+    private $thumnailDirName = 'thumbnail';
+
+    public function updateStoragePath(string $storagePath, string $uuidStorageFiles, string $uuidThumbnails): array
     {
-        if (!UploadFileHelper::makeFolder($storagePathWIthUuid)) {
-            return [false, 'Could not make directory. Check permissions'];
+        if (file_exists($storagePath . DIRECTORY_SEPARATOR . $uuidStorageFiles)) {
+            return [false, 'Storage directory already exists'];
+        }
+        if (!UploadFileHelper::makeFolder($storagePath . DIRECTORY_SEPARATOR . $uuidStorageFiles)) {
+            return [false, 'Could not make storage directory. Check permissions'];
+        }
+        if (!UploadFileHelper::makeFolder($storagePath . DIRECTORY_SEPARATOR . $uuidThumbnails)) {
+            return [false, 'Could not make thumbnail directory. Check permissions'];
         }
 
-        if (Setting::updateSetting('storage_path', $storagePath)) {
+        if (!Setting::updateSetting('storage_path', $storagePath)) {
             return [false, 'No changes were made'];
         }
 

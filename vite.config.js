@@ -8,6 +8,8 @@ export default defineConfig({
             input: 'resources/js/app.jsx',
             refresh: true,
         }),
-        react(),
+        react({
+            strictMode: false
+        }),
     ],
 });

@@ -2,7 +2,7 @@ import {DownloadIcon} from "lucide-react";
 import {useState} from "react";
 
 const DownloadButton = ({selectedFiles, classes, setStatusMessage}) => {
-    // console.log('selectedFiles ', selectedFiles);
+    // console.log('selectedFiles in download', selectedFiles);
     const [isLoading, setIsLoading] = useState(false)
 
     const handleDownload = async () => {
@@ -52,9 +52,8 @@ const DownloadButton = ({selectedFiles, classes, setStatusMessage}) => {
     return (
         <button
             disabled={isLoading}
-
             onClick={handleDownload}
-            className={`p-2 rounded-md flex items-center w-auto bg-green-800 ${classes} ${isLoading ? 'bg-gray-700 text-green-100 cursor-not-allowed' : 'bg-blue-700 text-white hover:bg-blue-600 active:bg-blue-700'}`}
+            className={`p-2 rounded-md flex items-center justify-center w-auto bg-green-800 ${classes} ${isLoading ? 'bg-gray-700 text-green-100 cursor-not-allowed' : 'bg-blue-700 hover:bg-blue-600 active:bg-blue-700'}`}
         >
             {isLoading ? (
                 <div
@@ -62,7 +61,7 @@ const DownloadButton = ({selectedFiles, classes, setStatusMessage}) => {
                 ) :
 
                <>
-                   <DownloadIcon className="text-green-500 inline" size={22} /> {!classes && <span className="mx-1 text-gray-200">Download</span>}
+                   <DownloadIcon className="text-center text-green-500 inline" size={22} /> {!classes && <span className="mx-1 ">Download</span>}
                </>
             }
 

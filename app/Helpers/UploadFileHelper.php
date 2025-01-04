@@ -3,7 +3,6 @@
 namespace App\Helpers;
 
 use ErrorException;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Log;
 
 class UploadFileHelper

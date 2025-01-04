@@ -16,7 +16,7 @@ class LPathService
 {
     public function getPrivatePathForPublicPathFromDb(string $publicPath = ''): string
     {
-        $privateRoot = $this->getRootPath();
+        $privateRoot = $this->getStorageDirPath();
         if (!$privateRoot) {
             return '';
         }
@@ -24,7 +24,7 @@ class LPathService
         if ($publicPath === '') {
             return $privateRoot;
         }
-        $privatePath = LocalFile::getPublicPath($publicPath);
+        $privatePath = LocalFile::getPrivatePath($publicPath);
         if (!$privatePath) {
             return '';
         }
@@ -35,10 +35,19 @@ class LPathService
         return '';
     }
 
-    public function getRootPath(): string
+    public function getStorageDirPath(): string
     {
-        $storagePath = Setting::getSettingByKeyName('storage_path');
-        $uuid = Setting::getSettingByKeyName('uuid');
+        $storagePath = Setting::getSettingByKeyName(Setting::$storagePath);
+        $uuid = Setting::getUUIDForStorageFiles();
+        if (!$storagePath || !$uuid) {
+            return '';
+        }
+        return $storagePath . DIRECTORY_SEPARATOR . $uuid;
+    }
+    public function getThumbnailDirPath(): string
+    {
+        $storagePath = Setting::getSettingByKeyName(Setting::$storagePath);
+        $uuid = Setting::getUUIDForThumbnails();
         if (!$storagePath || !$uuid) {
             return '';
         }
@@ -47,7 +56,7 @@ class LPathService
 
     public function genPrivatePathWithPublic(string $publicPath = ''): string
     {
-        $privateRoot = $this->getRootPath();
+        $privateRoot = $this->getStorageDirPath();
         if (!$privateRoot) {
             return '';
         }
@@ -63,8 +72,5 @@ class LPathService
         return '';
     }
 
-    public function getPrivatePathNameForFile(LocalFile $file)
-    {
-        return $file->private_path . DIRECTORY_SEPARATOR . $file->filename;
-    }
+
 }

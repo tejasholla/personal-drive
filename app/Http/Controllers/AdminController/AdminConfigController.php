@@ -42,14 +42,16 @@ class AdminConfigController extends Controller
     public function update(Request $request): RedirectResponse
     {
         $storagePath = $request->input('storage_path');
-        $uuid = Setting::getUUID();
-        if (!$uuid) {
-            $this->updateResponse('no uuid found ! ', false);
+        $uuidStorageFiles = Setting::getUUIDForStorageFiles();
+        $uuidThumbnails = Setting::getUUIDForThumbnails();
+        if (!$uuidStorageFiles || !$uuidThumbnails) {
+            $this->updateResponse('Unexpected error. Issue in storage or database.   ! ', false);
         }
 
         $updateStoragePathRes = $this->adminConfigService->updateStoragePath(
-            $storagePath . DIRECTORY_SEPARATOR . $uuid,
-            $request->input('storage_path')
+            $storagePath,
+            $uuidStorageFiles,
+            $uuidThumbnails
         );
         return $this->updateResponse(json_encode($updateStoragePathRes[1]), $updateStoragePathRes[0]);
     }

@@ -8,11 +8,10 @@ import {useCallback, useState} from "react";
 
 import RefreshButton from "@/Pages/Aws/Components/RefreshButton.jsx";
 import DeleteButton from "@/Pages/Aws/Components/DeleteButton.jsx";
-import Breadcrumb from "@/Pages/Aws/Components/Breadcrumb.jsx";
 
 
 const FileList = ({files, handleSearch, isSearch, path, token}) => {
-    console.log('filelist path ', path.split('/'));
+    console.log('filelist files ', files);
     const [statusMessage, setStatusMessage] = useState('')
     const [status, setStatus] = useState(false)
     const [selectedFiles, setSelectedFiles] = useState(new Map());
@@ -45,16 +44,17 @@ const FileList = ({files, handleSearch, isSearch, path, token}) => {
         }
     }
 
-    async function deleteFiles(deleteFilesComponentHandler) {
+    async function handleDeleteFilesFunc(deleteFilesComponentHandler) {
         let response = await deleteFilesComponentHandler();
         setSelectedFiles(new Map());
         handleStatus(response, 'delete failed', 'delete successful');
     }
 
-    const deleteFilesMemo = useCallback(deleteFiles, [])
+    const handleDeleteFilesMemo = useCallback(handleDeleteFilesFunc, [])
 
 
     function reloadFiles() {
+        console.log('reloading ..');
         router.visit(window.location.href, {
             only: ['files'], preserveState: true, preserveScroll: true
         });
@@ -73,29 +73,26 @@ const FileList = ({files, handleSearch, isSearch, path, token}) => {
                 <AlertBox message={statusMessage}
                           type={status ? 'success' : 'warning'}/>
             </div>
-            <div className="rounded-md gap-x-2 flex items-start mb-6  justify-between">
-                <div className="p-2 gap-2 flex ">
+            <div className="rounded-md gap-x-2 flex items-start mb-2  justify-between">
+                <div className="p-2 gap-2 flex  text-gray-300">
 
                     <RefreshButton handleRefreshBucketButton={handleRefreshBucketButton}/>
                     {selectedFiles.size > 0 &&
                         <DownloadButton selectedFiles={selectedFiles} setStatusMessage={setStatusMessage}/>
                     }
                 </div>
-                <div className="p-2 gap-x-2 flex ">
+                <div className="p-2 gap-x-2 flex  text-gray-200">
                     {selectedFiles.size > 0 &&
-                        <DeleteButton deleteFiles={deleteFilesMemo} selectedFiles={selectedFiles}/>
+                        <DeleteButton handleDeleteFiles={handleDeleteFilesMemo} selectedFiles={selectedFiles}/>
                     }
-                    <UploadMenu path={path} setStatus={setStatus}
-                                setStatusMessage={setStatusMessage}/>
+                    {!isSearch && <UploadMenu path={path} setStatus={setStatus}
+                                setStatusMessage={setStatusMessage}
+                    />}
                     <SearchBar handleSearch={handleSearch}/>
                 </div>
             </div>
-            <div className="rounded-md gap-x-2 flex items-start mt-3  justify-center">
-                <Breadcrumb path={path}/>
-            </div>
-            <hr className=" mx-2 text-gray-500 border-gray-600"/>
             <FileFolderRows files={files} path={path} isSearch={isSearch} selectFile={selectFileMemo}
-                            deleteFiles={deleteFilesMemo} token={token} setStatusMessage={setStatusMessage}/>
+                            handleDeleteFiles={handleDeleteFilesMemo} token={token} setStatusMessage={setStatusMessage}/>
         </div>
     );
 };

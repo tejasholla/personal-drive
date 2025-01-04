@@ -4,9 +4,11 @@ namespace App\Services;
 
 use App\Models\LocalFile;
 use FilesystemIterator;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
+use SplFileInfo;
 
 class LocalFileStatsService
 {
@@ -17,18 +19,30 @@ class LocalFileStatsService
         $this->pathService = $pathService;
     }
 
+    public function addFolderPathStat($folderName, $publicPath)
+    {
+        $itemPrivatePathname = $this->pathService->genPrivatePathWithPublic($publicPath);
+        return LocalFile::insert([
+            'filename' => $folderName,
+            'is_dir' => 1,
+            'public_path' => $publicPath,
+            'private_path' => $itemPrivatePathname,
+            'size' => '',
+            'user_id' => Auth::user()->id, // Set the appropriate user ID
+        ]);
+    }
 
     public function generateStats(string $path = ''): bool
     {
-        $rootPathLen = strlen($this->pathService->getRootPath()) + 1;
+        $rootPathLen = strlen($this->pathService->getStorageDirPath()) + 1;
         $privatePath = $this->pathService->genPrivatePathWithPublic($path);
-        if (!$privatePath) {
+        if (!$privatePath || !$rootPathLen) {
             return false;
         }
-        LocalFile::clearTable();
-
+        if (!$path) {
+            LocalFile::clearTable();
+        }
         $this->populateLocalFileWithStats($privatePath, $rootPathLen);
-
         return true;
     }
 
@@ -38,8 +52,6 @@ class LocalFileStatsService
         $dirSizes = [];
         $iterator = $this->createFileIterator($privatePath);
         foreach ($iterator as $item) {
-            $mimeType = mime_content_type($item->getPathname());
-
             $itemPrivatePathname = $item->getPath();
             $currentDir = dirname($item->getPathname());
             if (!$item->isDir()) {
@@ -61,17 +73,17 @@ class LocalFileStatsService
                 'private_path' => $itemPrivatePathname,
                 'size' => $item->isDir() ? $dirSizes[$item->getPathname()] ?? '' : $item->getSize(),
                 'user_id' => Auth::user()->id, // Set the appropriate user ID
-                'file_type' => $this->getFileType($mimeType)
+                'file_type' => $this->getFileType($item)
             ];
             // Insert in chunks of 100
             if (count($insertArr) === 100) {
-                LocalFile::insert($insertArr);
+                LocalFile::insertRows($insertArr);
                 $insertArr = []; // Clear the array for the next chunk
             }
         }
         // Insert remaining items if any
         if (!empty($insertArr)) {
-            LocalFile::insert($insertArr);
+            LocalFile::insertRows($insertArr);
         }
     }
 
@@ -88,29 +100,28 @@ class LocalFileStatsService
         );
     }
 
-    public function addFolderPathStat($folderName, $publicPath)
+    private function getFileType(SplFileInfo $item): string
     {
-        $itemPrivatePathname = $this->pathService->genPrivatePathWithPublic($publicPath);
-        return LocalFile::insert([
-            'filename' => $folderName,
-            'is_dir' => 1,
-            'public_path' => $publicPath,
-            'private_path' => $itemPrivatePathname,
-            'size' => '',
-            'user_id' => Auth::user()->id, // Set the appropriate user ID
-        ]);
-    }
+        if ($item->isDir()) {
+            return 'folder';
+        }
+        $mimeType = mime_content_type($item->getPathname());
 
-    private function getFileType(string $mimeType): string
-    {
-        $fileType = '';
         if (str_starts_with($mimeType, 'image/')) {
             $fileType = 'image';
         } elseif (str_starts_with($mimeType, 'video/')) {
             $fileType = 'video';
         } elseif ($mimeType === 'application/pdf') {
             $fileType = 'pdf';
+        } else {
+            $fileType = $item->getExtension();
         }
         return $fileType;
+    }
+
+    public function deleteRows($filesInDB)
+    {
+        $delete = $filesInDB->delete();
+        return $delete;
     }
 }

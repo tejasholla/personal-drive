@@ -1,12 +1,10 @@
 
 const ImageViewer = ({ fileHash }) => {
     return (
-        <div className="flex justify-center">
-            <img
+            <img className="max-h-screen  object-contain"
                 src={`/fetch-file/${fileHash}`} // Dynamically load the file
                 alt="Selected File"
             />
-        </div>
     );
 };
 

@@ -6,10 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Setting extends Model
 {
+    public static string $storagePath = 'storage_path';
+    public static string $uuidForStorageFiles = 'uuidForStorageFiles';
+    public static string $uuidForThumbnails = 'uuidForThumbnails';
     protected $fillable = ['key', 'value'];
 
     protected $hidden = [
-        'uuid',
+        'uuidForStorageFiles',
+        'uuidForThumbnails',
     ];
 
     public static function updateSetting($key, $value): bool
@@ -21,10 +25,13 @@ class Setting extends Model
         return $result->wasRecentlyCreated || $result->wasChanged();
     }
 
-    public static function getUUID(): string
+    public static function getUUIDForStorageFiles(): string
     {
-        $storageUuid = Setting::getSettingByKeyName('uuid');
-        return $storageUuid ?: '';
+        return Setting::getSettingByKeyName(self::$uuidForStorageFiles) ?: '';
+    }
+    public static function getUUIDForThumbnails(): string
+    {
+        return Setting::getSettingByKeyName(self::$uuidForThumbnails) ?: '';
     }
 
     public static function getSettingByKeyName(string $key): string

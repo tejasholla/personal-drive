@@ -72,7 +72,6 @@ const UploadMenu = ({  path, setStatus, setStatusMessage }) => {
     }
 
     return (
-
         <div ref={menuRef} className='relative  m-0 p-0'>
             <button className="p-2 rounded-md inline-flex w-auto bg-gray-700 m-0"
                     onClick={() => {
@@ -114,7 +113,6 @@ const UploadMenu = ({  path, setStatus, setStatusMessage }) => {
 
             <CreateFolderModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} setStatusMessage={setStatusMessage}  path={path} setStatus={setStatus} />
             <div className="relative inline-block">
-
                 <input
                     type="file"
                     ref={fileInputRef}

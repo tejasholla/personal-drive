@@ -31,7 +31,7 @@ class ReSyncController extends Controller
 //            redirect('/drive/' . $redirectPath);
         } catch (\Exception $e) {
             Log::info('ReSync failed | ' . $e->getMessage());
-            return ResponseHelper::json('ReSync failed. check logs');
+            return ResponseHelper::json('ReSync failed. check logs', false);
 
 //            session()->flash('message', 'ReSync failed. check logs');
 //            session()->flash('status', false);

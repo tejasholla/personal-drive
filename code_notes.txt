@@ -48,3 +48,17 @@ breadcrumbs
 download status
 sync bug, empty subdirectory
 video, img start
+
+tile view
+thumbnail generate
+resync not delete everytime
+selecting fixes
+layout changes
+admin config updates
+
+REAFACTOING !!!
+
+laravel -
+- try eloquent strict mode https://www.youtube.com/watch?v=kyIgkopP-MI
+- implement renderable handler for exceptions and custom exceptions https://www.youtube.com/watch?v=0AAg47xygTI
+- use custom requests https://www.youtube.com/watch?v=kyIgkopP-MI

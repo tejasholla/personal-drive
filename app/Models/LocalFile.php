@@ -12,9 +12,9 @@ class LocalFile extends Model
 //    protected $guarded = ['private_path', 'user_id'];
     protected $hidden = ['private_path', 'user_id'];
 
-    public static function getByIds(array $fileIds): Collection
+    public static function getByIds(array $fileIds)
     {
-        return self::whereIn('id', $fileIds)->get();
+        return self::whereIn('id', $fileIds);
     }
 
     public static function getPrivatePathNameForFileId(int $fileId): string
@@ -23,14 +23,25 @@ class LocalFile extends Model
         return $file->getPrivatePathNameForFile();
     }
 
+    public function getPublicPathname(): string
+    {
+        return $this->public_path . DIRECTORY_SEPARATOR . $this->filename;
+    }
+
+
     public function getPrivatePathNameForFile(): string
     {
         return $this->private_path . DIRECTORY_SEPARATOR . $this->filename;
     }
 
-    public static function getPublicPath(string $publicPath): string
+    public static function getPrivatePath(string $publicPath): string
     {
         return self::where('public_path', $publicPath)->first()?->private_path ?? '';
+    }
+
+    public static function insertRows(array $insertArr)
+    {
+        return self::upsert($insertArr, ['filename', 'public_path']);
     }
 
     public static function clearTable()
@@ -44,7 +55,7 @@ class LocalFile extends Model
         return self::modifyFileCollection($fileItems);
     }
 
-    public static function modifyFileCollection($fileItems)
+    private static function modifyFileCollection($fileItems)
     {
         return $fileItems->map(function ($item) {
             if ($item->size) {

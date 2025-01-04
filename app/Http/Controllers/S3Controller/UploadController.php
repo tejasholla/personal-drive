@@ -33,6 +33,13 @@ class UploadController extends Controller
         $publicPath = $request->path ?: '';
         $privatePath = $this->lPathService->genPrivatePathWithPublic($publicPath);
 
+        if (!$files) {
+            return $this->errorResponse('File upload failed. No files uploaded', 400);
+        }
+        if (!$privatePath) {
+            return $this->errorResponse('File upload failed. Could not find storage path', 400);
+        }
+
         $successWrite = true;
 
         foreach ($files as $index => $file) {
@@ -47,20 +54,12 @@ class UploadController extends Controller
             }
         }
         if ($successWrite) {
-            $this->localFileStatsService->generateStats('');
+            $this->localFileStatsService->generateStats($publicPath);
             return $this->successResponse('Files uploaded successfully');
         }
 
         Log::info('File upload failed | ');
         return $this->errorResponse('File upload failed. check logs', 400);
-    }
-
-    private function successResponse(string $message): JsonResponse
-    {
-        return response()->json([
-            'ok' => true,
-            'message' => $message
-        ], 200);
     }
 
     private function errorResponse(string $message, int $statusCode = 200): JsonResponse
@@ -69,6 +68,14 @@ class UploadController extends Controller
             'ok' => false,
             'message' => $message
         ], $statusCode);
+    }
+
+    private function successResponse(string $message): JsonResponse
+    {
+        return response()->json([
+            'ok' => true,
+            'message' => $message
+        ], 200);
     }
 
     public function createFolder(Request $request): JsonResponse

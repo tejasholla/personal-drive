@@ -13,7 +13,6 @@ class FileManagerController extends Controller
     {
         $pathFiles = LocalFile::getFilesForPublicPath($path);
 
-
         return Inertia::render('Aws/FileManager', [
             'files' => $pathFiles,
             'path' => $path,

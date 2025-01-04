@@ -32,7 +32,7 @@ class DeleteController
             $fileKeyArray = json_decode($fileList, true);
         }
         $filesInDB = LocalFile::whereIn('id', array_keys($fileKeyArray));
-        $rootPath = $this->pathService->getRootPath();
+        $rootPath = $this->pathService->getStorageDirPath();
         if (!$filesInDB->count()) {
             return ResponseHelper::json(' No Files found ');
         }
@@ -48,7 +48,6 @@ class DeleteController
             if (!file_exists($filePath)) {
                 continue;
             }
-
             if (unlink($filePath)) {
                 $filesDeleted++;
             }
@@ -59,7 +58,7 @@ class DeleteController
         if (!$response || !$filesDeleted) {
             return ResponseHelper::json(' Could not delete files ');
         }
-        $this->localFileStatsService->generateStats();
+        $this->localFileStatsService->deleteRows($filesInDB);
         return ResponseHelper::json(' Deleted ' . $filesDeleted . ' files ');
     }
 }

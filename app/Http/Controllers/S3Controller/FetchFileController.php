@@ -6,50 +6,60 @@ use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;
 use App\Models\LocalFile;
 use App\Services\LocalFileStatsService;
+use App\Services\ThumbnailService;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Iman\Streamer\VideoStreamer;
 
-
 class FetchFileController extends Controller
 {
     protected LocalFileStatsService $localFileStatsService;
+    private ThumbnailService $thumbnailService;
+
 
     public function __construct(
-        LocalFileStatsService $localFileStatsService
+        LocalFileStatsService $localFileStatsService,
+        ThumbnailService $thumbnailService
     ) {
         $this->localFileStatsService = $localFileStatsService;
+        $this->thumbnailService = $thumbnailService;
+
     }
 
     public function index(Request $request, $encryptedId)
     {
-
         try {
             // Decrypt the ID
             $fileId = Crypt::decryptString($encryptedId);
         } catch (DecryptException $e) {
-            abort(403, 'Invalid or tampered hash');
+            return ResponseHelper::json('Invalid or tampered hash', false);
         }
 
         // Find the file record by ID
         $fileRecord = LocalFile::find($fileId);
-
+        if (!$fileRecord ||  !$fileRecord->file_type) {
+            return ResponseHelper::json('Could not find file to stream', false);
+        }
         $filePrivatePathName = $fileRecord->getPrivatePathNameForFile();
         VideoStreamer::streamFile($filePrivatePathName);
+    }
+    public function getThumb(Request $request, $encryptedId)
+    {
+        try {
+            // Decrypt the ID
+            $fileId = Crypt::decryptString($encryptedId);
+        } catch (DecryptException $e) {
+            return ResponseHelper::json('Invalid or tampered hash', false);
+        }
 
-        // Stream the file to the client
-//        return new StreamedResponse(function () use ($filePrivatePathName) {
-//            $stream = fopen($filePrivatePathName, 'rb');
-//            if ($stream === false) {
-//                abort(500, 'Unable to open file for reading');
-//            }            while (!feof($stream)) {
-//                echo fread($stream, 8192); // Send 8KB chunks
-//            }
-//            fclose($stream);
-//        }, 200, [
-//            'Content-Type' => Storage::mimeType($filePrivatePathName),
-//            'Content-Disposition' => 'inline; filename="' . $fileRecord->filename . '"',
-//        ]);
+        // Find the file record by ID
+        $file = LocalFile::find($fileId);
+        if (!$file ||  !$file->file_type || !$file->has_thumbnail) {
+            return ResponseHelper::json('Could not thumb', false);
+        }
+
+        $filePrivatePathName = $this->thumbnailService->getFullFileThumbnailPath($file);
+        VideoStreamer::streamFile($filePrivatePathName);
     }
 }

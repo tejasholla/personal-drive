@@ -22,7 +22,7 @@ export default function RefreshButton({handleRefreshBucketButton}) {
             onClick={handleClick}
             disabled={isLoading}
             className={`rounded-md  p-2 transition-colors duration-200 inline-flex 
-                        ${isLoading ? 'bg-gray-700 text-green-100 cursor-not-allowed' : 'bg-blue-700 text-white hover:bg-blue-600 active:bg-blue-700'}
+                        ${isLoading ? 'bg-gray-700 text-green-100 cursor-not-allowed' : 'bg-blue-700 hover:bg-blue-600 active:bg-blue-700'}
                       `}
         >
             {isLoading ? (<div

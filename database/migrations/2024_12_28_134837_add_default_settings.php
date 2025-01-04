@@ -1,8 +1,6 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
 return new class extends Migration {
@@ -16,7 +14,15 @@ return new class extends Migration {
                 'key' => 'storage_path', 'value' => '/opt/personaldrive/storage', 'created_at' => now(),
                 'updated_at' => now()
             ],
-            ['key' => 'uuid', 'value' => Str::uuid()->toString(), 'created_at' => now(), 'updated_at' => now()]
+            [
+                'key' => 'uuidForStorageFiles',
+                'value' => 'thumbnail_' . Str::uuid()->toString(), 'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'key' => 'uuidForThumbnails', 'value' => 'storage_' . Str::uuid()->toString(), 'created_at' => now(),
+                'updated_at' => now()
+            ]
         ]);
     }
 

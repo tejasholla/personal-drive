@@ -26,7 +26,7 @@ export default function SearchBar({handleSearch}) {
             </div>
 
             <button onClick={(e) => handleSearch(e, document.getElementById('searchbox').value)}
-                    className="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-600 transition duration-300">Search
+                    className="bg-blue-700 text-white font-bold py-2 px-4 rounded hover:bg-blue-600 transition duration-300">Search
             </button>
         </form>
     </div>);

@@ -43,6 +43,8 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/resync', [S3Controller\ReSyncController::class, 'index']);
     Route::get('/fetch-file/{hash}', [S3Controller\FetchFileController::class, 'index']);
+    Route::get('/fetch-thumb/{hash}', [S3Controller\FetchFileController::class, 'getThumb']);
+    Route::post('/gen-thumbs', [S3Controller\ThumbnailController::class, 'update']);
 
 
     // test

@@ -1,7 +1,7 @@
 import {DeleteIcon} from "lucide-react";
 
 
-const DownloadButton = ({deleteFiles,  selectedFiles, classes}) => {
+const DeleteButton = ({handleDeleteFiles,  selectedFiles, classes}) => {
 
     async function deleteFilesComponentHandler() {
         return await axios.post('/s3/delete-files', {
@@ -10,10 +10,10 @@ const DownloadButton = ({deleteFiles,  selectedFiles, classes}) => {
     }
 
     // console.log('selectedFiles ', selectedFiles);
-    return (<button className={`p-2 rounded-md flex items-center w-auto bg-red-950  ${classes}`} onClick={() => deleteFiles(deleteFilesComponentHandler)}>
+    return (<button className={`p-2 rounded-md flex items-center w-auto bg-red-950  ${classes}`} onClick={() => handleDeleteFiles(deleteFilesComponentHandler)}>
         <DeleteIcon className={`text-red-500 inline`} size={22}/>
-        {!classes && <span className={`mx-1 text-gray-200`}>Delete</span>}
+        {!classes && <span className={`mx-1`}>Delete</span>}
     </button>);
 };
 
-export default DownloadButton;
+export default DeleteButton;

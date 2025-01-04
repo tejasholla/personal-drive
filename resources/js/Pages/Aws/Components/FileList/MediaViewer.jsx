@@ -12,21 +12,21 @@ const MediaViewer = ({
                          selectFileForPreview,
                          previewAbleFiles
                      }) => {
-
+    console.log('previewAbleFiles ', previewAbleFiles);
     const [isActive, setIsActive] = useState(false);
     const timeoutRef = useRef(null);
-    let currentFileIndex = previewAbleFiles.findIndex(file => file.hash === selectedFileHash);
+    let currentFileIndex = previewAbleFiles.current.findIndex(file => file.hash === selectedFileHash);
 
     function prevClick() {
-        if (previewAbleFiles[currentFileIndex]['prev']) {
-            let file = previewAbleFiles[--currentFileIndex];
+        if (previewAbleFiles.current[currentFileIndex]['prev']) {
+            let file = previewAbleFiles.current[--currentFileIndex];
             selectFileForPreview(file);
         }
     }
 
     function nextClick() {
-        if (previewAbleFiles[currentFileIndex]['next']) {
-            let file = previewAbleFiles[++currentFileIndex];
+        if (previewAbleFiles.current[currentFileIndex]['next']) {
+            let file = previewAbleFiles.current[++currentFileIndex];
             selectFileForPreview(file);
         }
     }
@@ -46,32 +46,34 @@ const MediaViewer = ({
         return () => {
             window.removeEventListener('keydown', handleKeyDown);
             window.removeEventListener('mousemove', handleMouseMove);
-
         };
-    });
+    },[isModalOpen ]);
 
     function handleMouseMove() {
+        if (!isModalOpen){
+            return;
+        }
         setIsActive(true);
         if (timeoutRef.current) {
             clearTimeout(timeoutRef.current);
         }
         timeoutRef.current = setTimeout(() => {
             setIsActive(false);
-        }, 1000);
+        }, 2000);
     }
 
-    return (<Modal isOpen={isModalOpen} onClose={setIsModalOpen} classes={`min-w-80  mx-auto`}>
+
+    return (<Modal isOpen={isModalOpen} onClose={setIsModalOpen} classes={` mx-auto`}>
         <div className=" mx-auto "
         >
-
-            {previewAbleFiles && previewAbleFiles[currentFileIndex] && previewAbleFiles[currentFileIndex].prev &&
+            {previewAbleFiles && previewAbleFiles.current[currentFileIndex] && previewAbleFiles.current[currentFileIndex].prev &&
                 <button onClick={prevClick}
                         className={`absolute ${isActive ? 'block' : 'hidden'}  left-32 top-1/2   p-2 rounded-full hover:bg-gray-500 bg-gray-500  opacity-40  focus:outline-none z-10`}
                 >
                     <ChevronLeft className="text-white h-8 w-8 rounded-full"/>
                 </button>}
 
-            {previewAbleFiles && previewAbleFiles[currentFileIndex] && previewAbleFiles[currentFileIndex].next &&
+            {previewAbleFiles && previewAbleFiles.current[currentFileIndex] && previewAbleFiles.current[currentFileIndex].next &&
                 <button onClick={nextClick}
                         className={`absolute ${isActive ? 'block' : 'hidden'}   right-32 top-1/2   p-2 rounded-full hover:bg-gray-500 bg-gray-500  opacity-40  focus:outline-none z-10`}
                 >
@@ -80,10 +82,8 @@ const MediaViewer = ({
             {selectedFileHash && ((selectedFileType === 'video' &&
                 <VideoPlayer fileHash={selectedFileHash}/>) || (selectedFileType === 'image' &&
                 <ImageViewer fileHash={selectedFileHash}/>))
-
             }
         </div>
-
     </Modal>);
 };
 
