@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\S3Controller;
+namespace App\Http\Controllers\DriveControllers;
 
 use App\Helpers\DownloadHelper;
 use App\Models\LocalFile;

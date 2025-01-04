@@ -15,7 +15,7 @@ const CreateFolderModal = ({isModalOpen, setIsModalOpen, setStatusMessage, bucke
             formPostData['folderName'] = folderName;
             setIsModalOpen(false);
 
-            const response = await axios.post('/s3/create-folder', formPostData);
+            const response = await axios.post('/create-folder', formPostData);
             console.log(response);
             setStatus(false);
             setStatusMessage(`Error creating folder`);

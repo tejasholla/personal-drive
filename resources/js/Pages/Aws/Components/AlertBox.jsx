@@ -1,14 +1,28 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import {usePage} from "@inertiajs/react";
 
 
-const AlertBox = ({message, type = 'default'}) => {
+const AlertBox = () => {
     let status = '';
     let icon;
     let bgStatus = 'bg-gray-500';
-    // console.log('message in alertbox ', message);
 
-    switch (type) {
-        case 'error':
+    let {flash, errors} = usePage().props;
+    const [alertBoxData, setAlertBoxData] = useState(flash);
+
+    // Effect to update messageToPrint when props change
+    useEffect(() => {
+        let alertBoxDataCopy = flash;
+        if (errors && Object.keys(errors).length > 0) {
+            alertBoxDataCopy.message = Object.values(errors).flat().join(', ');
+            alertBoxDataCopy.status = false;
+        }
+        setAlertBoxData(alertBoxDataCopy);
+    }, [flash, errors]);
+
+
+    switch (alertBoxData.status) {
+        case false:
             status = 'error';
             bgStatus = 'bg-error';
             icon = (
@@ -19,7 +33,7 @@ const AlertBox = ({message, type = 'default'}) => {
                 </svg>
             );
             break;
-        case 'success':
+        case true:
             bgStatus = 'bg-success';
             status = 'success';
             icon = (
@@ -60,12 +74,13 @@ const AlertBox = ({message, type = 'default'}) => {
             </svg>)
     }
     return (
-        <div role="alert" className={`-mt-3  absolute  left-1/2 -translate-x-1/2 
-             rounded-lg  text-gray-700 flex  p-3 px-5 ${bgStatus}         
-             ${message ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-4 scale-95'}`}
+
+        alertBoxData.message && <div role="alert" className={`-mt-3  absolute  left-1/2 -translate-x-1/2 
+             rounded-lg  text-gray-900 flex  p-3 px-5 ${bgStatus}         
+             ${alertBoxData.message ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-4 scale-95'}`}
         >
             {icon}
-            <span className="ml-2">{message}</span>
+            <span className="ml-2">{alertBoxData.message}</span>
         </div>
 
     );

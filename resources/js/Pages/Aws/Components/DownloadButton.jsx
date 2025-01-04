@@ -10,7 +10,7 @@ const DownloadButton = ({selectedFiles, classes, setStatusMessage}) => {
             setStatusMessage('Downloading...');
             setIsLoading(true);
             const response = await axios({
-                url: '/s3/download-files',
+                url: '/download-files',
                 method: 'POST',
                 responseType: 'blob',
                 data: {

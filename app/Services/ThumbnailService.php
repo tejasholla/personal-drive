@@ -32,7 +32,7 @@ class ThumbnailService
         return LocalFile::getByIds($fileIds)->whereIn('file_type', ['video', 'image']);
     }
 
-    public function generateThumbnailsForFiles(Collection $files)
+    public function generateThumbnailsForFiles(Collection $files): bool
     {
         foreach ($files as $file) {
             if (!$file->file_type) {
@@ -51,7 +51,7 @@ class ThumbnailService
         return true;
     }
 
-    private function generateVideoThumbnail(LocalFile $file)
+    private function generateVideoThumbnail(LocalFile $file): bool
     {
         $privateFilePath = $file->getPrivatePathNameForFile();
 
@@ -67,7 +67,7 @@ class ThumbnailService
         $this->imageResize($fullFileThumbnailPath, $fullFileThumbnailPath, self::IMAGESIZE);
 
         $file->has_thumbnail = true;
-        $file->save();
+        return $file->save();
     }
 
     public function getFullFileThumbnailPath(LocalFile $file): string
@@ -96,15 +96,9 @@ class ThumbnailService
         return $file->save();
     }
 
-    /**
-     * @param  string  $privateFilePath
-     * @param  string  $fullFileThumbnailPath
-     * @param $size
-     * @return void
-     */
-    public function imageResize(string $privateFilePath, string $fullFileThumbnailPath, int $size): void
+    public function imageResize(string $privateFilePath, string $fullFileThumbnailPath, int $size): Image
     {
-        Image::useImageDriver(ImageDriver::Gd)->loadFile($privateFilePath)
+        return Image::useImageDriver(ImageDriver::Gd)->loadFile($privateFilePath)
             ->width($size)
             ->height($size)
             ->save($fullFileThumbnailPath);

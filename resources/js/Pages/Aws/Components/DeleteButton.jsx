@@ -4,7 +4,7 @@ import {DeleteIcon} from "lucide-react";
 const DeleteButton = ({handleDeleteFiles,  selectedFiles, classes}) => {
 
     async function deleteFilesComponentHandler() {
-        return await axios.post('/s3/delete-files', {
+        return await axios.post('/delete-files', {
             fileList: JSON.stringify(Object.fromEntries(selectedFiles))
         });
     }

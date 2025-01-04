@@ -1,22 +1,23 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
-import {Head, router} from "@inertiajs/react";
-import {useState} from "react";
+import {Head, router, usePage} from "@inertiajs/react";
+import {useEffect, useState} from "react";
 import AlertBox from "@/Pages/Aws/Components/AlertBox.jsx";
 
 export default function Dashboard({
-                                      settings = {},
-                                      message = '',
-                                      status = false,
+                                      storage_path,
                                       php_max_upload_size,
                                       php_post_max_size,
                                       php_max_file_uploads
                                   }) {
+
+
     const [formData, setFormData] = useState({
-        storage_path: settings.storage_path,
+        storage_path: storage_path,
         php_max_upload_size: php_max_upload_size,
         php_post_max_size: php_post_max_size,
         php_max_file_uploads: php_max_file_uploads
     })
+    console.log('formData ', formData);
 
     function handleChange(e) {
         console.log('handleChange');
@@ -28,7 +29,7 @@ export default function Dashboard({
         router.post('/admin-config/update', formData, {
             onSuccess: (res) => {
                 setFormData({
-                    storage_path: res.props.settings.storage_path, php_max_upload_size: res.props.php_max_upload_size,
+                    storage_path: res.props.settings.storage_path
                 })
             }
         })
@@ -46,7 +47,7 @@ export default function Dashboard({
         <div className="p-4 space-y-4 max-w-7xl mx-auto dark:text-gray-200">
             <h2 className="text-center text-5xl my-12 mb-32">Admin Settings</h2>
             <main className="mx-auto max-w-7xl ">
-                {<AlertBox message={message} type={status ? 'success' : 'warning'}/>}
+                <AlertBox />
                 <form
                     className="w-[700px] mx-auto bg-blue-900/15 p-12 min-h-[500px] flex flex-col justify-between gap-y-20"
                     onSubmit={handleSubmit}>

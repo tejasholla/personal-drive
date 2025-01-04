@@ -45,7 +45,7 @@ const UploadMenu = ({  path, setStatus, setStatusMessage }) => {
         formData.append('path', path);
 
         try {
-            const response = await axios.post('/s3/upload', formData, {
+            const response = await axios.post('/upload', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }

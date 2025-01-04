@@ -7,25 +7,34 @@ use App\Models\Setting;
 
 class AdminConfigService
 {
-    private $thumnailDirName = 'thumbnail';
 
-    public function updateStoragePath(string $storagePath, string $uuidStorageFiles, string $uuidThumbnails): array
+    private UUIDService $uuidService;
+
+    public function __construct(UUIDService $uuidService)
     {
+        $this->uuidService = $uuidService;
+    }
+
+    public function updateStoragePath(string $storagePath): array
+    {
+
+        $uuidStorageFiles = $this->uuidService->getStorageFilesUUID();
+        $uuidThumbnails = $this->uuidService->getThumbnailsUUID();
         if (file_exists($storagePath . DIRECTORY_SEPARATOR . $uuidStorageFiles)) {
-            return [false, 'Storage directory already exists'];
+            return ['status' => false, 'message' => 'Storage directory already exists'];
         }
         if (!UploadFileHelper::makeFolder($storagePath . DIRECTORY_SEPARATOR . $uuidStorageFiles)) {
-            return [false, 'Could not make storage directory. Check permissions'];
+            return ['status' => false, 'message' => 'Could not make storage directory. Check permissions'];
         }
         if (!UploadFileHelper::makeFolder($storagePath . DIRECTORY_SEPARATOR . $uuidThumbnails)) {
-            return [false, 'Could not make thumbnail directory. Check permissions'];
+            return ['status' => false, 'message' => 'Could not make thumbnail directory. Check permissions'];
         }
 
         if (!Setting::updateSetting('storage_path', $storagePath)) {
-            return [false, 'No changes were made'];
+            return ['status' => false, 'message' => 'No changes were made'];
         }
 
-        return [true, 'Storage path updated successfully'];
+        return ['status' => true, 'message' => 'Storage path updated successfully'];
     }
 
     public function getPhpUploadMaxFilesize(): false|string

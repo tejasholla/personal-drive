@@ -2,8 +2,7 @@
 
 namespace App\Providers;
 
-use App\Services\S3Service;
-use Aws\S3\S3Client;
+use App\Services\UUIDService;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 
@@ -14,8 +13,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(S3Service::class, function ($app) {
-            return new S3Service();
+        $this->app->singleton(UUIDService::class, function () {
+            return new UUIDService();
         });
     }
 

@@ -2,18 +2,18 @@
 
 namespace App\Services;
 
-use App\Models\Bucket;
-use App\Models\File;
 use App\Models\LocalFile;
 use App\Models\Setting;
-use Aws\S3\S3Client;
-use Aws\S3\ObjectUploader;
-use Exception;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Http\UploadedFile;
 
 class LPathService
 {
+    protected UUIDService $uuidService;
+
+    public function __construct(UUIDService $uuidService)
+    {
+        $this->uuidService = $uuidService;
+    }
+
     public function getPrivatePathForPublicPathFromDb(string $publicPath = ''): string
     {
         $privateRoot = $this->getStorageDirPath();
@@ -38,7 +38,7 @@ class LPathService
     public function getStorageDirPath(): string
     {
         $storagePath = Setting::getSettingByKeyName(Setting::$storagePath);
-        $uuid = Setting::getUUIDForStorageFiles();
+        $uuid = $this->uuidService->getStorageFilesUUID();
         if (!$storagePath || !$uuid) {
             return '';
         }
@@ -47,7 +47,7 @@ class LPathService
     public function getThumbnailDirPath(): string
     {
         $storagePath = Setting::getSettingByKeyName(Setting::$storagePath);
-        $uuid = Setting::getUUIDForThumbnails();
+        $uuid = $this->uuidService->getThumbnailsUUID();
         if (!$storagePath || !$uuid) {
             return '';
         }
