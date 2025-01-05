@@ -34,32 +34,6 @@ const FileList = ({files, handleSearch, isSearch, path, token}) => {
 
     const selectFileMemo = useCallback(selectFile, [])
 
-    function handleStatus(response, failMessage, successMessage) {
-        setStatusMessage(`${failMessage}: ${(response.data && response.data.message) || 'Unknown error'}`);
-        setStatus(false);
-        if (response.data && response.data.ok) {
-            setStatusMessage(successMessage);
-            setStatus(true);
-            reloadFiles();
-        }
-    }
-
-    async function handleDeleteFilesFunc(deleteFilesComponentHandler) {
-        let response = await deleteFilesComponentHandler();
-        setSelectedFiles(new Map());
-        handleStatus(response, 'delete failed', 'delete successful');
-    }
-
-    const handleDeleteFilesMemo = useCallback(handleDeleteFilesFunc, [])
-
-
-    function reloadFiles() {
-        console.log('reloading ..');
-        router.visit(window.location.href, {
-            only: ['files'], preserveState: true, preserveScroll: true
-        });
-    }
-
 
     return (<div className="my-12 p-5">
             <div className="rounded-md gap-x-2 flex items-start relative ">
@@ -71,12 +45,12 @@ const FileList = ({files, handleSearch, isSearch, path, token}) => {
 
                     <RefreshButton />
                     {selectedFiles.size > 0 &&
-                        <DownloadButton selectedFiles={selectedFiles} setStatusMessage={setStatusMessage} statusMessage={statusMessage}/>
+                        <DownloadButton setSelectedFiles={setSelectedFiles} selectedFiles={selectedFiles} setStatusMessage={setStatusMessage} statusMessage={statusMessage}/>
                     }
                 </div>
                 <div className="p-2 gap-x-2 flex  text-gray-200">
                     {selectedFiles.size > 0 &&
-                        <DeleteButton handleDeleteFiles={handleDeleteFilesMemo} selectedFiles={selectedFiles}/>
+                        <DeleteButton setSelectedFiles={setSelectedFiles} selectedFiles={selectedFiles}/>
                     }
                     {!isSearch && <UploadMenu path={path} setStatus={setStatus}
                                 setStatusMessage={setStatusMessage}
@@ -85,7 +59,7 @@ const FileList = ({files, handleSearch, isSearch, path, token}) => {
                 </div>
             </div>
             <FileFolderRows files={files} path={path} isSearch={isSearch} selectFile={selectFileMemo}
-                            handleDeleteFiles={handleDeleteFilesMemo} token={token} setStatusMessage={setStatusMessage}/>
+                            token={token} setStatusMessage={setStatusMessage}/>
         </div>
     );
 };

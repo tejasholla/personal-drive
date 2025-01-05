@@ -35,6 +35,11 @@ class DownloadController
         return $this->getDownloadResponse($downloadFilePath);
     }
 
+    public function test(): BinaryFileResponse
+    {
+        return $this->getDownloadResponse('/var/www/html/personal3/3d794827-8ef7-431a-82db-6800c013c3b1/base/GX010037.MP4');
+
+    }
     public function getDownloadResponse(string $downloadFilePath): BinaryFileResponse
     {
         return Response::download(

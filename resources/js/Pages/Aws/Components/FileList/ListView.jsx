@@ -46,12 +46,12 @@ console.log('listview');
                     <SortIcon classes={`${sortDetails.key === 'filename' ? 'text-blue-500' : 'gray'} `} />
                 </div>
                 <div onClick={(e) => handleSortClick(e, 'size')}
-                     className={`p-2 px-4 w-32 hover:bg-gray-900  hover:cursor-pointer text-right ${sortDetails.key === 'size' ? 'text-blue-400' : ''}`}>
+                     className={`p-2 px-4 w-44 hover:bg-gray-900  hover:cursor-pointer text-right ${sortDetails.key === 'size' ? 'text-blue-400' : ''}`}>
                     <span>Size</span>
                     <SortIcon classes={`${sortDetails.key === 'size' ? 'text-blue-500' : 'gray'} `} />
                 </div>
                 <div onClick={(e) => handleSortClick(e, 'file_type')}
-                     className={`p-2 px-4 w-32 hover:bg-gray-900  hover:cursor-pointer text-right ${sortDetails.key === 'file_type' ? 'text-blue-400' : ''}`}>
+                     className={`p-2 px-4 w-44 hover:bg-gray-900  hover:cursor-pointer text-right ${sortDetails.key === 'file_type' ? 'text-blue-400' : ''}`}>
                     <span>Type</span>
                     <SortIcon classes={`${sortDetails.key === 'file_type' ? 'text-blue-500' : 'gray'} `} />
                 </div>
@@ -88,8 +88,8 @@ console.log('listview');
                                 />
                             )}
                         </div>
-                        <div className="p-4 text-right w-32">{file.sizeText}</div>
-                        <div className="p-4 text-right w-32">{file.file_type }</div>
+                        <div className="p-4 text-right w-44">{file.sizeText}</div>
+                        <div className="p-4 text-right w-44">{file.file_type }</div>
                     </div>
                 ))}
             </div>

@@ -2,7 +2,7 @@ import {DeleteIcon} from "lucide-react";
 import {router} from "@inertiajs/react";
 
 
-const DeleteButton = ({ selectedFiles, classes}) => {
+const DeleteButton = ({setSelectedFiles, selectedFiles, classes}) => {
 
     async function deleteFilesComponentHandler() {
         router.post('/delete-files', {
@@ -10,7 +10,11 @@ const DeleteButton = ({ selectedFiles, classes}) => {
         }, {
             preserveState: true,
             preserveScroll: true,
-            only: ['files', 'flash']
+            only: ['files', 'flash'],
+            onFinish: () => {
+                console.log('on finish delteion');
+                setSelectedFiles(new Map());
+            }
         });
     }
 

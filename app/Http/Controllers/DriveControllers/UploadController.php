@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\DriveControllers;
 
+use App\Exceptions\PersonalDriveExceptions\UploadFileException;
 use App\Helpers\UploadFileHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DriveController\CreateFolderRequest;
@@ -9,11 +10,7 @@ use App\Http\Requests\DriveController\UploadRequest;
 use App\Services\LocalFileStatsService;
 use App\Services\LPathService;
 use App\Traits\FlashMessages;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Http\Request;
 
 class UploadController extends Controller
 {
@@ -50,8 +47,12 @@ class UploadController extends Controller
             if (!file_exists($directory)) {
                 UploadFileHelper::makeFolder($directory);
             }
-            if ($file->getContent() && File::put($privatePath . $fileNameWithDir, $file->getContent())) {
-                $successWriteNum++;
+            try {
+                if ($file->move($privatePath, $file->getClientOriginalName())) {
+                    $successWriteNum++;
+                }
+            } catch (\Error $e) {
+                throw UploadFileException::outofmemory();
             }
         }
         if ($successWriteNum > 0) {

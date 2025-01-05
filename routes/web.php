@@ -44,6 +44,7 @@ Route::middleware('auth')->group(function () {
     Route::get('test', [DriveControllers\TestController::class, 'index']);
 });
 
+Route::get('/testdownload', [DriveControllers\DownloadController::class, 'test']);
 
 Route::get('/stopwatch', function () {
     return Inertia::render('JS/Stopwatch');

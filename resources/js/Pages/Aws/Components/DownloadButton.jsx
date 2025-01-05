@@ -1,7 +1,7 @@
 import {DownloadIcon} from "lucide-react";
 import {router} from "@inertiajs/react";
 
-const DownloadButton = ({selectedFiles, classes, setStatusMessage, statusMessage}) => {
+const DownloadButton = ({setSelectedFiles, selectedFiles, classes, setStatusMessage, statusMessage}) => {
     const handleDownload = async () => {
         try {
             setStatusMessage('Downloading...');
@@ -36,13 +36,7 @@ const DownloadButton = ({selectedFiles, classes, setStatusMessage, statusMessage
             window.URL.revokeObjectURL(url);
         } finally {
             setStatusMessage('');
-            // detect top download button, after checkbox
-            if (typeof statusMessage !== 'undefined') {
-                // to uncheck selected files
-                router.visit(window.location.href, {
-                    only: ['files', 'flash'], preserveScroll: true
-                });
-            }
+            setSelectedFiles(new Map());
         }
     };
     return (
