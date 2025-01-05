@@ -14,7 +14,6 @@ const TileViewOne = ({
                          setStatusMessage,
                          handleFileClick,
                          selectCheckbox,
-                         handleDeleteFiles,
                          isSearch,
                          selectAllFiles,
                          allSelected,
@@ -22,18 +21,13 @@ const TileViewOne = ({
                          sortCol,
                          sortDetails
                      }) => {
-    console.log('TileViewOne ')
+    console.log('TileViewOne ', filesCopy)
 
 
     useEffect(() => {
-        async function genThumbs(fileHashes) {
-            const response = await axios.post('/gen-thumbs', {hashes: fileHashes});
-            if (response.data.ok) {
-                await router.visit(window.location.href, {
-                    only: ['files'],
-                    preserveState: true,
-                });
-            }
+        console.log('tileviewone useeffect ');
+        function genThumbs(fileHashes) {
+            router.post('/gen-thumbs', {hashes: fileHashes});
         }
 
         const fileHashes = [];
@@ -44,7 +38,7 @@ const TileViewOne = ({
         }
 
         if (fileHashes.length) {
-            const res = genThumbs(fileHashes);
+            genThumbs(fileHashes);
         }
     }, []);
 
@@ -52,7 +46,6 @@ const TileViewOne = ({
         let sortedFiles = sortCol(filesCopy, key);
         setFilesCopy(sortedFiles);
     }
-
 
     return (
         <div className="w-full flex flex-col flex-wrap bg-gray-900/20 px-2">
@@ -65,22 +58,22 @@ const TileViewOne = ({
                 <div className="hover:cursor-pointer flex items-center gap-x-2">
                     <label>Sort by:</label>
                     <button
-                        className={`p-1 mx-1 rounded-md bg-gray-700 hover:bg-gray-500  ${sortDetails.key === 'filename' ? 'bg-gray-900 border border-gray-700' : ''}`}
+                        className={`p-1 mx-1 rounded-md bg-gray-700 hover:bg-gray-500  ${sortDetails.key === 'filename' ? 'bg-gray-900 border border-gray-500/80 text-blue-400' : ''}`}
                         onClick={(e) => handleSortClick(e, 'filename')}
                     >
-                        Name <SortIcon classes={`${sortDetails.key === 'size' ? 'text-blue-500' : 'gray'} `} />
+                        Name <SortIcon classes={`${sortDetails.key === 'filename' ? 'text-blue-500' : 'gray'} `} />
 
 
                     </button>
                     <button
-                        className={`p-1 mx-1 rounded-md bg-gray-700 hover:bg-gray-500  ${sortDetails.key === 'file_type' ? 'bg-gray-900 border border-gray-700' : ''}`}
+                        className={`p-1 mx-1 rounded-md bg-gray-700 hover:bg-gray-500  ${sortDetails.key === 'file_type' ? 'bg-gray-900 border border-gray-500/80  text-blue-400' : ''}`}
                         onClick={(e) => handleSortClick(e, 'file_type')}
                     >
-                        Type <SortIcon classes={`${sortDetails.key === 'size' ? 'text-blue-500' : 'gray'} `} />
+                        Type <SortIcon classes={`${sortDetails.key === 'file_type' ? 'text-blue-500' : 'gray'} `} />
 
                     </button>
                     <button
-                        className={`p-1 mx-1 rounded-md bg-gray-700 hover:bg-gray-500  ${sortDetails.key === 'size' ? 'bg-gray-900 border border-gray-700' : ''}`}
+                        className={`p-1 mx-1 rounded-md bg-gray-700 hover:bg-gray-500  ${sortDetails.key === 'size' ? 'bg-gray-900 border border-gray-500/80 text-blue-400' : ''}`}
                         onClick={(e) => handleSortClick(e, 'size')}
                     >
                         Size <SortIcon classes={`${sortDetails.key === 'size' ? 'text-blue-500' : 'gray'} `} />
@@ -90,6 +83,8 @@ const TileViewOne = ({
             </div>
             <div className="w-full flex flex-wrap gap-2">
                 {filesCopy.map((file, index) => {
+                    console.log(file);
+
                     const selectedFileMap = new Map([[file.id, 0]]);
 
                     return (
@@ -104,7 +99,7 @@ const TileViewOne = ({
                                         {(isSearch ? file.public_path + '/': '') + file.filename}
                                     </h3>
                                     <div
-                                        className="hover:bg-gray-600 p-4 cursor-pointer absolute -right-2 -top-2"
+                                        className="hover:bg-gray-600 p-2 pb-4 pl-4 cursor-pointer absolute -right-2 -top-2"
                                         onClick={(e) => {
                                             e.stopPropagation();
                                             selectCheckbox(file);
@@ -115,7 +110,7 @@ const TileViewOne = ({
                                             checked={!!checkboxStates[file.id]}
                                             onChange={() => {
                                             }}
-                                            className="h-4 w-4 rounded border-gray-600 bg-gray-800 text-blue-500 focus:ring-blue-500 focus:ring-offset-gray-900"
+                                            className="h-4 w-4 rounded border-gray-600 bg-gray-700 text-blue-500 focus:ring-blue-500 focus:ring-offset-gray-900"
                                         />
                                     </div>
                                 </div>
@@ -123,19 +118,18 @@ const TileViewOne = ({
                                 {/* File Icon */}
                                 {file.is_dir === 0 &&
                                     <div
-                                        className="flex cursor-pointer justify-center transition-transform duration-200 "
+                                        className="flex cursor-pointer justify-center items-center h-full transition-transform duration-200 h-[220px]"
                                         onClick={() => handleFileClick(file)}
                                     >
-                                        {file.has_thumbnail ? (
+                                        {file.has_thumbnail && !file.filename.endsWith('.svg') ? (
                                                 <img
-                                                    src={`/fetch-thumb/${file.hash}`} // Dynamically load the file
+                                                    src={`/fetch-thumb/${file.hash}`}
                                                     alt="Thumbnail"
-                                                    className="w-auto h-auto"
                                                 />
                                             )
                                             : (
                                                 <File
-                                                    className="text-gray-400 group-hover:text-gray-300"
+                                                    className="text-gray-400 group-hover:text-gray-300 "
                                                     size={120}
                                                 />
                                             )
@@ -145,7 +139,7 @@ const TileViewOne = ({
 
                                 {file.is_dir === 1 &&
                                     <div
-                                        className="flex cursor-pointer justify-center pb-3 transition-transform duration-200 "
+                                        className="flex cursor-pointer justify-center pb-3 transition-transform duration-200  h-[220px]"
                                     >
                                         <Link
                                             href={'/drive' + (file.public_path ? ('/' + file.public_path) : '') + '/' + file.filename}
@@ -163,7 +157,6 @@ const TileViewOne = ({
                                 <div className="flex-1">
                                     <DeleteButton
                                         classes=" bg-red-500/10 hover:bg-red-500/20 text-red-500 py-2 px-4 rounded-md transition-colors duration-200"
-                                        handleDeleteFiles={handleDeleteFiles}
                                         selectedFiles={selectedFileMap}
                                     />
                                 </div>

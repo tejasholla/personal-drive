@@ -2,26 +2,21 @@
 
 namespace App\Models;
 
+use App\Helpers\EncryptHelper;
 use App\Helpers\FileSizeFormatter;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Crypt;
+use Illuminate\Database\Eloquent\Builder;
 
 class LocalFile extends Model
 {
-//    protected $guarded = ['private_path', 'user_id'];
     protected $hidden = ['private_path', 'user_id'];
 
-    public static function getByIds(array $fileIds)
+    public static function getByIds(array $fileIds): Builder
     {
         return self::whereIn('id', $fileIds);
     }
 
-    public static function getPrivatePathNameForFileId(int $fileId): string
-    {
-        $file = self::where('id', $fileId)->first();
-        return $file->getPrivatePathNameForFile();
-    }
 
     public function getPublicPathname(): string
     {
@@ -34,17 +29,12 @@ class LocalFile extends Model
         return $this->private_path . DIRECTORY_SEPARATOR . $this->filename;
     }
 
-    public static function getPrivatePath(string $publicPath): string
-    {
-        return self::where('public_path', $publicPath)->first()?->private_path ?? '';
-    }
-
-    public static function insertRows(array $insertArr)
+    public static function insertRows(array $insertArr): int
     {
         return self::upsert($insertArr, ['filename', 'public_path']);
     }
 
-    public static function clearTable()
+    public static function clearTable(): void
     {
         self::truncate();
     }
@@ -55,24 +45,22 @@ class LocalFile extends Model
         return self::modifyFileCollection($fileItems);
     }
 
-    private static function modifyFileCollection($fileItems)
+    private static function modifyFileCollection(Collection $fileItems): Collection
     {
         return $fileItems->map(function ($item) {
             if ($item->size) {
                 $item->sizeText = FileSizeFormatter::format((int) $item->size);
             }
             if ($item->id) {
-                $item->hash = Crypt::encryptString($item->id);
+                $item->hash = EncryptHelper::encrypt($item->id);
             }
             return $item;
         });
     }
 
-    public static function searchFiles($userId, $searchQuery)
+    public static function searchFiles(string $searchQuery): Collection
     {
-        $fileItems = static::where('user_id', $userId)
-            ->where('filename', 'like', $searchQuery . '%')
-            ->get();
+        $fileItems = static::where('filename', 'like', $searchQuery . '%')->get();
         return self::modifyFileCollection($fileItems);
     }
 }

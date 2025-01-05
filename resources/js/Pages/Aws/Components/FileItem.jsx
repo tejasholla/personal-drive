@@ -2,7 +2,7 @@ import {File} from 'lucide-react';
 import DownloadButton from "./DownloadButton.jsx";
 import DeleteButton from "@/Pages/Aws/Components/DeleteButton.jsx";
 
-export default function FileItem({file, isSearch, token, handleDeleteFiles, setStatusMessage, handleFileClick}) {
+export default function FileItem({file, isSearch, token, setStatusMessage, handleFileClick}) {
 
     return (
         <div
@@ -14,7 +14,7 @@ export default function FileItem({file, isSearch, token, handleDeleteFiles, setS
                 <span className="truncate w-4/5">{(isSearch ? file.public_path + '/' : '') + file.filename}</span>
             </div>
             <div className="flex ">
-                <DeleteButton classes="hidden group-hover:block mr-2  z-10" handleDeleteFiles={handleDeleteFiles} selectedFiles={new Map([[file.id, 0]])}/>
+                <DeleteButton classes="hidden group-hover:block mr-2  z-10" selectedFiles={new Map([[file.id, 0]])}/>
 
                 <DownloadButton  classes="hidden group-hover:block mr-2" selectedFiles={new Map([[file.id, 0]])}
                                 token={token} setStatusMessage={setStatusMessage}

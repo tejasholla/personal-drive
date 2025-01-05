@@ -3,34 +3,21 @@
 namespace App\Http\Controllers\DriveControllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\DriveController\SearchRequest;
 use App\Models\LocalFile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class SearchFilesController extends Controller
 {
-    public function index(Request $request): \Inertia\Response
+    public function index(SearchRequest $request): Response
     {
-        $user = Auth::user();
-        $searchQuery = $request->post('query') ?? '/'; // Retrieve 'path' from the request
+        $searchQuery = $request->validated('query') ?? '/';
 
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'query' => 'string',
-            ]
-        );
-
-        if ($validator->fails()) {
-            return Inertia::render('Aws/FileManager', [
-                'files' => [],
-                'searchResults' => true
-            ]);
-        }
-
-        $files = LocalFile::searchFiles($user->id, $searchQuery);
+        $files = LocalFile::searchFiles($searchQuery);
 
         return Inertia::render('Aws/FileManager', [
             'files' => $files,

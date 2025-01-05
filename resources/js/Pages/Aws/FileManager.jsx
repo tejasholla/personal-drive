@@ -7,7 +7,7 @@ export default function FileManager({files, path, token}) {
     console.log('render filemanager ', files);
     const [isSearch, setIsSearch] = useState(false);
 
-    const handleSearch = async (e, searchText) => {
+    async function handleSearch (e, searchText){
         e.preventDefault();
         router.post('/search-files', {query: searchText}, {
             onSuccess: () => {

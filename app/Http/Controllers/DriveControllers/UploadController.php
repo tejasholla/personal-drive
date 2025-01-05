@@ -4,18 +4,21 @@ namespace App\Http\Controllers\DriveControllers;
 
 use App\Helpers\UploadFileHelper;
 use App\Http\Controllers\Controller;
-use App\Services\FileValidationService;
+use App\Http\Requests\DriveController\CreateFolderRequest;
+use App\Http\Requests\DriveController\UploadRequest;
 use App\Services\LocalFileStatsService;
-use App\Services\LocalFolderService;
 use App\Services\LPathService;
+use App\Traits\FlashMessages;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class UploadController extends Controller
 {
+    use FlashMessages;
+
     protected LPathService $lPathService;
     protected LocalFileStatsService $localFileStatsService;
 
@@ -27,72 +30,48 @@ class UploadController extends Controller
         $this->lPathService = $lPathService;
     }
 
-    public function store(Request $request): JsonResponse
+    public function store(UploadRequest $request): RedirectResponse
     {
-        $files = $request->file('files');
-        $publicPath = $request->path ?: '';
+        $files = $request->validated('files');
+        $publicPath = $request->validated('path') ?? '';
         $privatePath = $this->lPathService->genPrivatePathWithPublic($publicPath);
 
         if (!$files) {
-            return $this->errorResponse('File upload failed. No files uploaded', 400);
+            return $this->error('File upload failed. No files uploaded');
         }
         if (!$privatePath) {
-            return $this->errorResponse('File upload failed. Could not find storage path', 400);
+            return $this->error('File upload failed. Could not find storage path');
         }
 
-        $successWrite = true;
-
+        $successWriteNum = 0;
         foreach ($files as $index => $file) {
             $fileNameWithDir = UploadFileHelper::getUploadedFileFullPath($index);
             $directory = dirname($privatePath . $fileNameWithDir);
             if (!file_exists($directory)) {
                 UploadFileHelper::makeFolder($directory);
             }
-
-            if ($file->getContent() && !File::put($privatePath . $fileNameWithDir, $file->getContent())) {
-                $successWrite = false;
+            if ($file->getContent() && File::put($privatePath . $fileNameWithDir, $file->getContent())) {
+                $successWriteNum++;
             }
         }
-        if ($successWrite) {
+        if ($successWriteNum > 0) {
             $this->localFileStatsService->generateStats($publicPath);
-            return $this->successResponse('Files uploaded successfully');
+            return $this->success('Files uploaded: ' . $successWriteNum . ' out of ' . count($files));
         }
-
-        Log::info('File upload failed | ');
-        return $this->errorResponse('File upload failed. check logs', 400);
+        return $this->error('Some/All Files upload failed');
     }
 
-    private function errorResponse(string $message, int $statusCode = 200): JsonResponse
-    {
-        return response()->json([
-            'ok' => false,
-            'message' => $message
-        ], $statusCode);
-    }
 
-    private function successResponse(string $message): JsonResponse
+    public function createFolder(CreateFolderRequest $request): RedirectResponse
     {
-        return response()->json([
-            'ok' => true,
-            'message' => $message
-        ], 200);
-    }
-
-    public function createFolder(Request $request): JsonResponse
-    {
-        $publicPath = (string) $request->path;
-        $folderName = $request->folderName;
-        try {
-            $privatePath = $this->lPathService->genPrivatePathWithPublic($publicPath);
-            $makeFolderRes = UploadFileHelper::makeFolder($privatePath . $folderName);
-            $this->localFileStatsService->addFolderPathStat($folderName, $publicPath);
-            if ($makeFolderRes) {
-                return $this->successResponse('Created folder successfully');
-            }
-            return $this->errorResponse('Create folder failed. check logs', 400);
-        } catch (\Exception $e) {
-            Log::info('Create folder failed | ' . $e->getMessage());
-            return $this->errorResponse('Create folder failed. check logs', 400);
+        $publicPath = $request->validated('path') ?? '';
+        $folderName = $request->validated('folderName');
+        $privatePath = $this->lPathService->genPrivatePathWithPublic($publicPath);
+        $makeFolderRes = UploadFileHelper::makeFolder($privatePath . $folderName);
+        if (!$makeFolderRes) {
+            return $this->error('Create folder failed');
         }
+        $this->localFileStatsService->addFolderPathStat($folderName, $publicPath);
+        return $this->success('Created folder successfully');
     }
 }

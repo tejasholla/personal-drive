@@ -2,18 +2,22 @@
 
 namespace App\Http\Controllers\DriveControllers;
 
-use App\Helpers\ResponseHelper;
+use App\Exceptions\PersonalDriveExceptions\FetchFileException;
+use App\Helpers\EncryptHelper;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\DriveController\FetchFileRequest;
 use App\Models\LocalFile;
 use App\Services\LocalFileStatsService;
 use App\Services\ThumbnailService;
+use App\Traits\FlashMessages;
 use Illuminate\Contracts\Encryption\DecryptException;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Iman\Streamer\VideoStreamer;
 
 class FetchFileController extends Controller
 {
+    use FlashMessages;
+
     protected LocalFileStatsService $localFileStatsService;
     private ThumbnailService $thumbnailService;
 
@@ -24,42 +28,53 @@ class FetchFileController extends Controller
     ) {
         $this->localFileStatsService = $localFileStatsService;
         $this->thumbnailService = $thumbnailService;
-
     }
 
-    public function index(Request $request, $encryptedId)
+    /**
+     * @throws FetchFileException
+     */
+    public function index(FetchFileRequest $request): void
     {
-        try {
-            // Decrypt the ID
-            $fileId = Crypt::decryptString($encryptedId);
-        } catch (DecryptException $e) {
-            return ResponseHelper::json('Invalid or tampered hash', false);
-        }
-
-        // Find the file record by ID
-        $fileRecord = LocalFile::find($fileId);
-        if (!$fileRecord ||  !$fileRecord->file_type) {
-            return ResponseHelper::json('Could not find file to stream', false);
-        }
-        $filePrivatePathName = $fileRecord->getPrivatePathNameForFile();
+        $file =  $this->handleHashRequest($request);
+        $filePrivatePathName = $file->getPrivatePathNameForFile();
         VideoStreamer::streamFile($filePrivatePathName);
     }
-    public function getThumb(Request $request, $encryptedId)
+
+    /**
+     * @throws FetchFileException
+     */
+    public function getThumb(FetchFileRequest $request): void
     {
+        $file = $this->handleHashRequest($request);
+        if (!$file->has_thumbnail) {
+            throw FetchFileException::notFoundStream();
+        }
+        $filePrivatePathName = $this->thumbnailService->getFullFileThumbnailPath($file);
+        VideoStreamer::streamFile($filePrivatePathName);
+    }
+
+    /**
+     * @throws FetchFileException
+     */
+    private function handleHashRequest(FetchFileRequest $request): LocalFile
+    {
+        $encryptedId = $request->validated('hash');
         try {
             // Decrypt the ID
-            $fileId = Crypt::decryptString($encryptedId);
+            $fileId = EncryptHelper::decrypt($encryptedId);
         } catch (DecryptException $e) {
-            return ResponseHelper::json('Invalid or tampered hash', false);
+            throw FetchFileException::notFoundStream();
+        }
+        if (!$fileId) {
+            throw FetchFileException::notFoundStream();
         }
 
         // Find the file record by ID
         $file = LocalFile::find($fileId);
-        if (!$file ||  !$file->file_type || !$file->has_thumbnail) {
-            return ResponseHelper::json('Could not thumb', false);
+        if (!$file || !$file->file_type) {
+            throw FetchFileException::notFoundStream();
         }
 
-        $filePrivatePathName = $this->thumbnailService->getFullFileThumbnailPath($file);
-        VideoStreamer::streamFile($filePrivatePathName);
+        return $file;
     }
 }

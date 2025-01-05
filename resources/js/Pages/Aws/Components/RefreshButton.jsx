@@ -1,19 +1,22 @@
 'use client'
 
 import {useEffect, useState} from 'react'
-import {usePage} from "@inertiajs/react";
+import {router, usePage} from "@inertiajs/react";
 
-export default function RefreshButton({handleRefreshBucketButton}) {
-    // console.log('render refresh button');
-    const {flash} = usePage().props
+export default function RefreshButton() {
 
     const [isLoading, setIsLoading] = useState(false)
-    const handleClick = async (e) => {
+
+    async function handleClick(e) {
         e.preventDefault();
         setIsLoading(true)
-        await handleRefreshBucketButton(() => {
-            setIsLoading(false);
-            console.log('setIsLoading');
+        router.post('/resync', {}, {
+            preserveState: true,
+            preserveScroll: true,
+            only: ['files', 'flash'],
+            onFinish: () => {
+                setIsLoading(false);
+            }
         });
     }
 

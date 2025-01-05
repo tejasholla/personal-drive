@@ -2,38 +2,41 @@
 
 namespace App\Http\Controllers\DriveControllers;
 
-use App\Helpers\DownloadHelper;
+use App\Exceptions\PersonalDriveExceptions\FetchFileException;
+use App\Http\Requests\DriveController\DownloadRequest;
 use App\Models\LocalFile;
+use App\Services\DownloadService;
 use App\Services\LPathService;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Str;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class DownloadController
 {
     protected LPathService $pathService;
+    protected DownloadService $downloadService;
 
     public function __construct(
-        LPathService $pathService
+        LPathService $pathService,
+        DownloadService $downloadService
     ) {
         $this->pathService = $pathService;
+        $this->downloadService = $downloadService;
     }
 
-    public function index(Request $request)
+    public function index(DownloadRequest $request): BinaryFileResponse
     {
-        $fileKeyArray = $request->fileList;
-
+        $fileKeyArray = $request->validated('fileList');
         $localFiles = LocalFile::getByIds(array_keys($fileKeyArray))->get();
-        if (count($localFiles) === 1 && $localFiles[0]->is_dir === 0) {
-            $downloadFilePath = $localFiles[0]->getPrivatePathNameForFile();
-        } else {
-            $downloadFilePath = '/tmp' . DIRECTORY_SEPARATOR . Str::random(8) . now()->format('Y_m_d') . '.zip';
-            DownloadHelper::createZipArchive(
-                $localFiles,
-                $downloadFilePath
-            );
+        if (!$localFiles || count($localFiles) === 0) {
+            throw FetchFileException::notFoundDownload();
         }
+        $downloadFilePath = $this->downloadService->generateDownloadPath($localFiles);
 
+        return $this->getDownloadResponse($downloadFilePath);
+    }
+
+    public function getDownloadResponse(string $downloadFilePath): BinaryFileResponse
+    {
         return Response::download(
             $downloadFilePath,
             basename($downloadFilePath),

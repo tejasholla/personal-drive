@@ -44,31 +44,19 @@ const UploadMenu = ({  path, setStatus, setStatusMessage }) => {
         });
         formData.append('path', path);
 
-        try {
-            const response = await axios.post('/upload', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            });
+        router.post('/upload', formData, {
+            preserveState: true,
+            only: ['files', 'flash'],
+            onSuccess: (response) => {
+                console.log('response on successs ' , response);
+            },
+            onFinish: () => {
 
-            if (response.data.ok) {
-                const uploadType = isFolder ? 'Folder' : 'File(s)';
-                setStatusMessage(`${uploadType} uploaded successfully!`);
-                setStatus(true);
-
-                router.visit(window.location.href, {
-                    only: ['files'],
-                    preserveState: true,
-                });
+                setIsMenuOpen(false);
+                resetFileFolderInput();
             }
+        });
 
-        } catch (error) {
-            setStatusMessage('An error occurred. Please try again.')
-            setStatus(false);
-        } finally {
-            setIsMenuOpen(false);
-            resetFileFolderInput();
-        }
     }
 
     return (
@@ -112,6 +100,7 @@ const UploadMenu = ({  path, setStatus, setStatusMessage }) => {
             )}
 
             <CreateFolderModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} setStatusMessage={setStatusMessage}  path={path} setStatus={setStatus} />
+
             <div className="relative inline-block">
                 <input
                     type="file"

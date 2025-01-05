@@ -17,7 +17,6 @@ const ListView = ({
                       path,
                       checkboxStates,
                       token,
-                      handleDeleteFiles,
                       setStatusMessage,
                       handleFileClick,
                       selectCheckbox,
@@ -77,7 +76,6 @@ console.log('listview');
                                     file={file}
                                     isSearch={isSearch}
                                     token={token}
-                                    handleDeleteFiles={handleDeleteFiles}
                                     setStatusMessage={setStatusMessage}
                                 />
                             ) : (
@@ -85,7 +83,6 @@ console.log('listview');
                                     file={file}
                                     isSearch={isSearch}
                                     token={token}
-                                    handleDeleteFiles={handleDeleteFiles}
                                     setStatusMessage={setStatusMessage}
                                     handleFileClick={handleFileClick}
                                 />

@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\DriveControllers;
 
-use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;
 use App\Services\LocalFileStatsService;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Http\Request;
+use App\Traits\FlashMessages;
+use Illuminate\Http\RedirectResponse;
 
 class ReSyncController extends Controller
 {
+    use FlashMessages;
+
     protected LocalFileStatsService $localFileStatsService;
 
     public function __construct(
@@ -18,24 +19,12 @@ class ReSyncController extends Controller
         $this->localFileStatsService = $localFileStatsService;
     }
 
-    public function index(Request $request): \Illuminate\Http\JsonResponse
+    public function index(): RedirectResponse
     {
-        $redirectPath = (string) $request->redirect;
-        try {
-            $this->localFileStatsService->generateStats();
-            Log::info('ReSync succ | ');
-            return ResponseHelper::json('Sync successful');
-
-//            session()->flash('status');
-//            session()->flash('message', 'Sync successful');
-//            redirect('/drive/' . $redirectPath);
-        } catch (\Exception $e) {
-            Log::info('ReSync failed | ' . $e->getMessage());
-            return ResponseHelper::json('ReSync failed. check logs', false);
-
-//            session()->flash('message', 'ReSync failed. check logs');
-//            session()->flash('status', false);
-//            redirect('/drive/' . $redirectPath);
+        $filesUpdated = $this->localFileStatsService->generateStats();
+        if ($filesUpdated > 0) {
+            return $this->success('Sync successful. Found : ' . $filesUpdated . ' files');
         }
+        return $this->success('ReSync failed. check logs');
     }
 }

@@ -11,7 +11,7 @@ class Setting extends Model
     protected $fillable = ['key', 'value'];
 
 
-    public static function updateSetting($key, $value): bool
+    public static function updateSetting(string $key, string $value): bool
     {
         $result = Setting::updateOrCreate(
             ['key' => $key],

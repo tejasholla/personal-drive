@@ -7,7 +7,7 @@ import ListView from "./FileList/ListView.jsx";
 import Breadcrumb from "@/Pages/Aws/Components/Breadcrumb.jsx";
 
 
-const FileFolderRows = memo(({files, path, isSearch, selectFile, token, handleDeleteFiles, setStatusMessage}) => {
+const FileFolderRows = memo(({files, path, isSearch, selectFile, token, setStatusMessage}) => {
     console.log('FileFolderRows ', files)
     let previewAbleTypes = useRef(['image', 'video']);
     let previewAbleFiles = useRef([]);
@@ -148,7 +148,6 @@ const FileFolderRows = memo(({files, path, isSearch, selectFile, token, handleDe
                                 setStatusMessage={setStatusMessage}
                                 handleFileClick={handleFileClick}
                                 selectCheckbox={selectCheckbox}
-                                handleDeleteFiles={handleDeleteFiles}
                                 isSearch={isSearch}
                                 selectAllFiles={selectAllFiles}
                                 allSelected={allSelected}
@@ -168,7 +167,6 @@ const FileFolderRows = memo(({files, path, isSearch, selectFile, token, handleDe
                                 path={path}
                                 checkboxStates={checkboxStates}
                                 token={token}
-                                handleDeleteFiles={handleDeleteFiles}
                                 setStatusMessage={setStatusMessage}
                                 handleFileClick={handleFileClick}
                                 selectCheckbox={selectCheckbox}

@@ -14,27 +14,6 @@ class LPathService
         $this->uuidService = $uuidService;
     }
 
-    public function getPrivatePathForPublicPathFromDb(string $publicPath = ''): string
-    {
-        $privateRoot = $this->getStorageDirPath();
-        if (!$privateRoot) {
-            return '';
-        }
-
-        if ($publicPath === '') {
-            return $privateRoot;
-        }
-        $privatePath = LocalFile::getPrivatePath($publicPath);
-        if (!$privatePath) {
-            return '';
-        }
-
-        if (file_exists($privatePath)) {
-            return $privatePath;
-        }
-        return '';
-    }
-
     public function getStorageDirPath(): string
     {
         $storagePath = Setting::getSettingByKeyName(Setting::$storagePath);

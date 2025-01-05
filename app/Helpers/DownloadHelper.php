@@ -9,7 +9,7 @@ use ZipArchive;
 
 class DownloadHelper
 {
-    public static function createZipArchive(Collection $localFiles, $outputZipPath): ZipArchive
+    public static function createZipArchive(Collection $localFiles, string $outputZipPath): ZipArchive
     {
         $zip = new ZipArchive();
 

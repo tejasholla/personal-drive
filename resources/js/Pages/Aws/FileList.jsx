@@ -60,13 +60,6 @@ const FileList = ({files, handleSearch, isSearch, path, token}) => {
         });
     }
 
-    async function handleRefreshBucketButton(onSuccess) {
-        let response = await axios.post('/resync', {
-            redirect: path
-        });
-        onSuccess()
-        handleStatus(response, 'Resync failed', 'Resync successful');
-    }
 
     return (<div className="my-12 p-5">
             <div className="rounded-md gap-x-2 flex items-start relative ">
@@ -76,9 +69,9 @@ const FileList = ({files, handleSearch, isSearch, path, token}) => {
             <div className="rounded-md gap-x-2 flex items-start mb-2  justify-between">
                 <div className="p-2 gap-2 flex  text-gray-300">
 
-                    <RefreshButton handleRefreshBucketButton={handleRefreshBucketButton}/>
+                    <RefreshButton />
                     {selectedFiles.size > 0 &&
-                        <DownloadButton selectedFiles={selectedFiles} setStatusMessage={setStatusMessage}/>
+                        <DownloadButton selectedFiles={selectedFiles} setStatusMessage={setStatusMessage} statusMessage={statusMessage}/>
                     }
                 </div>
                 <div className="p-2 gap-x-2 flex  text-gray-200">

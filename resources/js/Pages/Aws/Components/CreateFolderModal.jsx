@@ -8,30 +8,17 @@ const CreateFolderModal = ({isModalOpen, setIsModalOpen, setStatusMessage, bucke
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        try {
-            const formPostData = {};
-            formPostData['bucketName'] = bucketName;
-            formPostData['path'] = path;
-            formPostData['folderName'] = folderName;
-            setIsModalOpen(false);
-
-            const response = await axios.post('/create-folder', formPostData);
-            console.log(response);
-            setStatus(false);
-            setStatusMessage(`Error creating folder`);
-            if (response.data.ok) {
-                setStatusMessage(`Folder "${folderName}" created successfully!`);
-                setStatus(true);
-                router.visit(window.location.href, {
-                    only: ['files'],
-                    preserveState: true,
-
-                });
-            }
-        } catch (error) {
-            setStatus(false);
-            setStatusMessage(`Error creating folder: ${error.response?.data?.message || error.message}`);
-        }
+        const formData = {};
+        formData['bucketName'] = bucketName;
+        formData['path'] = path;
+        formData['folderName'] = folderName;
+        setIsModalOpen(false);
+        router.post('/create-folder', formData, {
+            only: ['files', 'flash'],
+            onSuccess: (response) => {
+                console.log('response on successs ' , response);
+            },
+        });
     }
 
     return (

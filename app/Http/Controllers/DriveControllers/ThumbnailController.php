@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers\DriveControllers;
 
+use App\Helpers\EncryptHelper;
 use App\Helpers\ResponseHelper;
+use App\Http\Requests\DriveController\GetThumbnailRequest;
 use App\Services\ThumbnailService;
+use App\Traits\FlashMessages;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Crypt;
 
 class ThumbnailController
 {
+    use FlashMessages;
+
     private ThumbnailService $thumbnailService;
 
     public function __construct(ThumbnailService $thumbnailService)
@@ -16,22 +20,21 @@ class ThumbnailController
         $this->thumbnailService = $thumbnailService;
     }
 
-    public function update(Request $request)
+    public function update(GetThumbnailRequest $request)
     {
-        $fileIds = $this->getFileIds($request);
+        $encryptedIds = $request->validated('hashes');
+        $fileIds = $this->getFileIds($encryptedIds);
         if (!$fileIds) {
-            return ResponseHelper::json('could not generate thumbnails', false);
+            return $this->error('Could not generate thumbnails');
         }
-        if ($this->thumbnailService->genThumbailsForFileIds($fileIds)){
-            return ResponseHelper::json('generated', true);
+        $thumbsGenerated = $this->thumbnailService->genThumbnailsForFileIds($fileIds);
+        if ($thumbsGenerated === 0) {
+            return $this->error('No thumbnails generated. No valid files found');
         }
     }
 
-    private function getFileIds(Request $request): array
+    private function getFileIds(array $encryptedIds): array
     {
-        $encryptedIds = $request->hashes;
-        $fileIds = array_map(fn($encryptedId) => Crypt::decryptString($encryptedId), $encryptedIds);
-        return $fileIds;
+        return array_map(fn($encryptedId) => EncryptHelper::decrypt($encryptedId), $encryptedIds);
     }
-
 }

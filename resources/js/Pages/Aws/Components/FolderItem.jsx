@@ -3,7 +3,7 @@ import {Link} from '@inertiajs/react'
 import DownloadButton from "./DownloadButton.jsx";
 import DeleteButton from "@/Pages/Aws/Components/DeleteButton.jsx";
 
-export default function FolderItem({file, isSelected, isSearch, token, handleDeleteFiles, setStatusMessage}) {
+export default function FolderItem({file, isSelected, isSearch, token,  setStatusMessage}) {
     console.log('file in folderitem ', file)
 
     return (
@@ -23,7 +23,7 @@ export default function FolderItem({file, isSelected, isSearch, token, handleDel
             </Link>
 
             <div className="flex gap-x-1">
-                <DeleteButton classes="hidden group-hover:block mr-2  z-10" handleDeleteFiles={handleDeleteFiles}
+                <DeleteButton classes="hidden group-hover:block mr-2  z-10"
                               selectedFiles={new Map([[file.id, 0]])}/>
                 <DownloadButton classes="hidden  group-hover:block mr-2  z-10"
                                 selectedFiles={new Map([[file.id, file.is_dir]])} token={token}

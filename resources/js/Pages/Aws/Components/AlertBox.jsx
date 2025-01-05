@@ -2,23 +2,33 @@ import React, {useEffect, useState} from 'react';
 import {usePage} from "@inertiajs/react";
 
 
-const AlertBox = () => {
+const AlertBox = ({message,type}) => {
     let status = '';
     let icon;
     let bgStatus = 'bg-gray-500';
 
     let {flash, errors} = usePage().props;
     const [alertBoxData, setAlertBoxData] = useState(flash);
-
+    console.log('message,type', message,type)
     // Effect to update messageToPrint when props change
     useEffect(() => {
-        let alertBoxDataCopy = flash;
-        if (errors && Object.keys(errors).length > 0) {
-            alertBoxDataCopy.message = Object.values(errors).flat().join(', ');
-            alertBoxDataCopy.status = false;
+        if (!flash.message && Object.keys(errors).length === 0 && message) {
+            let alertBoxDataCopy = {message: message , status : status || 'warning' }
+            setAlertBoxData(alertBoxDataCopy);
+            console.log('alertBoxDataCopy mess', alertBoxDataCopy)
+
         }
-        setAlertBoxData(alertBoxDataCopy);
-    }, [flash, errors]);
+        else {
+            let alertBoxDataCopy = flash;
+            if (errors && Object.keys(errors).length > 0) {
+                alertBoxDataCopy.message = Object.values(errors).flat().join(', ');
+                alertBoxDataCopy.status = false;
+            }
+            setAlertBoxData(alertBoxDataCopy);
+            console.log('alertBoxDataCopy flash,error', alertBoxDataCopy, errors)
+
+        }
+    }, [flash, errors, message,type]);
 
 
     switch (alertBoxData.status) {

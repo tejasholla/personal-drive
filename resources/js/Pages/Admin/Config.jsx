@@ -29,7 +29,7 @@ export default function Dashboard({
         router.post('/admin-config/update', formData, {
             onSuccess: (res) => {
                 setFormData({
-                    storage_path: res.props.settings.storage_path
+                    storage_path: res.props.storage_path
                 })
             }
         })

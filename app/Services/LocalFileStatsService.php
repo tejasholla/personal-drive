@@ -19,7 +19,7 @@ class LocalFileStatsService
         $this->pathService = $pathService;
     }
 
-    public function addFolderPathStat($folderName, $publicPath)
+    public function addFolderPathStat(string $folderName, string $publicPath): bool
     {
         $itemPrivatePathname = $this->pathService->genPrivatePathWithPublic($publicPath);
         return LocalFile::insert([
@@ -32,7 +32,7 @@ class LocalFileStatsService
         ]);
     }
 
-    public function generateStats(string $path = ''): bool
+    public function generateStats(string $path = ''): int
     {
         $rootPathLen = strlen($this->pathService->getStorageDirPath()) + 1;
         $privatePath = $this->pathService->genPrivatePathWithPublic($path);
@@ -42,15 +42,15 @@ class LocalFileStatsService
         if (!$path) {
             LocalFile::clearTable();
         }
-        $this->populateLocalFileWithStats($privatePath, $rootPathLen);
-        return true;
+        return $this->populateLocalFileWithStats($privatePath, $rootPathLen);
     }
 
-    private function populateLocalFileWithStats(string $privatePath, int $rootPathLen): void
+    private function populateLocalFileWithStats(string $privatePath, int $rootPathLen): int
     {
         $insertArr = [];
         $dirSizes = [];
         $iterator = $this->createFileIterator($privatePath);
+        $filesUpdated = 0 ;
         foreach ($iterator as $item) {
             $itemPrivatePathname = $item->getPath();
             $currentDir = dirname($item->getPathname());
@@ -77,14 +77,15 @@ class LocalFileStatsService
             ];
             // Insert in chunks of 100
             if (count($insertArr) === 100) {
-                LocalFile::insertRows($insertArr);
+                $filesUpdated += LocalFile::insertRows($insertArr);
                 $insertArr = []; // Clear the array for the next chunk
             }
         }
         // Insert remaining items if any
         if (!empty($insertArr)) {
-            LocalFile::insertRows($insertArr);
+            $filesUpdated +=  LocalFile::insertRows($insertArr);
         }
+        return $filesUpdated;
     }
 
     private function createFileIterator(string $path): RecursiveIteratorIterator
@@ -117,11 +118,5 @@ class LocalFileStatsService
             $fileType = $item->getExtension();
         }
         return $fileType;
-    }
-
-    public function deleteRows($filesInDB)
-    {
-        $delete = $filesInDB->delete();
-        return $delete;
     }
 }

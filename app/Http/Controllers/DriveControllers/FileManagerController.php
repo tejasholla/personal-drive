@@ -9,12 +9,12 @@ use Inertia\Response;
 
 class FileManagerController extends Controller
 {
-    public function index($path = ''): Response
+    public function index(string $path = ''): Response
     {
-        $pathFiles = LocalFile::getFilesForPublicPath($path);
+        $files = LocalFile::getFilesForPublicPath($path);
 
         return Inertia::render('Aws/FileManager', [
-            'files' => $pathFiles,
+            'files' => $files,
             'path' => $path,
             'token' => csrf_token(),
         ]);
