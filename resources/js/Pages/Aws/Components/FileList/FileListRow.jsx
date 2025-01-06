@@ -1,0 +1,54 @@
+import FileItem from "../FileItem.jsx";
+import FolderItem from "../FolderItem.jsx";
+import React from "react";
+
+const FileListRow = React.memo(function FileListRow({
+                                                        file,
+                                                        isSearch,
+                                                        token,
+                                                        setStatusMessage,
+                                                        handleFileClick,
+                                                        isSelected,
+                                                        handlerSelectFile,
+                                                    }) {
+    console.log('filelistrow', isSelected);
+
+        return (
+            <div  className="cursor-pointer hover:bg-gray-700 group flex flex-row w-full">
+                <div
+                    className="p-2 px-6 w-20 items-center flex hover:bg-gray-900 justify-center"
+                    onClick={() => handlerSelectFile(file)}
+                >
+                    <input
+                        type="checkbox"
+                        checked={!!isSelected}
+                        onChange={() => {
+                        }}
+                    />
+                </div>
+                <div className="w-full">
+                    {file.is_dir ? (
+                        <FolderItem
+                            file={file}
+                            isSearch={isSearch}
+                            token={token}
+                            setStatusMessage={setStatusMessage}
+                        />
+                    ) : (
+                        <FileItem
+                            file={file}
+                            isSearch={isSearch}
+                            token={token}
+                            setStatusMessage={setStatusMessage}
+                            handleFileClick={handleFileClick}
+                        />
+                    )}
+                </div>
+                <div className="p-4 text-right w-44">{file.sizeText}</div>
+                <div className="p-4 text-right w-44">{file.file_type}</div>
+            </div>
+        )
+    }
+);
+
+export default FileListRow;

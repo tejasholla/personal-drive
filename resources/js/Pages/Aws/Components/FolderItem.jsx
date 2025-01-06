@@ -2,9 +2,10 @@ import {Folder} from 'lucide-react';
 import {Link} from '@inertiajs/react'
 import DownloadButton from "./DownloadButton.jsx";
 import DeleteButton from "@/Pages/Aws/Components/DeleteButton.jsx";
+import React from "react";
 
-export default function FolderItem({file, isSelected, isSearch, token,  setStatusMessage}) {
-    console.log('file in folderitem ', file)
+const FolderItem =  React.memo(function FolderItem({file, isSelected, isSearch, token,  setStatusMessage}) {
+    console.log('Folderitem render')
 
     return (
         <div
@@ -24,13 +25,14 @@ export default function FolderItem({file, isSelected, isSearch, token,  setStatu
 
             <div className="flex gap-x-1">
                 <DeleteButton classes="hidden group-hover:block mr-2  z-10"
-                              selectedFiles={new Map([[file.id, 0]])}/>
+                              selectedFiles={new Set([file.id])}/>
                 <DownloadButton classes="hidden  group-hover:block mr-2  z-10"
-                                selectedFiles={new Map([[file.id, file.is_dir]])} token={token}
+                                selectedFiles={new Set([file.id])} token={token}
                                 setStatusMessage={setStatusMessage}
                 />
             </div>
         </div>
 
     );
-}
+})
+export default FolderItem;

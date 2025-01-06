@@ -19,7 +19,7 @@ class SearchFilesController extends Controller
 
         $files = LocalFile::searchFiles($searchQuery);
 
-        return Inertia::render('Aws/FileManager', [
+        return Inertia::render('Aws/DriveHome', [
             'files' => $files,
             'searchResults' => true
         ]);

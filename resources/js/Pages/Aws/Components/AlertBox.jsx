@@ -2,38 +2,41 @@ import React, {useEffect, useState} from 'react';
 import {usePage} from "@inertiajs/react";
 
 
-const AlertBox = ({message,type}) => {
-    let status = '';
+const AlertBox = ({message,type: status = true}) => {
     let icon;
     let bgStatus = 'bg-gray-500';
 
     let {flash, errors} = usePage().props;
     const [alertBoxData, setAlertBoxData] = useState(flash);
-    console.log('message,type', message,type)
+    console.log('message,type', message,status)
     // Effect to update messageToPrint when props change
     useEffect(() => {
         if (!flash.message && Object.keys(errors).length === 0 && message) {
+            console.log('message in useeffect download ', message, status);
             let alertBoxDataCopy = {message: message , status : status || 'warning' }
             setAlertBoxData(alertBoxDataCopy);
             console.log('alertBoxDataCopy mess', alertBoxDataCopy)
 
         }
         else {
-            let alertBoxDataCopy = flash;
+            let alertBoxDataCopy = Object.assign({}, flash);;
             if (errors && Object.keys(errors).length > 0) {
                 alertBoxDataCopy.message = Object.values(errors).flat().join(', ');
                 alertBoxDataCopy.status = false;
             }
             setAlertBoxData(alertBoxDataCopy);
             console.log('alertBoxDataCopy flash,error', alertBoxDataCopy, errors)
+            flash.message = '';
+            flash.status = true;
+            console.log('alertBoxDataCopy flash,error after', alertBoxDataCopy, errors)
+
 
         }
-    }, [flash, errors, message,type]);
+    }, [flash, errors, message,status]);
 
 
     switch (alertBoxData.status) {
         case false:
-            status = 'error';
             bgStatus = 'bg-error';
             icon = (
                 <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none"
@@ -45,7 +48,6 @@ const AlertBox = ({message,type}) => {
             break;
         case true:
             bgStatus = 'bg-success';
-            status = 'success';
             icon = (
                 <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none"
                      viewBox="0 0 24 24">
@@ -56,7 +58,7 @@ const AlertBox = ({message,type}) => {
             break;
         case 'warning':
             bgStatus = 'bg-warning';
-            status = 'warning';
+
             icon = (
                 <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none"
                      viewBox="0 0 24 24">
@@ -67,7 +69,7 @@ const AlertBox = ({message,type}) => {
             break;
         case 'info':
             bgStatus = 'bg-info';
-            status = 'info';
+
             icon = (
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                      className="stroke-current shrink-0 w-6 h-6">

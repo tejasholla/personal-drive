@@ -1,7 +1,6 @@
-import React from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 
-import FileItem from "../FileItem.jsx";
-import FolderItem from "../FolderItem.jsx";
+import FileListRow from "./FileListRow.jsx";
 
 import {useNavigate} from 'react-router-dom';
 import SortIcon from "../../Svgs/SortIcon.jsx";
@@ -9,27 +8,28 @@ import SortIcon from "../../Svgs/SortIcon.jsx";
 
 const ListView = ({
                       filesCopy,
-                      selectAllFiles,
-                      allSelected,
-                      sortCol,
-                      sortDetails,
-                      isSearch,
-                      path,
-                      checkboxStates,
                       token,
                       setStatusMessage,
                       handleFileClick,
-                      selectCheckbox,
-                      setFilesCopy
+                      isSearch,
+                      sortCol,
+                      sortDetails,
+                      setFilesCopy,
+                      path,
+                      selectedFiles,
+                      handlerSelectFile,
+                      selectAllToggle,
+                      handleSelectAllToggle
                   }) => {
-console.log('listview');
     const navigate = useNavigate();
+
+
+
 
     function handleSortClick(e,  key){
         let sortedFiles = sortCol(filesCopy, key);
         setFilesCopy(sortedFiles);
     }
-
 
     return (
         <div className="w-full">
@@ -37,8 +37,8 @@ console.log('listview');
 
             <div className="flex items-center justify-between text-gray-400 border-b border-b-gray-600 w-full">
                 <div className="p-2 px-6 w-20 text-center hover:bg-gray-900 hover:cursor-pointer"
-                     onClick={(e) => selectAllFiles(e)}>
-                    <input type="checkbox" checked={allSelected} readOnly/>
+                     onClick={(e) => handleSelectAllToggle(e)}>
+                    <input type="checkbox" checked={selectAllToggle} readOnly/>
                 </div>
                 <div onClick={(e) => handleSortClick(e, 'filename')}
                      className={`text-left w-full p-2 px-4 hover:bg-gray-900 hover:cursor-pointer ${sortDetails.key === 'filename' ? 'text-blue-400' : ''}`}>
@@ -63,34 +63,16 @@ console.log('listview');
             )}
             <div className=" flex flex-wrap gap-2">
                 {filesCopy.map((file) => (
-                    <div key={file.id}
-                         className="cursor-pointer hover:bg-gray-700 group flex flex-row w-full">
-                        <div className="p-2 px-6 w-20 items-center flex hover:bg-gray-900 justify-center "
-                             onClick={(e) => selectCheckbox(file)}>
-                            <input type="checkbox" checked={!!checkboxStates[file.id]} onChange={() => {
-                            }}/>
-                        </div>
-                        <div className="w-full">
-                            {file.is_dir ? (
-                                <FolderItem
-                                    file={file}
-                                    isSearch={isSearch}
-                                    token={token}
-                                    setStatusMessage={setStatusMessage}
-                                />
-                            ) : (
-                                <FileItem
-                                    file={file}
-                                    isSearch={isSearch}
-                                    token={token}
-                                    setStatusMessage={setStatusMessage}
-                                    handleFileClick={handleFileClick}
-                                />
-                            )}
-                        </div>
-                        <div className="p-4 text-right w-44">{file.sizeText}</div>
-                        <div className="p-4 text-right w-44">{file.file_type }</div>
-                    </div>
+                    <FileListRow
+                        key={file.id}
+                        file={file}
+                        isSearch={isSearch}
+                        token={token}
+                        setStatusMessage={setStatusMessage}
+                        handleFileClick={handleFileClick}
+                        isSelected={selectedFiles.has(file.id)}
+                        handlerSelectFile={handlerSelectFile}
+                    />
                 ))}
             </div>
         </div>

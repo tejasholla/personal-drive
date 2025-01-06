@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\DriveControllers;
 
-use App\Http\Requests\DriveController\DeleteRequest;
+use App\Http\Requests\DriveController\FileDeleteRequest;
 use App\Models\LocalFile;
 use App\Services\FileDeleteService;
 use App\Services\LocalFileStatsService;
@@ -29,11 +29,11 @@ class FileDeleteController
     }
 
 
-    public function deleteFiles(DeleteRequest $request): RedirectResponse
+    public function deleteFiles(FileDeleteRequest $request): RedirectResponse
     {
-        $fileKeyArray = $request->fileList;
+        $fileKeyArray = $request->validated('fileList');
         $rootPath = $this->pathService->getStorageDirPath();
-        $localFiles = LocalFile::getByIds(array_keys($fileKeyArray));
+        $localFiles = LocalFile::getByIds($fileKeyArray);
         if (!$localFiles->count()) {
             return $this->error('No valid files in database. Try a ReSync first');
         }

@@ -1,37 +1,80 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.jsx';
-import {Head, router} from '@inertiajs/react';
-import FileList from './FileList.jsx';
-import {useState} from "react";
+import FileBrowserSection from './Components/FileBrowserSection.jsx';
+import SearchBar from "./Components/SearchBar.jsx";
+import UploadMenu from "./Components/UploadMenu.jsx";
+import AlertBox from "./Components/AlertBox.jsx";
+import DownloadButton from "./Components/DownloadButton.jsx";
+import {useCallback, useRef, useState} from "react";
 
-export default function FileManager({files, path, token}) {
-    console.log('render filemanager ', files);
-    const [isSearch, setIsSearch] = useState(false);
+import RefreshButton from "@/Pages/Aws/Components/RefreshButton.jsx";
+import DeleteButton from "@/Pages/Aws/Components/DeleteButton.jsx";
 
-    async function handleSearch (e, searchText){
-        e.preventDefault();
-        router.post('/search-files', {query: searchText}, {
-            onSuccess: () => {
-                setIsSearch(true);
-            }
+
+const FileManager = ({files, handleSearch, isSearch, path, token}) => {
+    console.log('filelist files ',);
+    const [statusMessage, setStatusMessage] = useState('')
+    const [status, setStatus] = useState(true)
+    const [selectedFiles, setSelectedFiles] = useState(new Set());
+    const [selectAllToggle, setSelectAllToggle] = useState(false);
+
+
+    function handlerSelectFile(file) {
+        setSelectedFiles(prevSelectedFiles => {
+            const newSelectedFiles = new Set(prevSelectedFiles);
+            newSelectedFiles.has(file.id)
+                ? newSelectedFiles.delete(file.id) // Toggle off
+                : newSelectedFiles.add(file.id); // Toggle on
+            return newSelectedFiles;
         });
     }
 
-    return (<AuthenticatedLayout
-        header={<div className="flex justify-between">
-            <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-                File Manager
-            </h2>
-        </div>}
-    >
-        <Head title="File manager"/>
-        <div className="max-w-7xl mx-auto  bg-gray-800 text-gray-200">
-            <FileList
-                files={files}
-                handleSearch={handleSearch}
-                isSearch={isSearch}
-                path={path}
-                token={token}
-            />
+    const handlerSelectFileMemo = useCallback(handlerSelectFile, [])
+
+
+    function handleSelectAllToggle() {
+        // if false -> select all files | else -> deselect all files
+        if (selectAllToggle) {
+            console.log('selectAllMode.current' , selectAllToggle);
+            setSelectedFiles(new Set());
+            setSelectAllToggle(false);
+        } else {
+            console.log('selectAllMode.current' ,selectAllToggle);
+            setSelectedFiles(new Set(files.map(file => file.id)));
+            setSelectAllToggle(true);
+        }
+    }
+
+
+    return (
+        <div className="my-12 p-5">
+            <div className="rounded-md gap-x-2 flex items-start relative ">
+                <AlertBox message={statusMessage}
+                          type={status}/>
+            </div>
+            <div className="rounded-md gap-x-2 flex items-start mb-2  justify-between">
+                <div className="p-2 gap-2 flex  text-gray-300">
+
+                    <RefreshButton/>
+                    {selectedFiles.size > 0 &&
+                        <DownloadButton setSelectedFiles={setSelectedFiles} selectedFiles={selectedFiles}
+                                        setStatusMessage={setStatusMessage} statusMessage={statusMessage} setSelectAllToggle={setSelectAllToggle}/>
+                    }
+                </div>
+                <div className="p-2 gap-x-2 flex  text-gray-200">
+                    {selectedFiles.size > 0 &&
+                        <DeleteButton setSelectedFiles={setSelectedFiles} selectedFiles={selectedFiles} setSelectAllToggle={setSelectAllToggle}/>
+                    }
+                    {!isSearch && <UploadMenu path={path} setStatus={setStatus}
+                                              setStatusMessage={setStatusMessage}
+                    />}
+                    <SearchBar handleSearch={handleSearch}/>
+                </div>
+            </div>
+            <FileBrowserSection files={files} path={path} isSearch={isSearch} token={token}
+                                setStatusMessage={setStatusMessage} selectAllToggle={selectAllToggle}
+                                handleSelectAllToggle={handleSelectAllToggle} selectedFiles={selectedFiles}
+                                handlerSelectFile={handlerSelectFileMemo}/>
         </div>
-    </AuthenticatedLayout>);
-}
+    );
+};
+
+export default FileManager;

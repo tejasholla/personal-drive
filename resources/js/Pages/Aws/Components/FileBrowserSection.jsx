@@ -1,4 +1,4 @@
-import {memo, useEffect, useRef, useState} from 'react';
+import {memo, useCallback, useEffect, useRef, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {Grid, List, StepBackIcon} from "lucide-react";
 import MediaViewer from "./FileList/MediaViewer.jsx";
@@ -7,68 +7,46 @@ import ListView from "./FileList/ListView.jsx";
 import Breadcrumb from "@/Pages/Aws/Components/Breadcrumb.jsx";
 
 
-const FileFolderRows = memo(({files, path, isSearch, selectFile, token, setStatusMessage}) => {
-    console.log('FileFolderRows ', files)
+const FileBrowserSection = memo(({files, path, isSearch, token, setStatusMessage, selectAllToggle,                                      handleSelectAllToggle, selectedFiles, handlerSelectFile}) => {
+    console.log('FileBrowserSection ')
+    const navigate = useNavigate();
+
+    // Preview
     let previewAbleTypes = useRef(['image', 'video']);
     let previewAbleFiles = useRef([]);
-    let viewModes = ['ListView', 'TileViewOne'];
-    const [currentViewMode, setCurrentViewMode] = useState(localStorage.getItem('viewMode') || viewModes[0])
-
-
-    function handleViewModeClick(mode) {
-        setCurrentViewMode(mode);
-        localStorage.setItem('viewMode', mode);
-
-    }
-
-    const [filesCopy, setFilesCopy] = useState([...files]);
-    const navigate = useNavigate();
-    const [checkboxStates, setCheckboxStates] = useState({});
-    const [allSelected, setAllSelected] = useState(false);
-    const selectAllMode = useRef(true);
-    const [selectedFileIndex, setSelectedFileIndex] = useState(null);
-    const [selectedFileType, setSelectedFileType] = useState(null);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-
-    let sortDetails = useRef({key: 'filename', order: 'desc'});
-
-    useEffect(() => {
-        console.log('useeffect filefolderrows');
-        setCheckboxStates({})
-        setAllSelected(false);
-        let sortedFiles = sortCol(files, sortDetails.current.key, false);
-        setFilesCopy([...sortedFiles]);
-        selectAllMode.current = true;
-        let previewAbleFilesPotential = sortedFiles.filter(file => previewAbleTypes.current.includes(file.file_type));
-        console.log('previewAbleFilesPotential' , previewAbleFilesPotential);
-        for (let i = 0; i < previewAbleFilesPotential.length; i++) {
-            previewAbleFilesPotential[i]['next'] = previewAbleFilesPotential[i + 1]?.hash || null;
-            previewAbleFilesPotential[i]['prev'] = previewAbleFilesPotential[i - 1]?.hash || null;
-        }
-        console.log('previewAbleFilesPotential' , previewAbleFilesPotential);
-
-        previewAbleFiles.current = previewAbleFilesPotential;
-    }, [files]);
+    const [previewFileIndex, setPreviewFileIndex] = useState(null);
+    const [previewFileType, setPreviewFileType] = useState(null);
+    const [isPreviewModalOpen, setPreviewIsModalOpen] = useState(false);
 
     function selectFileForPreview(file) {
-        setSelectedFileIndex(file.hash);
-        setSelectedFileType(file.file_type);
+        setPreviewFileIndex(file.hash);
+        setPreviewFileType(file.file_type);
     }
 
     function handleFileClick(file) {
         if (previewAbleTypes.current.includes(file.file_type)) {
-            setIsModalOpen(true);
+            setPreviewIsModalOpen(true);
             selectFileForPreview(file);
         }
     }
+    let handleFileClickM = useCallback(handleFileClick,[previewAbleFiles]);
 
+    // view mode
+    let viewModes = ['ListView', 'TileViewOne'];
+    const [currentViewMode, setCurrentViewMode] = useState(localStorage.getItem('viewMode') || viewModes[0])
+    function handleViewModeClick(mode) {
+        setCurrentViewMode(mode);
+        localStorage.setItem('viewMode', mode);
+    }
+
+    // Sorting
+    const [filesCopy, setFilesCopy] = useState([...files]);
+    let sortDetails = useRef({key: 'filename', order: 'desc'});
     function sortArrayByKey(arr, key, direction) {
         console.log('sortby key ', arr);
         return [...arr].sort((a, b) => {
-
             const valA = a[key]?.toLowerCase?.() || a[key] || '';
             const valB = b[key]?.toLowerCase?.() || b[key] || '';
-            console.log('a ',key, valA , valB);
 
             if (direction === 'desc') {
                 return valA > valB ? -1 : valA < valB ? 1 : 0;
@@ -77,7 +55,6 @@ const FileFolderRows = memo(({files, path, isSearch, selectFile, token, setStatu
             }
         });
     }
-
     function sortCol(files, key, changeDirection = true) {
         let sortDirectionToSet =  'desc';
         if (key === sortDetails.key ){
@@ -92,23 +69,21 @@ const FileFolderRows = memo(({files, path, isSearch, selectFile, token, setStatu
         return sortedFiles;
     }
 
-    function selectCheckbox(file) {
-        console.log('selectCheckbox ', file)
-        selectFile(file);
-        const newStates = {...checkboxStates, [file.id]: !checkboxStates[file.id]};
-        setCheckboxStates(newStates);
-    }
 
-    function selectAllFiles() {
-        let checkboxStates = {};
-        for (const file of filesCopy) {
-            selectFile(file, selectAllMode.current ? '1' : '0');
-            checkboxStates[file.id] = selectAllMode.current;
+
+    useEffect(() => {
+        console.log('useeffect filefolderrows');
+        // initial sort
+        let sortedFiles = sortCol(files, sortDetails.current.key, false);
+        setFilesCopy([...sortedFiles]);
+        // Generate previewable files
+        let previewAbleFilesPotential = sortedFiles.filter(file => previewAbleTypes.current.includes(file.file_type));
+        for (let i = 0; i < previewAbleFilesPotential.length; i++) {
+            previewAbleFilesPotential[i]['next'] = previewAbleFilesPotential[i + 1]?.hash || null;
+            previewAbleFilesPotential[i]['prev'] = previewAbleFilesPotential[i - 1]?.hash || null;
         }
-        selectAllMode.current = !selectAllMode.current;
-        setCheckboxStates(checkboxStates);
-        setAllSelected(prevState => !prevState);
-    }
+        previewAbleFiles.current = previewAbleFilesPotential;
+    }, [files]);
 
 
     return (
@@ -131,9 +106,9 @@ const FileFolderRows = memo(({files, path, isSearch, selectFile, token, setStatu
                 </div>
             </div>
 
-            <MediaViewer selectedFileHash={selectedFileIndex} selectedFileType={selectedFileType}
-                         isModalOpen={isModalOpen}
-                         setIsModalOpen={setIsModalOpen} selectFileForPreview={selectFileForPreview}
+            <MediaViewer selectedFileHash={previewFileIndex} selectedFileType={previewFileType}
+                         isModalOpen={isPreviewModalOpen}
+                         setIsModalOpen={setPreviewIsModalOpen} selectFileForPreview={selectFileForPreview}
                          previewAbleFiles={previewAbleFiles}/>
 
             <div className="w-full flex flex-wrap ">
@@ -143,34 +118,34 @@ const FileFolderRows = memo(({files, path, isSearch, selectFile, token, setStatu
                         {currentViewMode === 'TileViewOne' &&
                             <TileViewOne
                                 filesCopy={filesCopy}
-                                checkboxStates={checkboxStates}
                                 token={token}
                                 setStatusMessage={setStatusMessage}
-                                handleFileClick={handleFileClick}
-                                selectCheckbox={selectCheckbox}
+                                handleFileClick={handleFileClickM}
                                 isSearch={isSearch}
-                                selectAllFiles={selectAllFiles}
-                                allSelected={allSelected}
-                                setFilesCopy={setFilesCopy}
                                 sortCol={sortCol}
                                 sortDetails={sortDetails}
+                                setFilesCopy={setFilesCopy}
+                                selectedFiles={selectedFiles}
+                                handlerSelectFile={handlerSelectFile}
+                                selectAllToggle={selectAllToggle}
+                                handleSelectAllToggle={handleSelectAllToggle}
                             />
                         }
                         {currentViewMode === 'ListView' &&
                             <ListView
                                 filesCopy={filesCopy}
-                                selectAllFiles={selectAllFiles}
-                                allSelected={allSelected}
-                                sortCol={sortCol}
-                                sortDetails={sortDetails}
-                                isSearch={isSearch}
-                                path={path}
-                                checkboxStates={checkboxStates}
                                 token={token}
                                 setStatusMessage={setStatusMessage}
-                                handleFileClick={handleFileClick}
-                                selectCheckbox={selectCheckbox}
+                                handleFileClick={handleFileClickM}
+                                isSearch={isSearch}
+                                sortCol={sortCol}
+                                sortDetails={sortDetails}
                                 setFilesCopy={setFilesCopy}
+                                path={path}
+                                selectedFiles={selectedFiles}
+                                handlerSelectFile={handlerSelectFile}
+                                selectAllToggle={selectAllToggle}
+                                handleSelectAllToggle={handleSelectAllToggle}
                             />
                         }
                     </>
@@ -196,4 +171,4 @@ const FileFolderRows = memo(({files, path, isSearch, selectFile, token, setStatu
     );
 });
 
-export default FileFolderRows;
+export default FileBrowserSection;

@@ -1,19 +1,40 @@
 import {DownloadIcon} from "lucide-react";
 import {router} from "@inertiajs/react";
 
-const DownloadButton = ({setSelectedFiles, selectedFiles, classes, setStatusMessage, statusMessage}) => {
+const DownloadButton = ({setSelectedFiles, selectedFiles, classes, setStatusMessage, statusMessage, setSelectAllToggle}) => {
     const handleDownload = async () => {
+        let response = {};
         try {
             setStatusMessage('Downloading...');
             // setIsLoading(true);
-            const response = await axios({
+            response = await axios({
                 url: '/download-files',
                 method: 'POST',
                 responseType: 'blob',
                 data: {
-                    fileList: Object.fromEntries(selectedFiles)
+                    fileList: Array.from(selectedFiles)
                 }
             });
+
+
+        }
+        finally {
+            setStatusMessage('');
+            setSelectedFiles?.(new Set());
+            setSelectAllToggle?.(false);
+        }
+        // Check if the response is JSON
+        const contentType = response.headers['content-type'];
+        if (contentType && contentType.includes('application/json')) {
+            // Convert blob to JSON
+            const text = await response.data.text();
+            const jsonResponse = JSON.parse(text);
+
+            if (!jsonResponse.status && jsonResponse.message) {
+                setStatusMessage('Download failed ' + jsonResponse.message);
+                console.error(jsonResponse.message); // Handle the error message
+            }
+        } else {
 
             // Create blob link to download
             const blob = new Blob([response.data], {
@@ -34,10 +55,8 @@ const DownloadButton = ({setSelectedFiles, selectedFiles, classes, setStatusMess
             // Cleanup
             link.parentNode.removeChild(link);
             window.URL.revokeObjectURL(url);
-        } finally {
-            setStatusMessage('');
-            setSelectedFiles(new Map());
         }
+
     };
     return (
         <button

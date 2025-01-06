@@ -6,8 +6,6 @@ import useClickOutside   from "../Hooks/useClickOutside.jsx";
 import  CreateFolderModal  from './CreateFolderModal.jsx'
 
 
-
-
 const UploadMenu = ({  path, setStatus, setStatusMessage }) => {
     // console.log('render upload menu ');
     const [isMenuOpen, setIsMenuOpen] = useState(false)
