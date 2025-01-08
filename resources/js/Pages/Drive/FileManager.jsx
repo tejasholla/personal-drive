@@ -50,7 +50,6 @@ const FileManager = ({files, path, token}) => {
 
     const handlerSelectFileMemo = useCallback(handlerSelectFile, [])
 
-
     function handleSelectAllToggle() {
         // if false -> select all files | else -> deselect all files
         if (selectAllToggle) {
@@ -68,12 +67,10 @@ const FileManager = ({files, path, token}) => {
     return (
         <div className="my-12 p-5">
             <div className="rounded-md gap-x-2 flex items-start relative ">
-                <AlertBox message={statusMessage}
-                          type={status}/>
+                <AlertBox message={statusMessage} type={status}/>
             </div>
             <div className="rounded-md gap-x-2 flex items-start mb-2  justify-between">
                 <div className="p-2 gap-2 flex  text-gray-300">
-
                     <RefreshButton/>
                     {selectedFiles.size > 0 &&
                         <>
@@ -86,8 +83,7 @@ const FileManager = ({files, path, token}) => {
                 </div>
 
                 <ShareModal isShareModalOpen={isShareModalOpen} setIsShareModalOpen={setIsShareModalOpen}
-                            setSelectedFiles={setSelectedFiles}
-                            selectedFiles={filesToShare}  setSelectAllToggle={setSelectAllToggle} path={path} />
+                            setSelectedFiles={setSelectedFiles} selectedFiles={filesToShare} setSelectAllToggle={setSelectAllToggle} path={path} />
                 <div className="p-2 gap-x-2 flex  text-gray-200">
                     {selectedFiles.size > 0 &&
                         <DeleteButton setSelectedFiles={setSelectedFiles} selectedFiles={selectedFiles}

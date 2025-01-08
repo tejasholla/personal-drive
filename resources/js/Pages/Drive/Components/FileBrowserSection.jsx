@@ -98,6 +98,7 @@ const FileBrowserSection = memo(({files, path, isSearch, token, setStatusMessage
 
     return (
         <div className=" rounded-md overflow-hidden px-2 ">
+             {/*breadcrumb bar*/}
             <div className="rounded-md gap-x-2 flex items-start mb-3  justify-start relative">
                 <Breadcrumb path={path}/>
                 <div className="flex justify-end absolute right-0">
@@ -115,12 +116,12 @@ const FileBrowserSection = memo(({files, path, isSearch, token, setStatusMessage
                     </button>
                 </div>
             </div>
-
+            {/*media viewer*/}
             <MediaViewer selectedFileHash={previewFileIndex} selectedFileType={previewFileType}
                          isModalOpen={isPreviewModalOpen}
                          setIsModalOpen={setPreviewIsModalOpen} selectFileForPreview={selectFileForPreview}
                          previewAbleFiles={previewAbleFiles}/>
-
+            {/*Files viewer*/}
             <div className="w-full flex flex-wrap ">
 
                 {filesCopy.length > 0 && (

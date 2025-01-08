@@ -14,7 +14,7 @@ class ShareFilesGuestController
         $slug = $request->validated('slug');
         $files = Share::getFilenamesBySlug($slug);
 
-        return Inertia::render('Drive/DriveHome', [
+        return Inertia::render('Drive/GuestSharedLayout', [
             'files' => $files,
             'path' => '',
             'token' => csrf_token(),
