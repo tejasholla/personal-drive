@@ -3,7 +3,7 @@ import React from 'react';
 const Modal = ({isOpen, onClose, title, children, classes}) => {
     return (
         isOpen && (
-            <div className={`fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 text-gray-300`}
+            <div className={`fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-30 text-gray-300`}
                  onClick={() => onClose(false)}>
                 <div className={`bg-gray-900 rounded-lg shadow-xl  mx-4 ${classes}`} onClick={e => e.stopPropagation()}>
                     {title && <div className="flex justify-between items-center border-b p-4">

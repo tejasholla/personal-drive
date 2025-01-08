@@ -1,7 +1,7 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 import {Head, router, usePage} from "@inertiajs/react";
 import {useEffect, useState} from "react";
-import AlertBox from "@/Pages/Aws/Components/AlertBox.jsx";
+import AlertBox from "@/Pages/Drive/Components/AlertBox.jsx";
 
 export default function Dashboard({
                                       storage_path,

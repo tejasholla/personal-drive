@@ -3,13 +3,12 @@ import  Modal  from './Modal.jsx'
 import {router} from "@inertiajs/react";
 
 
-const CreateFolderModal = ({isModalOpen, setIsModalOpen, setStatusMessage, bucketName, path, setStatus  }) => {
+const CreateFolderModal = ({isModalOpen, setIsModalOpen, path  }) => {
     const [folderName, setFolderName] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const formData = {};
-        formData['bucketName'] = bucketName;
         formData['path'] = path;
         formData['folderName'] = folderName;
         setIsModalOpen(false);

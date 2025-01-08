@@ -13,7 +13,7 @@ class FileManagerController extends Controller
     {
         $files = LocalFile::getFilesForPublicPath($path);
 
-        return Inertia::render('Aws/DriveHome', [
+        return Inertia::render('Drive/DriveHome', [
             'files' => $files,
             'path' => $path,
             'token' => csrf_token(),

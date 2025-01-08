@@ -8,4 +8,8 @@ class UploadFileException extends PersonalDriveException
     {
         return new self('Memory exhausted while uploading. Increase PHP allocated memory');
     }
+    public static function nonewdir(): UploadFileException
+    {
+        return new self('Could not create new directory');
+    }
 }

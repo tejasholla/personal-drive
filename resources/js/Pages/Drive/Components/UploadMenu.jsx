@@ -49,6 +49,7 @@ const UploadMenu = ({  path, setStatus, setStatusMessage }) => {
                 console.log('response on successs ' , response);
             },
             onFinish: () => {
+                setStatusMessage('');
 
                 setIsMenuOpen(false);
                 resetFileFolderInput();
@@ -97,7 +98,7 @@ const UploadMenu = ({  path, setStatus, setStatusMessage }) => {
                 </div>
             )}
 
-            <CreateFolderModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} setStatusMessage={setStatusMessage}  path={path} setStatus={setStatus} />
+            <CreateFolderModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} path={path} />
 
             <div className="relative inline-block">
                 <input

@@ -1,5 +1,5 @@
 import {DownloadIcon} from "lucide-react";
-import {router} from "@inertiajs/react";
+import Button from "./Generic/Button.jsx"
 
 const DownloadButton = ({setSelectedFiles, selectedFiles, classes, setStatusMessage, statusMessage, setSelectAllToggle}) => {
     const handleDownload = async () => {
@@ -15,8 +15,6 @@ const DownloadButton = ({setSelectedFiles, selectedFiles, classes, setStatusMess
                     fileList: Array.from(selectedFiles)
                 }
             });
-
-
         }
         finally {
             setStatusMessage('');
@@ -59,10 +57,9 @@ const DownloadButton = ({setSelectedFiles, selectedFiles, classes, setStatusMess
 
     };
     return (
-        <button
-            disabled={statusMessage}
-            onClick={handleDownload}
-            className={`p-2 rounded-md flex items-center justify-center w-auto bg-green-800 ${classes} ${statusMessage ? 'bg-gray-700 text-green-100 cursor-not-allowed' : 'bg-blue-700 hover:bg-blue-600 active:bg-blue-700'}`}
+        <Button classes={`bg-green-800 ${classes} ${statusMessage ? 'bg-gray-700 text-green-100 cursor-not-allowed' : 'bg-blue-700 hover:bg-blue-600 active:bg-blue-700'}`}
+                disabled={statusMessage}
+                onClick={handleDownload}
         >
             {statusMessage ? (
                     <div className="w-5 h-5 border-t-2 border-blue-300 border-solid rounded-full animate-spin"></div>
@@ -72,9 +69,7 @@ const DownloadButton = ({setSelectedFiles, selectedFiles, classes, setStatusMess
                     <span className="mx-1 ">Download</span>}
                 </>
             }
-
-        </button>
-
+        </Button>
     );
 };
 

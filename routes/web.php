@@ -1,8 +1,9 @@
 <?php
 
 use App\Http\Controllers\AdminController\AdminConfigController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DriveControllers;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ShareControllers;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -24,11 +25,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/admin-config', [AdminConfigController::class, 'index'])->name('admin-config.index');
+    Route::get('/admin-config', [AdminConfigController::class, 'index'])->name('admin-config');
     Route::post('/admin-config/update', [AdminConfigController::class, 'update'])->name('admin-config.update');
 
     // Drive routes
-    Route::get('/drive/{path?}', [DriveControllers\FileManagerController::class, 'index'])->where('path', '.*');
+    Route::get('/drive/{path?}', [DriveControllers\FileManagerController::class, 'index'])
+        ->where('path', '.*')
+        ->name('drive');
     Route::post('/upload', [DriveControllers\UploadController::class, 'store'])->name('s3.upload');
     Route::post('/create-folder', [DriveControllers\UploadController::class, 'createFolder']);
     Route::post('/delete-files', [DriveControllers\FileDeleteController::class, 'deleteFiles']);
@@ -39,6 +42,13 @@ Route::middleware('auth')->group(function () {
     Route::post('/gen-thumbs', [DriveControllers\ThumbnailController::class, 'update']);
     Route::post('/search-files', [DriveControllers\SearchFilesController::class, 'index']);
     Route::get('/search-files', fn() => redirect('/drive'));
+
+    //Share Routes
+    Route::post('/pause-share', [ShareControllers\ShareFilesModController::class, 'pause']);
+    Route::post('/delete-share', [ShareControllers\ShareFilesModController::class, 'delete']);
+    Route::post('/share-files', [ShareControllers\ShareFilesGenController::class, 'index']);
+    Route::get('/all-shares', [ShareControllers\ShareFilesAllController::class, 'index'])->name('all-shares');
+    Route::get('/shared/{slug}', [ShareControllers\ShareFilesGuestController::class, 'index']);
 
     // Test
     Route::get('test', [DriveControllers\TestController::class, 'index']);

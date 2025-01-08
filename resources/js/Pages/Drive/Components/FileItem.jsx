@@ -1,10 +1,11 @@
 import {File} from 'lucide-react';
 import DownloadButton from "./DownloadButton.jsx";
-import DeleteButton from "@/Pages/Aws/Components/DeleteButton.jsx";
+import DeleteButton from "@/Pages/Drive/Components/DeleteButton.jsx";
 import React from 'react';
+import ShowShareModalButton from "@/Pages/Drive/Components/Shares/ShowShareModalButton.jsx";
 
 
-const FileItem = React.memo(function FileItem({ file, isSearch, token, setStatusMessage, handleFileClick }) {
+const FileItem = React.memo(function FileItem({ file, isSearch, token, setStatusMessage, handleFileClick, setIsShareModalOpen, setFilesToShare }) {
     return (
         <div
             className={` flex items-center  hover:bg-gray-900 justify-between`}
@@ -20,6 +21,8 @@ const FileItem = React.memo(function FileItem({ file, isSearch, token, setStatus
                 <DownloadButton  classes="hidden group-hover:block mr-2" selectedFiles={new Set([file.id])}
                                 token={token} setStatusMessage={setStatusMessage}
                 />
+                <ShowShareModalButton  classes="hidden group-hover:block mr-2  z-10" setIsShareModalOpen={setIsShareModalOpen} setFilesToShare={setFilesToShare} filesToShare={new Set([file.id])}/>
+
             </div>
         </div>
     );

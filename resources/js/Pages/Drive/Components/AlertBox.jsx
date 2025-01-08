@@ -2,21 +2,20 @@ import React, {useEffect, useState} from 'react';
 import {usePage} from "@inertiajs/react";
 
 
-const AlertBox = ({message,type: status = true}) => {
+const AlertBox = React.memo(function AlertBox  ({message,type: status = true}){
     let icon;
     let bgStatus = 'bg-gray-500';
 
     let {flash, errors} = usePage().props;
     const [alertBoxData, setAlertBoxData] = useState(flash);
-    console.log('message,type', message,status)
+    console.log('message,type, alertBoxData', message,status, alertBoxData)
     // Effect to update messageToPrint when props change
     useEffect(() => {
         if (!flash.message && Object.keys(errors).length === 0 && message) {
-            console.log('message in useeffect download ', message, status);
+            // console.log('message in useeffect download flash', message, status, flash);
             let alertBoxDataCopy = {message: message , status : status || 'warning' }
             setAlertBoxData(alertBoxDataCopy);
-            console.log('alertBoxDataCopy mess', alertBoxDataCopy)
-
+            // console.log('alertBoxDataCopy mess', alertBoxDataCopy)
         }
         else {
             let alertBoxDataCopy = Object.assign({}, flash);;
@@ -25,13 +24,13 @@ const AlertBox = ({message,type: status = true}) => {
                 alertBoxDataCopy.status = false;
             }
             setAlertBoxData(alertBoxDataCopy);
-            console.log('alertBoxDataCopy flash,error', alertBoxDataCopy, errors)
             flash.message = '';
             flash.status = true;
-            console.log('alertBoxDataCopy flash,error after', alertBoxDataCopy, errors)
-
-
         }
+        const timer = setTimeout(() => {
+            setAlertBoxData({ message: '', status: true });
+        }, 5000);
+
     }, [flash, errors, message,status]);
 
 
@@ -88,7 +87,7 @@ const AlertBox = ({message,type: status = true}) => {
     return (
 
         alertBoxData.message && <div role="alert" className={`-mt-3  absolute  left-1/2 -translate-x-1/2 
-             rounded-lg  text-gray-900 flex  p-3 px-5 ${bgStatus}         
+             rounded-lg  text-gray-900 flex  p-3 px-5 ${bgStatus}  z-50 
              ${alertBoxData.message ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-4 scale-95'}`}
         >
             {icon}
@@ -96,6 +95,6 @@ const AlertBox = ({message,type: status = true}) => {
         </div>
 
     );
-};
+});
 
 export default AlertBox;

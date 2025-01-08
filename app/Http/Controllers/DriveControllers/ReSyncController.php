@@ -25,6 +25,6 @@ class ReSyncController extends Controller
         if ($filesUpdated > 0) {
             return $this->success('Sync successful. Found : ' . $filesUpdated . ' files');
         }
-        return $this->success('ReSync failed. check logs');
+        return $this->error('No files found !');
     }
 }

@@ -1,0 +1,66 @@
+<?php
+
+namespace App\Http\Controllers\ShareControllers;
+
+use App\Exceptions\PersonalDriveExceptions\ShareFileException;
+use App\Http\Requests\DriveController\ShareFilesGenRequest;
+use App\Models\LocalFile;
+use App\Models\Share;
+use App\Models\SharedFile;
+use App\Services\LocalFileStatsService;
+use App\Services\LPathService;
+use App\Traits\FlashMessages;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+
+class ShareFilesGenController
+{
+    use FlashMessages;
+
+    protected LPathService $pathService;
+    protected LocalFileStatsService $localFileStatsService;
+
+    public function __construct(
+        LPathService $pathService,
+        LocalFileStatsService $localFileStatsService
+    ) {
+        $this->localFileStatsService = $localFileStatsService;
+        $this->pathService = $pathService;
+    }
+
+    public function index(ShareFilesGenRequest $request)
+    {
+        $fileKeyArray = $request->validated('fileList');
+        $slug = $request->validated('slug');
+        $password = $request->validated('password');
+        $expiry = $request->validated('expiry');
+        $rootPath = $this->pathService->getStorageDirPath();
+        $localFiles = LocalFile::getByIds($fileKeyArray)->get();
+
+        $slug = $slug ?: Str::random(10);
+
+        if (!$localFiles->count()) {
+            throw ShareFileException::couldNotShare();
+        }
+        $hashedPassword = $password ? Hash::make($password) : null;
+
+        $share = Share::add($slug, $hashedPassword, $expiry);
+
+        if (!$share) {
+            throw ShareFileException::couldNotShare();
+        }
+
+        $sharedFiles = SharedFile::addArray($localFiles, $share->id);
+        if (!$sharedFiles) {
+            throw ShareFileException::couldNotShare();
+        }
+
+
+
+        $sharedLink = "site.com/shared/" . $slug ?? 'sdf';
+        return redirect()->back()->with('shared_link', $sharedLink);
+
+        return $this->shared($sharedLink);
+
+    }
+}

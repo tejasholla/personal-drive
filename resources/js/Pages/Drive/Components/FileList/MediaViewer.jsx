@@ -1,4 +1,4 @@
-import Modal from "@/Pages/Aws/Components/Modal.jsx";
+import Modal from "@/Pages/Drive/Components/Modal.jsx";
 import VideoPlayer from "./VideoPlayer.jsx";
 import ImageViewer from "./ImageViewer.jsx";
 import {ChevronLeft, ChevronRight} from 'lucide-react';
@@ -12,7 +12,7 @@ const MediaViewer = ({
                          selectFileForPreview,
                          previewAbleFiles
                      }) => {
-    console.log('previewAbleFiles ', previewAbleFiles);
+    console.log('previewAbleFiles ');
     const [isActive, setIsActive] = useState(false);
     const timeoutRef = useRef(null);
     let currentFileIndex = previewAbleFiles.current.findIndex(file => file.hash === selectedFileHash);

@@ -56,3 +56,19 @@ add file search to the application - laravel + react
 - Ability to index all files of a bucket
 - Search a bucket recursively
 - browse a bucket in a fact react file manager
+
+##### Features over filbrowser
+
+select all, easier multiselect
+no shift,ctrl to select multiple
+autoplay video
+sortable type column
+instant sort
+
+##### Features < filbrowser
+
+no drag drop upload
+no drag drop in file manager
+text file viewer
+pdf viewer
+text file creator and editor

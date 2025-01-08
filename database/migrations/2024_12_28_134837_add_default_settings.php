@@ -16,11 +16,11 @@ return new class extends Migration {
             ],
             [
                 'key' => 'uuidForStorageFiles',
-                'value' => 'thumbnail_' . Str::uuid()->toString(), 'created_at' => now(),
+                'value' => 'storage_' . Str::uuid()->toString(), 'created_at' => now(),
                 'updated_at' => now()
             ],
             [
-                'key' => 'uuidForThumbnails', 'value' => 'storage_' . Str::uuid()->toString(), 'created_at' => now(),
+                'key' => 'uuidForThumbnails', 'value' => 'thumbnail_' . Str::uuid()->toString(), 'created_at' => now(),
                 'updated_at' => now()
             ]
         ]);

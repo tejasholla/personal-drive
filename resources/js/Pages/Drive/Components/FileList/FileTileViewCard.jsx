@@ -1,8 +1,9 @@
 import React from "react";
 import {File, Folder} from "lucide-react";
 import {Link} from "@inertiajs/react";
-import DeleteButton from "@/Pages/Aws/Components/DeleteButton.jsx";
-import DownloadButton from "@/Pages/Aws/Components/DownloadButton.jsx";
+import DeleteButton from "@/Pages/Drive/Components/DeleteButton.jsx";
+import DownloadButton from "@/Pages/Drive/Components/DownloadButton.jsx";
+import ShowShareModalButton from "@/Pages/Drive/Components/Shares/ShowShareModalButton.jsx";
 
 const FileTileViewCard = React.memo(function FileTileViewCard({
                                                                   file,
@@ -12,12 +13,14 @@ const FileTileViewCard = React.memo(function FileTileViewCard({
                                                                   handleFileClick,
                                                                   isSelected,
                                                                   handlerSelectFile,
+                                                                  setIsShareModalOpen,
+                                                                  setFilesToShare,
                                                               }) {
         console.log('filelistrow', isSelected);
         const selectedFileSet = new Set([file.id]);
         return (
             <div
-                 className={`group relative overflow-hidden rounded-lg border border-gray-800 bg-gray-900/50 p-3 transition-all duration-200 hover:border-gray-700 hover:shadow-lg w-[295px] flex flex-col justify-between  ${isSelected ? 'bg-gray-950' : ''} `}
+                className={`group relative overflow-hidden rounded-lg border border-gray-800 bg-gray-900/50 p-3 transition-all duration-200 hover:border-gray-700 hover:shadow-lg w-[295px] flex flex-col justify-between  ${isSelected ? 'bg-gray-950' : ''} `}
             >
 
                 <div className="">
@@ -78,21 +81,20 @@ const FileTileViewCard = React.memo(function FileTileViewCard({
 
                 {/* Action Buttons */}
                 <div
-                    className="flex justify-between absolute bottom-0 left-1/2 transform -translate-x-1/2 w-4/5 mb-2 opacity-60 group-hover:flex  hidden">
+                    className="flex justify-between absolute bottom-0 left-1/2 transform -translate-x-1/2 w-4/5 mb-2 opacity-60 group-hover:flex hidden">
                     <div className="flex-1">
                         <DeleteButton
                             classes=" bg-red-500/10 hover:bg-red-500/20 text-red-500 py-2 px-4 rounded-md transition-colors duration-200"
-                            selectedFiles={selectedFileSet}
-                        />
-                    </div>
-                    <div className="flex-1">
+                            selectedFiles={selectedFileSet}/></div>
+                    <div className="flex-1 flex ">
                         <DownloadButton
                             classes="w-full  bg-blue-500/10 hover:bg-blue-500/20 text-blue-500 py-2 px-4 rounded-md transition-colors duration-200"
                             selectedFiles={selectedFileSet}
                             token={token}
-                            setStatusMessage={setStatusMessage}
-                        />
-                    </div>
+                            setStatusMessage={setStatusMessage}/>
+                        <ShowShareModalButton classes="hidden group-hover:block mr-2  z-10"
+                                              setIsShareModalOpen={setIsShareModalOpen} setFilesToShare={setFilesToShare}
+                                              filesToShare={new Set([file.id])}/></div>
                 </div>
             </div>
         )

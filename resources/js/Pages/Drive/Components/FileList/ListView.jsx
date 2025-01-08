@@ -19,7 +19,9 @@ const ListView = ({
                       selectedFiles,
                       handlerSelectFile,
                       selectAllToggle,
-                      handleSelectAllToggle
+                      handleSelectAllToggle,
+                      setIsShareModalOpen,
+                      setFilesToShare
                   }) => {
     const navigate = useNavigate();
 
@@ -61,7 +63,7 @@ const ListView = ({
                 <div className="cursor-pointer hover:bg-gray-700 p-4 px-8 w-full" title="Go back"
                      onClick={() => navigate(-1)}>..</div>
             )}
-            <div className=" flex flex-wrap gap-2">
+            <div className=" flex flex-wrap">
                 {filesCopy.map((file) => (
                     <FileListRow
                         key={file.id}
@@ -72,6 +74,8 @@ const ListView = ({
                         handleFileClick={handleFileClick}
                         isSelected={selectedFiles.has(file.id)}
                         handlerSelectFile={handlerSelectFile}
+                        setIsShareModalOpen={setIsShareModalOpen}
+                        setFilesToShare={setFilesToShare}
                     />
                 ))}
             </div>

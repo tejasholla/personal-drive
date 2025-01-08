@@ -7,10 +7,18 @@ use App\Helpers\FileSizeFormatter;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class LocalFile extends Model
 {
     protected $hidden = ['private_path', 'user_id'];
+    protected $fillable = ['filename', 'is_dir', 'public_path', 'private_path', 'size', 'user_id', 'file_type'];
+    public $timestamps = true;
+
+    public function sharedFiles(): HasMany
+    {
+        return $this->hasMany(SharedFile::class, 'file_id');
+    }
 
     public static function getByIds(array $fileIds): Builder
     {
@@ -41,7 +49,9 @@ class LocalFile extends Model
 
     public static function getFilesForPublicPath(string $publicPath): Collection
     {
-        $fileItems = self::where('public_path', $publicPath)->get();
+        $fileItems = self::where('public_path', $publicPath)
+            ->orderBy('created_at', 'desc')
+            ->get();
         return self::modifyFileCollection($fileItems);
     }
 

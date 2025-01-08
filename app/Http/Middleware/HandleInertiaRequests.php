@@ -29,15 +29,20 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $flashA = [
+            'message' => $request->session()->get('message'),
+            'status' => $request->session()->get('status'),
+        ];
+        $sharedLink = $request->session()->get('shared_link');
+        if ($sharedLink) {
+            $flashA['shared_link'] = $sharedLink ;
+        }
         return [
             ...parent::share($request),
             'auth' => [
                 'user' => $request->user(),
             ],
-            'flash' => [
-                'message' => fn () => $request->session()->get('message'),
-                'status' => fn () => $request->session()->get('status')
-            ],
+            'flash' => $flashA,
         ];
     }
 }

@@ -30,6 +30,24 @@ export default function AuthenticatedLayout({ header, children }) {
                                 >
                                     Dashboard
                                 </NavLink>
+                                <NavLink
+                                    href={route('admin-config')}
+                                    active={route().current('admin-config')}
+                                >
+                                    Settings
+                                </NavLink>
+                                <NavLink
+                                    href={route('drive')}
+                                    active={route().current('drive')}
+                                >
+                                    Files
+                                </NavLink>
+                                <NavLink
+                                    href={route('all-shares')}
+                                    active={route().current('all-shares')}
+                                >
+                                    Shares
+                                </NavLink>
                             </div>
                         </div>
 

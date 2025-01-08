@@ -9,6 +9,6 @@ class TestController
 
     public function index()
     {
-        return Inertia::render('Aws/DriveHome' );
+        return Inertia::render('Drive/DriveHome' );
     }
 }

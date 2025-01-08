@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import {Link, router} from '@inertiajs/react'
 import SortIcon from "../../Svgs/SortIcon.jsx";
-import FileTileViewCard from "@/Pages/Aws/Components/FileList/FileTileViewCard.jsx";
+import FileTileViewCard from "@/Pages/Drive/Components/FileList/FileTileViewCard.jsx";
 
 
 const TileViewOne = ({
@@ -16,7 +16,9 @@ const TileViewOne = ({
                          selectedFiles,
                          handlerSelectFile,
                          selectAllToggle,
-                         handleSelectAllToggle
+                         handleSelectAllToggle,
+                         setIsShareModalOpen,
+                         setFilesToShare
                      }) => {
     console.log('TileViewOne ', )
 
@@ -89,6 +91,8 @@ const TileViewOne = ({
                         handleFileClick={handleFileClick}
                         isSelected={selectedFiles.has(file.id)}
                         handlerSelectFile={handlerSelectFile}
+                        setIsShareModalOpen={setIsShareModalOpen}
+                        setFilesToShare={setFilesToShare}
                     />
                 ))}
             </div>

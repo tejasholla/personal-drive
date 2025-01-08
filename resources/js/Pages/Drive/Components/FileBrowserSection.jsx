@@ -4,11 +4,11 @@ import {Grid, List, StepBackIcon} from "lucide-react";
 import MediaViewer from "./FileList/MediaViewer.jsx";
 import TileViewOne from "./FileList/TileViewOne.jsx";
 import ListView from "./FileList/ListView.jsx";
-import Breadcrumb from "@/Pages/Aws/Components/Breadcrumb.jsx";
+import Breadcrumb from "@/Pages/Drive/Components/Breadcrumb.jsx";
 
 
-const FileBrowserSection = memo(({files, path, isSearch, token, setStatusMessage, selectAllToggle,                                      handleSelectAllToggle, selectedFiles, handlerSelectFile}) => {
-    console.log('FileBrowserSection ')
+const FileBrowserSection = memo(({files, path, isSearch, token, setStatusMessage, selectAllToggle,                                      handleSelectAllToggle, selectedFiles, handlerSelectFile, setIsShareModalOpen, setFilesToShare}) => {
+    // console.log('FileBrowserSection ')
     const navigate = useNavigate();
 
     // Preview
@@ -41,7 +41,7 @@ const FileBrowserSection = memo(({files, path, isSearch, token, setStatusMessage
 
     // Sorting
     const [filesCopy, setFilesCopy] = useState([...files]);
-    let sortDetails = useRef({key: 'filename', order: 'desc'});
+    let sortDetails = useRef({key: '', order: 'desc'});
     function sortArrayByKey(arr, key, direction) {
         console.log('sortby key ', arr);
         return [...arr].sort((a, b) => {
@@ -70,18 +70,28 @@ const FileBrowserSection = memo(({files, path, isSearch, token, setStatusMessage
     }
 
 
-
-    useEffect(() => {
-        console.log('useeffect filefolderrows');
-        // initial sort
-        let sortedFiles = sortCol(files, sortDetails.current.key, false);
-        setFilesCopy([...sortedFiles]);
-        // Generate previewable files
-        let previewAbleFilesPotential = sortedFiles.filter(file => previewAbleTypes.current.includes(file.file_type));
+    function getPrevieAbleFiles(files) {
+        let previewAbleFilesPotential = files.filter(file => previewAbleTypes.current.includes(file.file_type));
         for (let i = 0; i < previewAbleFilesPotential.length; i++) {
             previewAbleFilesPotential[i]['next'] = previewAbleFilesPotential[i + 1]?.hash || null;
             previewAbleFilesPotential[i]['prev'] = previewAbleFilesPotential[i - 1]?.hash || null;
         }
+        return previewAbleFilesPotential;
+    }
+
+    useEffect(() => {
+        // console.log('useeffect filefolderrows');
+        // initial sort
+        let previewAbleFilesPotential;
+        if (sortDetails.current.key) {
+            let sortedFiles = sortCol(files, sortDetails.current.key, false);
+            setFilesCopy([...sortedFiles]);
+            previewAbleFilesPotential = getPrevieAbleFiles(sortedFiles);
+        } else {
+            setFilesCopy([...files]);
+            previewAbleFilesPotential = getPrevieAbleFiles(files);
+        }
+        // Generate previewable files
         previewAbleFiles.current = previewAbleFilesPotential;
     }, [files]);
 
@@ -129,6 +139,8 @@ const FileBrowserSection = memo(({files, path, isSearch, token, setStatusMessage
                                 handlerSelectFile={handlerSelectFile}
                                 selectAllToggle={selectAllToggle}
                                 handleSelectAllToggle={handleSelectAllToggle}
+                                setIsShareModalOpen={setIsShareModalOpen}
+                                setFilesToShare={setFilesToShare}
                             />
                         }
                         {currentViewMode === 'ListView' &&
@@ -146,6 +158,8 @@ const FileBrowserSection = memo(({files, path, isSearch, token, setStatusMessage
                                 handlerSelectFile={handlerSelectFile}
                                 selectAllToggle={selectAllToggle}
                                 handleSelectAllToggle={handleSelectAllToggle}
+                                setIsShareModalOpen={setIsShareModalOpen}
+                                setFilesToShare={setFilesToShare}
                             />
                         }
                     </>

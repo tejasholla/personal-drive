@@ -3,19 +3,40 @@ import SearchBar from "./Components/SearchBar.jsx";
 import UploadMenu from "./Components/UploadMenu.jsx";
 import AlertBox from "./Components/AlertBox.jsx";
 import DownloadButton from "./Components/DownloadButton.jsx";
-import {useCallback, useRef, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 
-import RefreshButton from "@/Pages/Aws/Components/RefreshButton.jsx";
-import DeleteButton from "@/Pages/Aws/Components/DeleteButton.jsx";
+import RefreshButton from "@/Pages/Drive/Components/RefreshButton.jsx";
+import DeleteButton from "@/Pages/Drive/Components/DeleteButton.jsx";
+import ShowShareModalButton from "@/Pages/Drive/Components/Shares/ShowShareModalButton.jsx";
+import ShareModal from "@/Pages/Drive/Components/Shares/ShareModal.jsx";
+import {router} from "@inertiajs/react";
 
 
-const FileManager = ({files, handleSearch, isSearch, path, token}) => {
+const FileManager = ({files, path, token}) => {
     console.log('filelist files ',);
     const [statusMessage, setStatusMessage] = useState('')
     const [status, setStatus] = useState(true)
     const [selectedFiles, setSelectedFiles] = useState(new Set());
+    const [filesToShare, setFilesToShare] = useState(new Set());
     const [selectAllToggle, setSelectAllToggle] = useState(false);
+    const [isShareModalOpen, setIsShareModalOpen] = useState(false);
+    const [isSearch, setIsSearch] = useState(false);
 
+    useEffect(() => {
+        'useeffect filemanager ';
+        setFilesToShare(selectedFiles);
+    },[selectedFiles ]);
+
+
+
+    async function handleSearch (e, searchText){
+        e.preventDefault();
+        router.post('/search-files', {query: searchText}, {
+            onSuccess: () => {
+                setIsSearch(true);
+            }
+        });
+    }
 
     function handlerSelectFile(file) {
         setSelectedFiles(prevSelectedFiles => {
@@ -33,11 +54,11 @@ const FileManager = ({files, handleSearch, isSearch, path, token}) => {
     function handleSelectAllToggle() {
         // if false -> select all files | else -> deselect all files
         if (selectAllToggle) {
-            console.log('selectAllMode.current' , selectAllToggle);
+            console.log('selectAllMode.current', selectAllToggle);
             setSelectedFiles(new Set());
             setSelectAllToggle(false);
         } else {
-            console.log('selectAllMode.current' ,selectAllToggle);
+            console.log('selectAllMode.current', selectAllToggle);
             setSelectedFiles(new Set(files.map(file => file.id)));
             setSelectAllToggle(true);
         }
@@ -55,24 +76,33 @@ const FileManager = ({files, handleSearch, isSearch, path, token}) => {
 
                     <RefreshButton/>
                     {selectedFiles.size > 0 &&
-                        <DownloadButton setSelectedFiles={setSelectedFiles} selectedFiles={selectedFiles}
-                                        setStatusMessage={setStatusMessage} statusMessage={statusMessage} setSelectAllToggle={setSelectAllToggle}/>
+                        <>
+                            <DownloadButton setSelectedFiles={setSelectedFiles} selectedFiles={selectedFiles}
+                                            setStatusMessage={setStatusMessage} statusMessage={statusMessage}
+                                            setSelectAllToggle={setSelectAllToggle}/>
+                            <ShowShareModalButton setIsShareModalOpen={setIsShareModalOpen}/>
+                        </>
                     }
                 </div>
+
+                <ShareModal isShareModalOpen={isShareModalOpen} setIsShareModalOpen={setIsShareModalOpen}
+                            setSelectedFiles={setSelectedFiles}
+                            selectedFiles={filesToShare}  setSelectAllToggle={setSelectAllToggle} path={path} />
                 <div className="p-2 gap-x-2 flex  text-gray-200">
                     {selectedFiles.size > 0 &&
-                        <DeleteButton setSelectedFiles={setSelectedFiles} selectedFiles={selectedFiles} setSelectAllToggle={setSelectAllToggle}/>
+                        <DeleteButton setSelectedFiles={setSelectedFiles} selectedFiles={selectedFiles}
+                                      setSelectAllToggle={setSelectAllToggle}/>
                     }
-                    {!isSearch && <UploadMenu path={path} setStatus={setStatus}
-                                              setStatusMessage={setStatusMessage}
-                    />}
+                    {!isSearch &&
+                        <UploadMenu path={path} setStatus={setStatus} setStatusMessage={setStatusMessage}/>
+                    }
                     <SearchBar handleSearch={handleSearch}/>
                 </div>
             </div>
             <FileBrowserSection files={files} path={path} isSearch={isSearch} token={token}
                                 setStatusMessage={setStatusMessage} selectAllToggle={selectAllToggle}
                                 handleSelectAllToggle={handleSelectAllToggle} selectedFiles={selectedFiles}
-                                handlerSelectFile={handlerSelectFileMemo}/>
+                                handlerSelectFile={handlerSelectFileMemo} setIsShareModalOpen={setIsShareModalOpen} setFilesToShare={setFilesToShare}/>
         </div>
     );
 };

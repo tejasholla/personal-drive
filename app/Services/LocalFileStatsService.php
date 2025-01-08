@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exceptions\PersonalDriveExceptions\UploadFileException;
 use App\Models\LocalFile;
 use FilesystemIterator;
 use Illuminate\Http\UploadedFile;
@@ -19,17 +20,21 @@ class LocalFileStatsService
         $this->pathService = $pathService;
     }
 
-    public function addFolderPathStat(string $folderName, string $publicPath): bool
+    public function addFolderPathStat(string $folderName, string $publicPath): void
     {
         $itemPrivatePathname = $this->pathService->genPrivatePathWithPublic($publicPath);
-        return LocalFile::insert([
-            'filename' => $folderName,
-            'is_dir' => 1,
-            'public_path' => $publicPath,
-            'private_path' => $itemPrivatePathname,
-            'size' => '',
-            'user_id' => Auth::user()->id, // Set the appropriate user ID
-        ]);
+        try {
+            LocalFile::create([
+                'filename' => $folderName,
+                'is_dir' => 1,
+                'public_path' => $publicPath,
+                'private_path' => $itemPrivatePathname,
+                'size' => '',
+                'user_id' => Auth::user()->id, // Set the appropriate user ID
+            ]);
+        } catch (\Exception $e) {
+            throw  UploadFileException::nonewdir();
+        }
     }
 
     public function generateStats(string $path = ''): int

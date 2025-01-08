@@ -6,6 +6,11 @@ use Illuminate\Http\RedirectResponse;
 
 trait FlashMessages
 {
+    public function shared(string $link): RedirectResponse
+    {
+        session()->flash('shared_link', $link);
+        return redirect()->back();
+    }
     public function success(string $message): RedirectResponse
     {
         session()->flash('message', $message);
