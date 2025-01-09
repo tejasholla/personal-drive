@@ -13,7 +13,9 @@ const FolderItem = React.memo(function FolderItem({
                                                       token,
                                                       setStatusMessage,
                                                       setIsShareModalOpen,
-                                                      setFilesToShare
+                                                      setFilesToShare,
+                                                      isAdmin,
+                                                      path
                                                   }) {
     console.log('Folderitem render')
 
@@ -21,9 +23,10 @@ const FolderItem = React.memo(function FolderItem({
         <div
             className={` flex items-center hover:bg-gray-900  justify-between`}
         >
-            <Link href={'/drive' + (file.public_path ? ('/' + file.public_path) : '') + '/' + file.filename}
-                  className={`p-4  flex items-center w-full  ${isSelected ? 'bg-blue-100' : ''}`}
-                  preserveScroll
+            <Link
+                href={path + '/' + file.filename}
+                className={`p-4  flex items-center w-full  ${isSelected ? 'bg-blue-100' : ''}`}
+                preserveScroll
             >
                 <div className="flex  ">
                     <Folder className={`mr-2 text-yellow-600`} size={20}/>
@@ -34,12 +37,14 @@ const FolderItem = React.memo(function FolderItem({
             </Link>
 
             <div className="flex gap-x-1">
-                <DeleteButton classes="hidden group-hover:block mr-2  z-10"
-                              selectedFiles={new Set([file.id])}/>
+                {isAdmin && <DeleteButton classes="hidden group-hover:block mr-2  z-10"
+                                          selectedFiles={new Set([file.id])}/>}
                 <DownloadButton classes="hidden  group-hover:block mr-2  z-10"
                                 selectedFiles={new Set([file.id])} token={token}
                                 setStatusMessage={setStatusMessage}/>
-                <ShowShareModalButton  classes="hidden group-hover:block mr-2  z-10" setIsShareModalOpen={setIsShareModalOpen} setFilesToShare={setFilesToShare} filesToShare={new Set([file.id])}/>
+                {isAdmin && <ShowShareModalButton classes="hidden group-hover:block mr-2  z-10"
+                                                  setIsShareModalOpen={setIsShareModalOpen}
+                                                  setFilesToShare={setFilesToShare} filesToShare={new Set([file.id])}/>}
             </div>
         </div>
 

@@ -19,6 +19,7 @@
         "aws/aws-sdk-php": "^3.331",
         "imanghafoori/laravel-video": "*",
         "inertiajs/inertia-laravel": "^1.0",
+        "kayandra/hashidable": "^1.6",
         "laravel/framework": "^11.31",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",

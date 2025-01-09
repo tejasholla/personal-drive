@@ -3,7 +3,8 @@ import SearchBar from "./Components/SearchBar.jsx";
 import UploadMenu from "./Components/UploadMenu.jsx";
 import AlertBox from "./Components/AlertBox.jsx";
 import DownloadButton from "./Components/DownloadButton.jsx";
-import {useCallback, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
+import useSelectionUtil from "./Hooks/useSelectionutil.jsx";
 
 import RefreshButton from "@/Pages/Drive/Components/RefreshButton.jsx";
 import DeleteButton from "@/Pages/Drive/Components/DeleteButton.jsx";
@@ -13,23 +14,31 @@ import {router} from "@inertiajs/react";
 
 
 const FileManager = ({files, path, token}) => {
+
+    const {
+        selectAllToggle,
+        handleSelectAllToggle,
+        selectedFiles,
+        setSelectedFiles,
+        setSelectAllToggle,
+        handlerSelectFileMemo
+    } = useSelectionUtil();
+
     console.log('filelist files ',);
+
     const [statusMessage, setStatusMessage] = useState('')
     const [status, setStatus] = useState(true)
-    const [selectedFiles, setSelectedFiles] = useState(new Set());
     const [filesToShare, setFilesToShare] = useState(new Set());
-    const [selectAllToggle, setSelectAllToggle] = useState(false);
     const [isShareModalOpen, setIsShareModalOpen] = useState(false);
     const [isSearch, setIsSearch] = useState(false);
 
     useEffect(() => {
         'useeffect filemanager ';
         setFilesToShare(selectedFiles);
-    },[selectedFiles ]);
+    }, [selectedFiles]);
 
 
-
-    async function handleSearch (e, searchText){
+    async function handleSearch(e, searchText) {
         e.preventDefault();
         router.post('/search-files', {query: searchText}, {
             onSuccess: () => {
@@ -37,32 +46,6 @@ const FileManager = ({files, path, token}) => {
             }
         });
     }
-
-    function handlerSelectFile(file) {
-        setSelectedFiles(prevSelectedFiles => {
-            const newSelectedFiles = new Set(prevSelectedFiles);
-            newSelectedFiles.has(file.id)
-                ? newSelectedFiles.delete(file.id) // Toggle off
-                : newSelectedFiles.add(file.id); // Toggle on
-            return newSelectedFiles;
-        });
-    }
-
-    const handlerSelectFileMemo = useCallback(handlerSelectFile, [])
-
-    function handleSelectAllToggle() {
-        // if false -> select all files | else -> deselect all files
-        if (selectAllToggle) {
-            console.log('selectAllMode.current', selectAllToggle);
-            setSelectedFiles(new Set());
-            setSelectAllToggle(false);
-        } else {
-            console.log('selectAllMode.current', selectAllToggle);
-            setSelectedFiles(new Set(files.map(file => file.id)));
-            setSelectAllToggle(true);
-        }
-    }
-
 
     return (
         <div className="my-12 p-5">
@@ -83,7 +66,8 @@ const FileManager = ({files, path, token}) => {
                 </div>
 
                 <ShareModal isShareModalOpen={isShareModalOpen} setIsShareModalOpen={setIsShareModalOpen}
-                            setSelectedFiles={setSelectedFiles} selectedFiles={filesToShare} setSelectAllToggle={setSelectAllToggle} path={path} />
+                            setSelectedFiles={setSelectedFiles} selectedFiles={filesToShare}
+                            setSelectAllToggle={setSelectAllToggle} path={path}/>
                 <div className="p-2 gap-x-2 flex  text-gray-200">
                     {selectedFiles.size > 0 &&
                         <DeleteButton setSelectedFiles={setSelectedFiles} selectedFiles={selectedFiles}
@@ -98,7 +82,8 @@ const FileManager = ({files, path, token}) => {
             <FileBrowserSection files={files} path={path} isSearch={isSearch} token={token}
                                 setStatusMessage={setStatusMessage} selectAllToggle={selectAllToggle}
                                 handleSelectAllToggle={handleSelectAllToggle} selectedFiles={selectedFiles}
-                                handlerSelectFile={handlerSelectFileMemo} setIsShareModalOpen={setIsShareModalOpen} setFilesToShare={setFilesToShare}/>
+                                handlerSelectFile={handlerSelectFileMemo} setIsShareModalOpen={setIsShareModalOpen}
+                                setFilesToShare={setFilesToShare}/>
         </div>
     );
 };

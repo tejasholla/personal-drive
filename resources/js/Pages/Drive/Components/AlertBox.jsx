@@ -2,23 +2,23 @@ import React, {useEffect, useState} from 'react';
 import {usePage} from "@inertiajs/react";
 
 
-const AlertBox = React.memo(function AlertBox  ({message,type: status = true}){
+const AlertBox = React.memo(function AlertBox({message}) {
     let icon;
     let bgStatus = 'bg-gray-500';
 
     let {flash, errors} = usePage().props;
     const [alertBoxData, setAlertBoxData] = useState(flash);
-    console.log('message,type, alertBoxData', message,status, alertBoxData)
+    console.log('message,type, alertBoxData', message, alertBoxData)
     // Effect to update messageToPrint when props change
     useEffect(() => {
         if (!flash.message && Object.keys(errors).length === 0 && message) {
             // console.log('message in useeffect download flash', message, status, flash);
-            let alertBoxDataCopy = {message: message , status : status || 'warning' }
+            let alertBoxDataCopy = {message: message, status: true}
             setAlertBoxData(alertBoxDataCopy);
             // console.log('alertBoxDataCopy mess', alertBoxDataCopy)
-        }
-        else {
-            let alertBoxDataCopy = Object.assign({}, flash);;
+        } else {
+            let alertBoxDataCopy = Object.assign({}, flash);
+            ;
             if (errors && Object.keys(errors).length > 0) {
                 alertBoxDataCopy.message = Object.values(errors).flat().join(', ');
                 alertBoxDataCopy.status = false;
@@ -28,10 +28,10 @@ const AlertBox = React.memo(function AlertBox  ({message,type: status = true}){
             flash.status = true;
         }
         const timer = setTimeout(() => {
-            setAlertBoxData({ message: '', status: true });
+            setAlertBoxData({message: '', status: true});
         }, 5000);
 
-    }, [flash, errors, message,status]);
+    }, [flash, errors, message]);
 
 
     switch (alertBoxData.status) {

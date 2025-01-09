@@ -29,7 +29,7 @@ return Application::configure(basePath: dirname(__DIR__))
                 return redirect()->back()->withErrors($e->errors());
             }
 
-            session()->flash('message', 'Something went wrong!'. $e->getMessage());
+        session()->flash('message', 'Something went wrong!'. $e->getMessage());
             session()->flash('status', false);
             return redirect()->back();
         });

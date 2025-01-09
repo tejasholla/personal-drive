@@ -11,7 +11,9 @@ const FileListRow = React.memo(function FileListRow({
                                                         isSelected,
                                                         handlerSelectFile,
                                                         setIsShareModalOpen,
-                                                        setFilesToShare
+                                                        setFilesToShare,
+                                                        isAdmin,
+                                                        path
                                                     }) {
     console.log('filelistrow', isSelected);
 
@@ -37,6 +39,8 @@ const FileListRow = React.memo(function FileListRow({
                             setStatusMessage={setStatusMessage}
                             setIsShareModalOpen={setIsShareModalOpen}
                             setFilesToShare={setFilesToShare}
+                            isAdmin={isAdmin}
+                            path={path}
                         />
                     ) : (
                         <FileItem
@@ -47,6 +51,8 @@ const FileListRow = React.memo(function FileListRow({
                             handleFileClick={handleFileClick}
                             setIsShareModalOpen={setIsShareModalOpen}
                             setFilesToShare={setFilesToShare}
+                            isAdmin={isAdmin}
+                            path={path}
                         />
                     )}
                 </div>

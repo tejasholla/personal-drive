@@ -22,8 +22,7 @@ class ThumbnailController
 
     public function update(GetThumbnailRequest $request)
     {
-        $encryptedIds = $request->validated('hashes');
-        $fileIds = $this->getFileIds($encryptedIds);
+        $fileIds = $request->validated('ids');
         if (!$fileIds) {
             return $this->error('Could not generate thumbnails');
         }
@@ -33,8 +32,4 @@ class ThumbnailController
         }
     }
 
-    private function getFileIds(array $encryptedIds): array
-    {
-        return array_map(fn($encryptedId) => EncryptHelper::decrypt($encryptedId), $encryptedIds);
-    }
 }

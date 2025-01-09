@@ -1,8 +1,8 @@
 
-const ImageViewer = ({ fileHash }) => {
+const ImageViewer = ({ id }) => {
     return (
             <img className="max-h-screen  object-contain"
-                src={`/fetch-file/${fileHash}`} // Dynamically load the file
+                src={`/fetch-file/${id}`} // Dynamically load the file
                 alt="Selected File"
             />
     );

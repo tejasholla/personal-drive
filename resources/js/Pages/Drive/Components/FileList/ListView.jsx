@@ -21,7 +21,8 @@ const ListView = ({
                       selectAllToggle,
                       handleSelectAllToggle,
                       setIsShareModalOpen,
-                      setFilesToShare
+                      setFilesToShare,
+                      isAdmin
                   }) => {
     const navigate = useNavigate();
 
@@ -36,7 +37,7 @@ const ListView = ({
 
             <div className="flex items-center justify-between text-gray-400 border-b border-b-gray-600 w-full">
                 <div className="p-2 px-6 w-20 text-center hover:bg-gray-900 hover:cursor-pointer"
-                     onClick={(e) => handleSelectAllToggle(e)}>
+                     onClick={(e) => handleSelectAllToggle(filesCopy)}>
                     <input type="checkbox" checked={selectAllToggle} readOnly/>
                 </div>
                 <div onClick={(e) => handleSortClick(e, 'filename')}
@@ -56,7 +57,7 @@ const ListView = ({
                 </div>
             </div>
 
-            {(path || isSearch) && (
+            {(path || isSearch || path !== '/shared') && (
                 <div className="cursor-pointer hover:bg-gray-700 p-4 px-8 w-full" title="Go back"
                      onClick={() => navigate(-1)}>..</div>
             )}
@@ -73,6 +74,8 @@ const ListView = ({
                         handlerSelectFile={handlerSelectFile}
                         setIsShareModalOpen={setIsShareModalOpen}
                         setFilesToShare={setFilesToShare}
+                        isAdmin={isAdmin}
+                        path={path}
                     />
                 ))}
             </div>

@@ -40,6 +40,7 @@ class FileDeleteController
 
         $filesDeleted = $this->fileDeleteService->deleteFiles($localFiles, $rootPath);
 
+        //delete files from database
         $response = $localFiles->delete();
         if (!$response || !$filesDeleted) {
             return $this->error('Could not delete files');

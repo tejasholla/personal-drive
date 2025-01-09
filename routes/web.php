@@ -37,8 +37,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/delete-files', [DriveControllers\FileDeleteController::class, 'deleteFiles']);
     Route::post('/download-files', [DriveControllers\DownloadController::class, 'index']);
     Route::post('/resync', [DriveControllers\ReSyncController::class, 'index']);
-    Route::get('/fetch-file/{hash}', [DriveControllers\FetchFileController::class, 'index']);
-    Route::get('/fetch-thumb/{hash}', [DriveControllers\FetchFileController::class, 'getThumb']);
+    Route::get('/fetch-file/{id}', [DriveControllers\FetchFileController::class, 'index']);
+    Route::get('/fetch-thumb/{id}', [DriveControllers\FetchFileController::class, 'getThumb']);
     Route::post('/gen-thumbs', [DriveControllers\ThumbnailController::class, 'update']);
     Route::post('/search-files', [DriveControllers\SearchFilesController::class, 'index']);
     Route::get('/search-files', fn() => redirect('/drive'));
@@ -48,7 +48,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/delete-share', [ShareControllers\ShareFilesModController::class, 'delete']);
     Route::post('/share-files', [ShareControllers\ShareFilesGenController::class, 'index']);
     Route::get('/all-shares', [ShareControllers\ShareFilesAllController::class, 'index'])->name('all-shares');
-    Route::get('/shared/{slug}', [ShareControllers\ShareFilesGuestController::class, 'index']);
+    Route::get('/shared/{slug}/{path?}', [ShareControllers\ShareFilesGuestController::class, 'index'])    ->where('path', '.*');
+
 
     // Test
     Route::get('test', [DriveControllers\TestController::class, 'index']);

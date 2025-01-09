@@ -9,8 +9,8 @@ class GetThumbnailRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'hashes' => 'required|array|min:1',
-            'hashes.*' => 'required|string|alpha_num',
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'required|string|alpha_num',
         ];
     }
 }

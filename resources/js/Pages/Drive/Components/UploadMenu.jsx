@@ -1,18 +1,19 @@
 'use client'
 
-import { useState, useRef, useCallback } from 'react'
-import { router } from '@inertiajs/react'
-import useClickOutside   from "../Hooks/useClickOutside.jsx";
-import  CreateFolderModal  from './CreateFolderModal.jsx'
+import {useEffect, useRef, useState} from 'react'
+import {router} from '@inertiajs/react'
+import useClickOutside from "../Hooks/useClickOutside.jsx";
+import CreateFolderModal from './CreateFolderModal.jsx'
+import useThumbnailGenerator from "@/Pages/Drive/Hooks/useThumbnailGenerator.jsx";
 
 
-const UploadMenu = ({  path, setStatus, setStatusMessage }) => {
+const UploadMenu = ({path, setStatusMessage, files}) => {
     // console.log('render upload menu ');
     const [isMenuOpen, setIsMenuOpen] = useState(false)
+    const [uploadedFiles, setUploadedFiles] = useState([]);
 
     const fileInputRef = useRef(null)
     const folderInputRef = useRef(null)
-
     const resetFileFolderInput = () => {
         if (fileInputRef.current) {
             fileInputRef.current.value = ''; // Clears the selected files
@@ -29,34 +30,37 @@ const UploadMenu = ({  path, setStatus, setStatusMessage }) => {
 
     const uploadFile = async (event, isFolder = false) => {
         console.log('upload folder called');
-        const files = Array.from(event.target.files || []);
-        if (!files.length) return;
-
+        let selectedFileForUpload = Array.from(event.target.files || []);
+        if (!selectedFileForUpload.length) return;
 
         setStatusMessage('Uploading...');
 
         const formData = new FormData();
-        files.forEach(file => {
+        selectedFileForUpload.forEach(file => {
             const fileName = isFolder ? file.webkitRelativePath : file.name;
             formData.append('files[]', file, fileName);
         });
         formData.append('path', path);
 
         router.post('/upload', formData, {
-            preserveState: true,
             only: ['files', 'flash'],
             onSuccess: (response) => {
-                console.log('response on successs ' , response);
+                console.log('response on successs ', response);
+                setUploadedFiles(selectedFileForUpload);
             },
             onFinish: () => {
                 setStatusMessage('');
-
                 setIsMenuOpen(false);
                 resetFileFolderInput();
             }
         });
-
     }
+
+    useEffect(() => {
+        if (uploadedFiles.length > 0 ) {
+            useThumbnailGenerator(files);
+        }
+    }, [uploadedFiles]);
 
     return (
         <div ref={menuRef} className='relative  m-0 p-0'>
@@ -73,7 +77,7 @@ const UploadMenu = ({  path, setStatus, setStatusMessage }) => {
                     <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                         <button
                             onClick={() => {
-                                setIsModalOpen(true) ;
+                                setIsModalOpen(true);
                             }}
                             className="text-left block w-full px-4 py-2 text-sm bg-gray-700 "
                             role="menuitem"
@@ -98,7 +102,7 @@ const UploadMenu = ({  path, setStatus, setStatusMessage }) => {
                 </div>
             )}
 
-            <CreateFolderModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} path={path} />
+            <CreateFolderModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} path={path}/>
 
             <div className="relative inline-block">
                 <input

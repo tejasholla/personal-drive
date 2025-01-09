@@ -9,15 +9,15 @@ class FetchFileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'hash' => 'required|string'
+            'id' => 'required|string'
         ];
     }
 
     protected function prepareForValidation(): void
     {
-        // Bind the route parameter 'hash' into the request data
+        // Bind the route parameter 'id' into the request data
         $this->merge([
-            'hash' => $this->route('hash'),
+            'id' => $this->route('id'),
         ]);
     }
 }

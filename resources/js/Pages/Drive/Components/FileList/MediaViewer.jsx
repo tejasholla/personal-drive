@@ -5,7 +5,7 @@ import {ChevronLeft, ChevronRight} from 'lucide-react';
 import {useCallback, useEffect, useRef, useState} from "react";
 
 const MediaViewer = ({
-                         selectedFileHash,
+                         selectedid,
                          selectedFileType,
                          isModalOpen,
                          setIsModalOpen,
@@ -15,7 +15,7 @@ const MediaViewer = ({
     console.log('previewAbleFiles ');
     const [isActive, setIsActive] = useState(false);
     const timeoutRef = useRef(null);
-    let currentFileIndex = previewAbleFiles.current.findIndex(file => file.hash === selectedFileHash);
+    let currentFileIndex = previewAbleFiles.current.findIndex(file => file.id === selectedid);
 
     function prevClick() {
         if (previewAbleFiles.current[currentFileIndex]['prev']) {
@@ -79,9 +79,9 @@ const MediaViewer = ({
                 >
                     <ChevronRight className="text-white h-8 w-8 rounded-full"/>
                 </button>}
-            {selectedFileHash && ((selectedFileType === 'video' &&
-                <VideoPlayer fileHash={selectedFileHash}/>) || (selectedFileType === 'image' &&
-                <ImageViewer fileHash={selectedFileHash}/>))
+            {selectedid && ((selectedFileType === 'video' &&
+                <VideoPlayer id={selectedid}/>) || (selectedFileType === 'image' &&
+                <ImageViewer id={selectedid}/>))
             }
         </div>
     </Modal>);

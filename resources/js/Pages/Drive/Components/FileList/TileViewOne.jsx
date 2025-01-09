@@ -1,7 +1,8 @@
 import React, {useEffect} from 'react';
-import {Link, router} from '@inertiajs/react'
+import {router} from '@inertiajs/react'
 import SortIcon from "../../Svgs/SortIcon.jsx";
 import FileTileViewCard from "@/Pages/Drive/Components/FileList/FileTileViewCard.jsx";
+import useThumbnailGenerator from "@/Pages/Drive/Hooks/useThumbnailGenerator.jsx";
 
 
 const TileViewOne = ({
@@ -13,32 +14,19 @@ const TileViewOne = ({
                          sortCol,
                          sortDetails,
                          setFilesCopy,
+                         path,
                          selectedFiles,
                          handlerSelectFile,
                          selectAllToggle,
                          handleSelectAllToggle,
                          setIsShareModalOpen,
-                         setFilesToShare
+                         setFilesToShare,
+                         isAdmin
                      }) => {
-    console.log('TileViewOne ', )
-
+    console.log('TileViewOne ')
 
     useEffect(() => {
-        console.log('tileviewone useeffect ');
-        function genThumbs(fileHashes) {
-            router.post('/gen-thumbs', {hashes: fileHashes});
-        }
-
-        const fileHashes = [];
-        for (const file of filesCopy) {
-            if (!file.has_thumbnail && (file.file_type === 'image' || file.file_type === 'video')) {
-                fileHashes.push(file.hash);
-            }
-        }
-
-        if (fileHashes.length) {
-            genThumbs(fileHashes);
-        }
+        useThumbnailGenerator(filesCopy);
     }, []);
 
     function handleSortClick(e, key) {
@@ -50,7 +38,7 @@ const TileViewOne = ({
         <div className="w-full flex flex-col flex-wrap bg-gray-900/20 px-2">
             <div className=" text-center flex items-center gap-x-2 justify-between my-2 text-sm text-gray-400">
                 <div className="text-center hover:bg-gray-900 hover:cursor-pointer flex items-center gap-x-2 p-2"
-                     onClick={(e) => handleSelectAllToggle(e)}>
+                     onClick={(e) => handleSelectAllToggle(filesCopy)}>
                     <input className=" hover:cursor-pointer" type="checkbox" checked={selectAllToggle} readOnly/>
                     <label className=" hover:cursor-pointer">Select All</label>
                 </div>
@@ -93,6 +81,8 @@ const TileViewOne = ({
                         handlerSelectFile={handlerSelectFile}
                         setIsShareModalOpen={setIsShareModalOpen}
                         setFilesToShare={setFilesToShare}
+                        isAdmin={isAdmin}
+                        path={path}
                     />
                 ))}
             </div>

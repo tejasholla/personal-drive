@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 
-const VideoPlayer = ({fileHash}) => {
+const VideoPlayer = ({id}) => {
     const [autoplay, setAutoplay] = useState(() => {
         const savedAutoplay = localStorage.getItem('videoAutoplay');
         return savedAutoplay !== null ? JSON.parse(savedAutoplay) : false;
@@ -22,13 +22,13 @@ const VideoPlayer = ({fileHash}) => {
         <div className="flex justify-center flex-col gap-y-2">
             <video
                 ref={videoRef}
-                key={fileHash}
+                key={id}
                 controls
                 autoPlay={autoplay}
                 className="max-w-2xl rounded-lg shadow-lg"
             >
                 <source
-                    src={`/fetch-file/${fileHash}`}
+                    src={`/fetch-file/${id}`}
                     type="video/mp4"
                 />
                 Your browser does not support the video tag.

@@ -1,11 +1,15 @@
 import {Link} from "@inertiajs/react";
 import {ChevronRight, HomeIcon} from 'lucide-react'
 
-export default function Breadcrumb({path}) {
-    let rootLink = '/drive';
+export default function Breadcrumb({path, isAdmin}) {
+    let rootLink = isAdmin ? '/drive' : '/shared';
     let links = [];
     if (path) {
         let pathArr = path.split('/');
+        console.log('pathArr ', pathArr, path);
+        pathArr.shift();
+        pathArr.shift();
+        console.log('pathArr ', pathArr);
         for (let link of pathArr) {
             rootLink += '/' + link;
             links.push({name: link, href: rootLink});

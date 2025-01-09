@@ -10,6 +10,7 @@ class ShareFilesGuestRequest extends FormRequest
     {
         return [
             'slug' => 'required|string|alpha_num',
+            'path' => 'nullable|string',
         ];
     }
 
@@ -19,6 +20,7 @@ class ShareFilesGuestRequest extends FormRequest
         // Bind the route parameter 'hash' into the request data
         $this->merge([
             'slug' => $this->route('slug'),
+            'path' => $this->route('path'),
         ]);
     }
 }

@@ -15,6 +15,8 @@ const FileTileViewCard = React.memo(function FileTileViewCard({
                                                                   handlerSelectFile,
                                                                   setIsShareModalOpen,
                                                                   setFilesToShare,
+                                                                  isAdmin,
+                                                                  path
                                                               }) {
         console.log('filelistrow', isSelected);
         const selectedFileSet = new Set([file.id]);
@@ -51,7 +53,7 @@ const FileTileViewCard = React.memo(function FileTileViewCard({
                         >
                             {file.has_thumbnail && !file.filename.endsWith('.svg') ? (
                                     <img
-                                        src={`/fetch-thumb/${file.hash}`}
+                                        src={`/fetch-thumb/${file.id}`}
                                         alt="Thumbnail"
                                     />
                                 )
@@ -70,10 +72,12 @@ const FileTileViewCard = React.memo(function FileTileViewCard({
                             className="flex cursor-pointer justify-center pb-3 transition-transform duration-200  h-[220px]"
                         >
                             <Link
-                                href={'/drive' + (file.public_path ? ('/' + file.public_path) : '') + '/' + file.filename}
+                                href={  path +  '/' + file.filename}
                                 className={`flex items-center `} preserveScroll
                             >
                                 <Folder className={`mr-2 text-yellow-600`} size={120}/>
+                                path {path}  ||
+                                file.public_path  {file.public_path }
                             </Link>
                         </div>
                     }
@@ -81,20 +85,20 @@ const FileTileViewCard = React.memo(function FileTileViewCard({
 
                 {/* Action Buttons */}
                 <div
-                    className="flex justify-between absolute bottom-0 left-1/2 transform -translate-x-1/2 w-4/5 mb-2 opacity-60 group-hover:flex hidden">
-                    <div className="flex-1">
+                    className="justify-between absolute bottom-0 left-1/2 transform -translate-x-1/2 w-4/5 mb-2 opacity-60 group-hover:flex hidden">
+                    {isAdmin && <div className="flex-1">
                         <DeleteButton
                             classes=" bg-red-500/10 hover:bg-red-500/20 text-red-500 py-2 px-4 rounded-md transition-colors duration-200"
-                            selectedFiles={selectedFileSet}/></div>
+                            selectedFiles={selectedFileSet}/></div> }
                     <div className="flex-1 flex ">
                         <DownloadButton
                             classes="w-full  bg-blue-500/10 hover:bg-blue-500/20 text-blue-500 py-2 px-4 rounded-md transition-colors duration-200"
                             selectedFiles={selectedFileSet}
                             token={token}
                             setStatusMessage={setStatusMessage}/>
-                        <ShowShareModalButton classes="hidden group-hover:block mr-2  z-10"
+                        {isAdmin && <ShowShareModalButton classes="hidden group-hover:block mr-2  z-10"
                                               setIsShareModalOpen={setIsShareModalOpen} setFilesToShare={setFilesToShare}
-                                              filesToShare={new Set([file.id])}/></div>
+                                              filesToShare={new Set([file.id])}/>}</div>
                 </div>
             </div>
         )

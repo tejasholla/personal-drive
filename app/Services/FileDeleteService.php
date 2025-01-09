@@ -18,13 +18,17 @@ class FileDeleteService
             }
 
             // Handle directory deletion
-            if ($this->isDeletableDirectory($file, $privateFilePathName, $rootPath)) {
+            if (
+                $this->isDeletableDirectory($file, $privateFilePathName, $rootPath) &&
+                $file->deleteFromPublicPath()
+            ) {
                 File::deleteDirectory($privateFilePathName);
+
                 $filesDeleted++;
             }
 
             // Handle file deletion
-            if ($this->isDeletableFile($file, $privateFilePathName) && unlink($privateFilePathName)) {
+            if ($this->isDeletableFile($file) && unlink($privateFilePathName)) {
                 $filesDeleted++;
             }
         }
@@ -42,6 +46,6 @@ class FileDeleteService
 
     private function isDeletableFile(LocalFile $file): bool
     {
-        return $file->is_dir === 0 ;
+        return $file->is_dir === 0;
     }
 }

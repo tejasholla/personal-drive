@@ -34,7 +34,6 @@ class ShareFilesGenController
         $slug = $request->validated('slug');
         $password = $request->validated('password');
         $expiry = $request->validated('expiry');
-        $rootPath = $this->pathService->getStorageDirPath();
         $localFiles = LocalFile::getByIds($fileKeyArray)->get();
 
         $slug = $slug ?: Str::random(10);
@@ -44,7 +43,7 @@ class ShareFilesGenController
         }
         $hashedPassword = $password ? Hash::make($password) : null;
 
-        $share = Share::add($slug, $hashedPassword, $expiry);
+        $share = Share::add($slug, $hashedPassword, $expiry, $localFiles[0]->public_path);
 
         if (!$share) {
             throw ShareFileException::couldNotShare();

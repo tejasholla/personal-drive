@@ -58,16 +58,7 @@ class FetchFileController extends Controller
      */
     private function handleHashRequest(FetchFileRequest $request): LocalFile
     {
-        $encryptedId = $request->validated('hash');
-        try {
-            // Decrypt the ID
-            $fileId = EncryptHelper::decrypt($encryptedId);
-        } catch (DecryptException $e) {
-            throw FetchFileException::notFoundStream();
-        }
-        if (!$fileId) {
-            throw FetchFileException::notFoundStream();
-        }
+        $fileId = $request->validated('id');
 
         // Find the file record by ID
         $file = LocalFile::find($fileId);

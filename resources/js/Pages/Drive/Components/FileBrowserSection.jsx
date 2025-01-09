@@ -7,8 +7,8 @@ import ListView from "./FileList/ListView.jsx";
 import Breadcrumb from "@/Pages/Drive/Components/Breadcrumb.jsx";
 
 
-const FileBrowserSection = memo(({files, path, isSearch, token, setStatusMessage, selectAllToggle,                                      handleSelectAllToggle, selectedFiles, handlerSelectFile, setIsShareModalOpen, setFilesToShare}) => {
-    // console.log('FileBrowserSection ')
+const FileBrowserSection = memo(({files, path, isSearch, token, setStatusMessage, selectAllToggle,                                      handleSelectAllToggle, selectedFiles, handlerSelectFile, setIsShareModalOpen, setFilesToShare, isAdmin}) => {
+    console.log('FileBrowserSection files', files)
     const navigate = useNavigate();
 
     // Preview
@@ -19,7 +19,7 @@ const FileBrowserSection = memo(({files, path, isSearch, token, setStatusMessage
     const [isPreviewModalOpen, setPreviewIsModalOpen] = useState(false);
 
     function selectFileForPreview(file) {
-        setPreviewFileIndex(file.hash);
+        setPreviewFileIndex(file.id);
         setPreviewFileType(file.file_type);
     }
 
@@ -73,14 +73,14 @@ const FileBrowserSection = memo(({files, path, isSearch, token, setStatusMessage
     function getPrevieAbleFiles(files) {
         let previewAbleFilesPotential = files.filter(file => previewAbleTypes.current.includes(file.file_type));
         for (let i = 0; i < previewAbleFilesPotential.length; i++) {
-            previewAbleFilesPotential[i]['next'] = previewAbleFilesPotential[i + 1]?.hash || null;
-            previewAbleFilesPotential[i]['prev'] = previewAbleFilesPotential[i - 1]?.hash || null;
+            previewAbleFilesPotential[i]['next'] = previewAbleFilesPotential[i + 1]?.id || null;
+            previewAbleFilesPotential[i]['prev'] = previewAbleFilesPotential[i - 1]?.id || null;
         }
         return previewAbleFilesPotential;
     }
 
     useEffect(() => {
-        // console.log('useeffect filefolderrows');
+        console.log('useeffect filefolderrows filesCopy', filesCopy);
         // initial sort
         let previewAbleFilesPotential;
         if (sortDetails.current.key) {
@@ -93,6 +93,8 @@ const FileBrowserSection = memo(({files, path, isSearch, token, setStatusMessage
         }
         // Generate previewable files
         previewAbleFiles.current = previewAbleFilesPotential;
+        console.log('useeffect filefolderrows filesCopy end', filesCopy);
+
     }, [files]);
 
 
@@ -100,7 +102,7 @@ const FileBrowserSection = memo(({files, path, isSearch, token, setStatusMessage
         <div className=" rounded-md overflow-hidden px-2 ">
              {/*breadcrumb bar*/}
             <div className="rounded-md gap-x-2 flex items-start mb-3  justify-start relative">
-                <Breadcrumb path={path}/>
+                <Breadcrumb path={path} isAdmin={isAdmin}/>
                 <div className="flex justify-end absolute right-0">
                     <button
                         className={`p-2 mx-1 rounded-md ${currentViewMode === 'TileViewOne' ? 'bg-gray-900 border border-gray-700' : 'bg-gray-600'} hover:bg-gray-500`}
@@ -117,7 +119,7 @@ const FileBrowserSection = memo(({files, path, isSearch, token, setStatusMessage
                 </div>
             </div>
             {/*media viewer*/}
-            <MediaViewer selectedFileHash={previewFileIndex} selectedFileType={previewFileType}
+            <MediaViewer selectedid={previewFileIndex} selectedFileType={previewFileType}
                          isModalOpen={isPreviewModalOpen}
                          setIsModalOpen={setPreviewIsModalOpen} selectFileForPreview={selectFileForPreview}
                          previewAbleFiles={previewAbleFiles}/>
@@ -136,12 +138,14 @@ const FileBrowserSection = memo(({files, path, isSearch, token, setStatusMessage
                                 sortCol={sortCol}
                                 sortDetails={sortDetails}
                                 setFilesCopy={setFilesCopy}
+                                path={path}
                                 selectedFiles={selectedFiles}
                                 handlerSelectFile={handlerSelectFile}
                                 selectAllToggle={selectAllToggle}
                                 handleSelectAllToggle={handleSelectAllToggle}
                                 setIsShareModalOpen={setIsShareModalOpen}
                                 setFilesToShare={setFilesToShare}
+                                isAdmin={isAdmin}
                             />
                         }
                         {currentViewMode === 'ListView' &&
@@ -161,6 +165,7 @@ const FileBrowserSection = memo(({files, path, isSearch, token, setStatusMessage
                                 handleSelectAllToggle={handleSelectAllToggle}
                                 setIsShareModalOpen={setIsShareModalOpen}
                                 setFilesToShare={setFilesToShare}
+                                isAdmin={isAdmin}
                             />
                         }
                     </>

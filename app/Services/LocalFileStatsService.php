@@ -45,7 +45,7 @@ class LocalFileStatsService
             return false;
         }
         if (!$path) {
-            LocalFile::clearTable();
+//            LocalFile::clearTable();
         }
         return $this->populateLocalFileWithStats($privatePath, $rootPathLen);
     }
