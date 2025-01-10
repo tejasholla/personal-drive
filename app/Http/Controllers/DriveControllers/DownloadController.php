@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\DriveControllers;
 
 use App\Exceptions\PersonalDriveExceptions\FetchFileException;
-use App\Http\Requests\DriveController\DownloadRequest;
+use App\Http\Requests\DriveRequests\DownloadRequest;
 use App\Models\LocalFile;
 use App\Services\DownloadService;
 use App\Services\LPathService;

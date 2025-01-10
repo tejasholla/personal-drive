@@ -5,7 +5,7 @@ namespace App\Http\Controllers\DriveControllers;
 use App\Exceptions\PersonalDriveExceptions\FetchFileException;
 use App\Helpers\EncryptHelper;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\DriveController\FetchFileRequest;
+use App\Http\Requests\DriveRequests\FetchFileRequest;
 use App\Models\LocalFile;
 use App\Services\LocalFileStatsService;
 use App\Services\ThumbnailService;

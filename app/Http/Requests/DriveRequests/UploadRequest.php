@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\DriveController;
+namespace App\Http\Requests\DriveRequests;
 
 use Illuminate\Foundation\Http\FormRequest;
 

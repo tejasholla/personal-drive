@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class Share extends Model
@@ -28,9 +29,10 @@ class Share extends Model
         ]);
     }
 
-    public static function getAll(): Collection
+    public static function getAllUnExpired(): Collection
     {
         return static::with(['sharedFiles.localFile:id,filename'])
+            ->whereRaw("datetime(created_at, '+' || expiry || ' days') > datetime('now')")
             ->orderBy('created_at', 'desc')
             ->get();
     }

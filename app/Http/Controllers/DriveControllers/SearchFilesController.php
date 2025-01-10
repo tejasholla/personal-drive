@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\DriveControllers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\DriveController\SearchRequest;
+use App\Http\Requests\DriveRequests\SearchRequest;
 use App\Models\LocalFile;
 use Inertia\Inertia;
 use Inertia\Response;

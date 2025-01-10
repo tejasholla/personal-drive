@@ -9,7 +9,7 @@ use App\Traits\FlashMessages;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class ShareFilesAllController
+class SharedListController
 {
     use FlashMessages;
 
@@ -26,7 +26,7 @@ class ShareFilesAllController
 
     public function index(Request $request)
     {
-        $shares = Share::getAll();
+        $shares = Share::getAllUnExpired();
         return Inertia::render('Drive/Shares/AllShares', ['shares' => $shares]);
     }
 }

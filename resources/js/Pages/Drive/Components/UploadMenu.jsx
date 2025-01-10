@@ -5,6 +5,7 @@ import {router} from '@inertiajs/react'
 import useClickOutside from "../Hooks/useClickOutside.jsx";
 import CreateFolderModal from './CreateFolderModal.jsx'
 import useThumbnailGenerator from "@/Pages/Drive/Hooks/useThumbnailGenerator.jsx";
+import {UploadCloudIcon} from "lucide-react";
 
 
 const UploadMenu = ({path, setStatusMessage, files}) => {
@@ -61,15 +62,16 @@ const UploadMenu = ({path, setStatusMessage, files}) => {
             useThumbnailGenerator(files);
         }
     }, [uploadedFiles]);
-
     return (
         <div ref={menuRef} className='relative  m-0 p-0'>
-            <button className="p-2 rounded-md inline-flex w-auto bg-gray-700 m-0"
+            <button className="  inline-flex gap-x-1 bg-blue-700 text-white font-bold py-2 px-2 rounded hover:bg-blue-600 transition duration-300
+"
                     onClick={() => {
                         setIsMenuOpen(!isMenuOpen)
                     }}
             >
-                + New
+                <UploadCloudIcon />
+                New
             </button>
             {isMenuOpen && (
                 <div
@@ -104,23 +106,6 @@ const UploadMenu = ({path, setStatusMessage, files}) => {
 
             <CreateFolderModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} path={path}/>
 
-            <div className="relative inline-block">
-                <input
-                    type="file"
-                    ref={fileInputRef}
-                    className="hidden"
-                    onChange={(e) => uploadFile(e)}
-                    multiple
-                />
-                <input
-                    type="file"
-                    ref={folderInputRef}
-                    className="hidden"
-                    onChange={(e) => uploadFile(e, true)}
-                    webkitdirectory="true"
-                    directory="true"
-                />
-            </div>
         </div>
     )
 }

@@ -5,8 +5,8 @@ namespace App\Http\Controllers\DriveControllers;
 use App\Exceptions\PersonalDriveExceptions\UploadFileException;
 use App\Helpers\UploadFileHelper;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\DriveController\CreateFolderRequest;
-use App\Http\Requests\DriveController\UploadRequest;
+use App\Http\Requests\DriveRequests\CreateFolderRequest;
+use App\Http\Requests\DriveRequests\UploadRequest;
 use App\Services\LocalFileStatsService;
 use App\Services\LPathService;
 use App\Traits\FlashMessages;
@@ -31,6 +31,7 @@ class UploadController extends Controller
     {
         $files = $request->validated('files');
         $publicPath = $request->validated('path') ?? '';
+        $publicPath = $this->lPathService->cleanDrivePublicPath($publicPath);
         $privatePath = $this->lPathService->genPrivatePathWithPublic($publicPath);
 
         if (!$files) {
@@ -67,6 +68,7 @@ class UploadController extends Controller
     {
         $publicPath = $request->validated('path') ?? '';
         $folderName = $request->validated('folderName');
+        $publicPath = $this->lPathService->cleanDrivePublicPath($publicPath);
         $privatePath = $this->lPathService->genPrivatePathWithPublic($publicPath);
         $makeFolderRes = UploadFileHelper::makeFolder($privatePath . $folderName);
         if (!$makeFolderRes) {

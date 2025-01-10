@@ -16,10 +16,13 @@ const FileTileViewCard = React.memo(function FileTileViewCard({
                                                                   setIsShareModalOpen,
                                                                   setFilesToShare,
                                                                   isAdmin,
-                                                                  path
+                                                                  path,
+                                                                  slug
                                                               }) {
-        console.log('filelistrow', isSelected);
         const selectedFileSet = new Set([file.id]);
+        let imageSrc = '/fetch-thumb/' + file.id;
+        imageSrc += slug ? '/' + slug : ''
+
         return (
             <div
                 className={`group relative overflow-hidden rounded-lg border border-gray-800 bg-gray-900/50 p-3 transition-all duration-200 hover:border-gray-700 hover:shadow-lg w-[295px] flex flex-col justify-between  ${isSelected ? 'bg-gray-950' : ''} `}
@@ -53,7 +56,7 @@ const FileTileViewCard = React.memo(function FileTileViewCard({
                         >
                             {file.has_thumbnail && !file.filename.endsWith('.svg') ? (
                                     <img
-                                        src={`/fetch-thumb/${file.id}`}
+                                        src={imageSrc}
                                         alt="Thumbnail"
                                     />
                                 )
@@ -72,12 +75,12 @@ const FileTileViewCard = React.memo(function FileTileViewCard({
                             className="flex cursor-pointer justify-center pb-3 transition-transform duration-200  h-[220px]"
                         >
                             <Link
-                                href={  path +  '/' + file.filename}
+                                href={path + '/' + file.filename}
                                 className={`flex items-center `} preserveScroll
                             >
                                 <Folder className={`mr-2 text-yellow-600`} size={120}/>
-                                path {path}  ||
-                                file.public_path  {file.public_path }
+                                path {path} ||
+                                file.public_path {file.public_path}
                             </Link>
                         </div>
                     }
@@ -89,16 +92,18 @@ const FileTileViewCard = React.memo(function FileTileViewCard({
                     {isAdmin && <div className="flex-1">
                         <DeleteButton
                             classes=" bg-red-500/10 hover:bg-red-500/20 text-red-500 py-2 px-4 rounded-md transition-colors duration-200"
-                            selectedFiles={selectedFileSet}/></div> }
+                            selectedFiles={selectedFileSet}/></div>}
                     <div className="flex-1 flex ">
                         <DownloadButton
                             classes="w-full  bg-blue-500/10 hover:bg-blue-500/20 text-blue-500 py-2 px-4 rounded-md transition-colors duration-200"
                             selectedFiles={selectedFileSet}
                             token={token}
-                            setStatusMessage={setStatusMessage}/>
+                            setStatusMessage={setStatusMessage}
+                            slug={slug}/>
                         {isAdmin && <ShowShareModalButton classes="hidden group-hover:block mr-2  z-10"
-                                              setIsShareModalOpen={setIsShareModalOpen} setFilesToShare={setFilesToShare}
-                                              filesToShare={new Set([file.id])}/>}</div>
+                                                          setIsShareModalOpen={setIsShareModalOpen}
+                                                          setFilesToShare={setFilesToShare}
+                                                          filesToShare={new Set([file.id])}/>}</div>
                 </div>
             </div>
         )

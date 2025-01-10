@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Exceptions\PersonalDriveExceptions\UploadFileException;
 use App\Models\LocalFile;
 use FilesystemIterator;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;

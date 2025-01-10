@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\DriveControllers;
 
-use App\Http\Requests\DriveController\FileDeleteRequest;
+use App\Http\Requests\DriveRequests\FileDeleteRequest;
 use App\Models\LocalFile;
 use App\Services\FileDeleteService;
 use App\Services\LocalFileStatsService;

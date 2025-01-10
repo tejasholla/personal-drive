@@ -1,14 +1,15 @@
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
-import {Head, router, usePage} from "@inertiajs/react";
-import {useEffect, useState} from "react";
+import Header from "@/Pages/Drive/Layouts/Header.jsx";
+import {router} from "@inertiajs/react";
+import {useState} from "react";
 import AlertBox from "@/Pages/Drive/Components/AlertBox.jsx";
+import RefreshButton from "@/Pages/Drive/Components/RefreshButton.jsx";
 
-export default function Dashboard({
-                                      storage_path,
-                                      php_max_upload_size,
-                                      php_post_max_size,
-                                      php_max_file_uploads
-                                  }) {
+export default function AdminConfig({
+                                        storage_path,
+                                        php_max_upload_size,
+                                        php_post_max_size,
+                                        php_max_file_uploads
+                                    }) {
 
 
     const [formData, setFormData] = useState({
@@ -35,44 +36,50 @@ export default function Dashboard({
         })
     }
 
-    return (<AuthenticatedLayout
-        header={<div className="flex justify-between">
-            <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-                Personal Drive Admin Config
-            </h2>
-        </div>}
-    >
-        <Head title="Personal Drive Admin Config"/>
+    return (
+        <>
+        <Header/>
 
         <div className="p-4 space-y-4 max-w-7xl mx-auto dark:text-gray-200">
             <h2 className="text-center text-5xl my-12 mb-32">Admin Settings</h2>
             <main className="mx-auto max-w-7xl ">
-                <AlertBox />
-                <form
-                    className="w-[700px] mx-auto bg-blue-900/15 p-12 min-h-[500px] flex flex-col justify-between gap-y-20"
-                    onSubmit={handleSubmit}>
-                    <div>
-                        <div className="m-1 flex flex-col mx-auto items-start gap-y-5 w-full">
-                            <label htmlFor="storage_path"
-                                   className="block text-blue-200 text-xl font-bold ">
-                                Storage Path:
-                            </label>
-                            <input
-                                type="text"
-                                id="storage_path"
-                                name="storage_path"
-                                value={formData.storage_path}
-                                onChange={handleChange}
-                                className="w-full  text-gray-200 bg-blue-900 border border-blue-900 rounded-md focus:border-indigo-500 focus:ring-indigo-500 "
-                            />
-                        </div>
+                <AlertBox/>
 
-                        <div className="flex justify-between">
-                            <p className="text-sm text-gray-400 text-right mt-1">Root Path of all files</p>
-                            <p className="text-sm text-gray-400 text-right mt-1 font-bold">Changing will NOT move
-                                files !! </p>
+                <div className="w-[700px] mx-auto bg-blue-900/15 p-12 min-h-[500px] flex flex-col gap-y-20 ">
+
+                    <form
+                        className="flex flex-col justify-between gap-y-6"
+                        onSubmit={handleSubmit}>
+                        <div>
+                            <div className="m-1 flex flex-col mx-auto items-start gap-y-5 w-full">
+                                <label htmlFor="storage_path"
+                                       className="block text-blue-200 text-xl font-bold ">
+                                    Storage Path:
+                                </label>
+                                <input
+                                    type="text"
+                                    id="storage_path"
+                                    name="storage_path"
+                                    value={formData.storage_path}
+                                    onChange={handleChange}
+                                    className="w-full  text-gray-200 bg-blue-900 border border-blue-900 rounded-md focus:border-indigo-500 focus:ring-indigo-500 "
+                                />
+                            </div>
+
+                            <div className="flex justify-between">
+                                <p className="text-sm text-gray-400 text-right mt-1">Root Path of all files</p>
+                                <p className="text-sm text-gray-400 text-right mt-1 font-bold">Changing will NOT
+                                    move
+                                    files !! </p>
+                            </div>
                         </div>
-                    </div>
+                        <div className="flex justify-center mt-1">
+                            <button
+                                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ">
+                                Update Settings
+                            </button>
+                        </div>
+                    </form>
                     <div>
                         <p className=" text-blue-200 text-xl font-bold mb-2 ">
                             PHP Upload Size Limits
@@ -128,14 +135,22 @@ php_value max_file_uploads 10000`}
                             </pre>
                         </div>
                     </div>
-                    <div className="flex justify-center mt-32">
-                        <button
-                            className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ">
-                            Update Settings
-                        </button>
+
+                    <div className="  ">
+
+                        <h2 className=" text-blue-200 text-xl font-bold mb-2 ">Refresh Database and cancel all
+                            Shares </h2>
+                        <p className="mb-4">This is a 'reset' option, and will reindex all files. Remove all
+                            shares</p>
+                        <RefreshButton/>
+
                     </div>
-                </form>
+                </div>
+
+
             </main>
         </div>
-    </AuthenticatedLayout>);
+</>
+)
+    ;
 }

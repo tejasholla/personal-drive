@@ -6,7 +6,7 @@ import DownloadButton from "@/Pages/Drive/Components/DownloadButton.jsx";
 import ShowShareModalButton from "@/Pages/Drive/Components/Shares/ShowShareModalButton.jsx";
 import {useState} from "react";
 
-export default function GuestHome({files, path, token}) {
+export default function ShareFilesGuestHome({files, path, token, slug}) {
     console.log('render GuestHome files', files);
     const {
         selectAllToggle,
@@ -29,7 +29,7 @@ export default function GuestHome({files, path, token}) {
                             <>
                                 <DownloadButton setSelectedFiles={setSelectedFiles} selectedFiles={selectedFiles}
                                                 setStatusMessage={setStatusMessage} statusMessage={statusMessage}
-                                                setSelectAllToggle={setSelectAllToggle}/>
+                                                setSelectAllToggle={setSelectAllToggle} slug={slug}/>
                             </>
                         }
                 </div>
@@ -38,7 +38,7 @@ export default function GuestHome({files, path, token}) {
                                 setStatusMessage={setStatusMessage} selectAllToggle={selectAllToggle}
                                 handleSelectAllToggle={handleSelectAllToggle} selectedFiles={selectedFiles}
                                 handlerSelectFile={handlerSelectFileMemo}
-                                isAdmin={false}
+                                isAdmin={false} slug={slug}
                                />
         </div>
     );

@@ -1,7 +1,7 @@
 import {ShareIcon} from "lucide-react";
 
 
-const ShowShareModalButton = ({setIsShareModalOpen, classes, setFilesToShare, filesToShare}) => {
+const ShowShareModalButton = ({setIsShareModalOpen, classes = '', setFilesToShare, filesToShare}) => {
     function handleShareButton(){
         setIsShareModalOpen(true);
         setFilesToShare(filesToShare);

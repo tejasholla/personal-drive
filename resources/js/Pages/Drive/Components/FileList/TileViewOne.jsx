@@ -1,5 +1,4 @@
 import React, {useEffect} from 'react';
-import {router} from '@inertiajs/react'
 import SortIcon from "../../Svgs/SortIcon.jsx";
 import FileTileViewCard from "@/Pages/Drive/Components/FileList/FileTileViewCard.jsx";
 import useThumbnailGenerator from "@/Pages/Drive/Hooks/useThumbnailGenerator.jsx";
@@ -21,7 +20,8 @@ const TileViewOne = ({
                          handleSelectAllToggle,
                          setIsShareModalOpen,
                          setFilesToShare,
-                         isAdmin
+                         isAdmin,
+                         slug,
                      }) => {
     console.log('TileViewOne ')
 
@@ -35,9 +35,9 @@ const TileViewOne = ({
     }
 
     return (
-        <div className="w-full flex flex-col flex-wrap bg-gray-900/20 px-2">
-            <div className=" text-center flex items-center gap-x-2 justify-between my-2 text-sm text-gray-400">
-                <div className="text-center hover:bg-gray-900 hover:cursor-pointer flex items-center gap-x-2 p-2"
+        <div className="w-full flex flex-col flex-wrap ">
+            <div className=" text-center flex items-center gap-x-2 justify-between mb-6 text-sm text-gray-400 px-3">
+                <div className="text-center hover:bg-gray-900 hover:cursor-pointer flex items-center gap-x-2"
                      onClick={(e) => handleSelectAllToggle(filesCopy)}>
                     <input className=" hover:cursor-pointer" type="checkbox" checked={selectAllToggle} readOnly/>
                     <label className=" hover:cursor-pointer">Select All</label>
@@ -68,7 +68,7 @@ const TileViewOne = ({
                     </button>
                 </div>
             </div>
-            <div className="w-full flex flex-wrap gap-2">
+            <div className="w-full flex flex-wrap gap-4 ">
                 {filesCopy.map((file) => (
                     <FileTileViewCard
                         key={file.id}
@@ -83,6 +83,7 @@ const TileViewOne = ({
                         setFilesToShare={setFilesToShare}
                         isAdmin={isAdmin}
                         path={path}
+                        slug={slug}
                     />
                 ))}
             </div>

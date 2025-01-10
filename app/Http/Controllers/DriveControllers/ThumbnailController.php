@@ -4,7 +4,7 @@ namespace App\Http\Controllers\DriveControllers;
 
 use App\Helpers\EncryptHelper;
 use App\Helpers\ResponseHelper;
-use App\Http\Requests\DriveController\GetThumbnailRequest;
+use App\Http\Requests\DriveRequests\GetThumbnailRequest;
 use App\Services\ThumbnailService;
 use App\Traits\FlashMessages;
 use Illuminate\Http\Request;

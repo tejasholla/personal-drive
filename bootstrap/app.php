@@ -1,12 +1,14 @@
 <?php
 
 use App\Exceptions\PersonalDriveExceptions\PersonalDriveException;
-use App\Http\Middleware\HandleInertiaRequests;
+use App\Http\Middleware\HandleInertiaMiddlware;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -15,22 +17,28 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        $middleware->redirectGuestsTo('login');
         $middleware->web(append: [
-            HandleInertiaRequests::class,
+            HandleInertiaMiddlware::class,
             AddLinkHeadersForPreloadedAssets::class,
         ]);
-        //
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        $exceptions->render(function (Throwable $e, Request $request) {
+        $exceptions->render(function (Throwable $e) {
             if ($e instanceof PersonalDriveException) {
                 session()->flash('message', $e->getMessage());
                 session()->flash('status', false);
+                return redirect()->back();
+            }
+            if ($e instanceof ValidationException) {
+                session()->flash('message', 'Please check the form for errors.');
+                session()->flash('status', false);
                 return redirect()->back()->withErrors($e->errors());
             }
-
-        session()->flash('message', 'Something went wrong!'. $e->getMessage());
-            session()->flash('status', false);
-            return redirect()->back();
+            if (!$e instanceof AuthenticationException) {
+                session()->flash('message', 'Something went wrong!' . $e->getMessage());
+                session()->flash('status', false);
+                return redirect()->back();
+            }
         });
     })->create();

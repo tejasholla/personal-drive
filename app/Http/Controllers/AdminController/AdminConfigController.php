@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\AdminController;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\AdminController\AdminConfigRequest;
+use App\Http\Requests\AdminRequests\AdminConfigRequest;
 use App\Models\Setting;
 use App\Services\AdminConfigService;
 use Illuminate\Http\RedirectResponse;

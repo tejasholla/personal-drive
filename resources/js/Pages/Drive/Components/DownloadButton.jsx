@@ -1,22 +1,27 @@
 import {DownloadIcon} from "lucide-react";
 import Button from "./Generic/Button.jsx"
 
-const DownloadButton = ({setSelectedFiles, selectedFiles, classes, setStatusMessage, statusMessage, setSelectAllToggle}) => {
+const DownloadButton = ({setSelectedFiles, selectedFiles, classes, setStatusMessage, statusMessage, setSelectAllToggle, slug}) => {
     const handleDownload = async () => {
         let response = {};
         try {
             setStatusMessage('Downloading...');
             // setIsLoading(true);
+            let formData = {
+                fileList: Array.from(selectedFiles),
+            };
+            if (slug){
+                formData['slug'] = slug;
+            }
             response = await axios({
                 url: '/download-files',
                 method: 'POST',
                 responseType: 'blob',
-                data: {
-                    fileList: Array.from(selectedFiles)
-                }
+                data: formData
             });
         }
         finally {
+
             setStatusMessage('');
             setSelectedFiles?.(new Set());
             setSelectAllToggle?.(false);

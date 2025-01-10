@@ -16,18 +16,21 @@ export default function Breadcrumb({path, isAdmin}) {
         }
     }
 
+    console.log(' links ', links);
 
     return (<nav aria-label="Breadcrumb" className="mb-4 ">
-        <ol className="flex  flex-wrap h-10">
-            <li className="flex items-center">
-
-                    <Link className="hover:bg-gray-600 p-2 rounded-md inline-flex w-auto bg-gray-700" href='/drive' preserveScroll>
+        <ol className="flex flex-wrap h-10 pr-2">
+            {isAdmin &&
+                <li className="flex items-center">
+                    <Link className="hover:bg-gray-600 p-2 rounded-md inline-flex w-auto bg-gray-700" href='/drive'
+                          preserveScroll>
                         <HomeIcon className={`text-gray-500 inline`} size={22}/>
                         <span className={`mx-1`}>Base Folder</span>
                     </Link>
-
-                {links.length > 0 && path && (<ChevronRight className="w-4 h-4 text-gray-400 mx-2" aria-hidden="true"/>)}
-            </li>
+                    {links.length > 0 && path && (
+                        <ChevronRight className="w-4 h-4 text-gray-400 mx-2" aria-hidden="true"/>)}
+                </li>
+            }
             {links.map((link, index) =>
                 (<li key={index} className="flex items-center">
                     {index === links.length - 1 ?
@@ -36,7 +39,8 @@ export default function Breadcrumb({path, isAdmin}) {
                           </span>) :
                         (<>
                             <Link href={link.href}
-                                  className="text-blue-600 hover:text-blue-800 transition-colors duration-200" preserveScroll>
+                                  className="text-blue-600 hover:text-blue-800 transition-colors duration-200"
+                                  preserveScroll>
                                 {link.name}
                             </Link>
                             <ChevronRight className="w-4 h-4 text-gray-400 mx-2" aria-hidden="true"/>

@@ -1,6 +1,11 @@
 import React, {useEffect, useRef, useState} from 'react';
 
-const VideoPlayer = ({id}) => {
+const VideoPlayer = ({id, slug}) => {
+    let src = '/fetch-file/' + id ;
+    console.log('src ', src);
+
+    src += slug ?  '/' + slug : ''
+    console.log('src ', src);
     const [autoplay, setAutoplay] = useState(() => {
         const savedAutoplay = localStorage.getItem('videoAutoplay');
         return savedAutoplay !== null ? JSON.parse(savedAutoplay) : false;
@@ -28,7 +33,7 @@ const VideoPlayer = ({id}) => {
                 className="max-w-2xl rounded-lg shadow-lg"
             >
                 <source
-                    src={`/fetch-file/${id}`}
+                    src={src}
                     type="video/mp4"
                 />
                 Your browser does not support the video tag.

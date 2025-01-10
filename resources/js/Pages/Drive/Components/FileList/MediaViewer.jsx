@@ -10,7 +10,8 @@ const MediaViewer = ({
                          isModalOpen,
                          setIsModalOpen,
                          selectFileForPreview,
-                         previewAbleFiles
+                         previewAbleFiles,
+                         slug
                      }) => {
     console.log('previewAbleFiles ');
     const [isActive, setIsActive] = useState(false);
@@ -80,8 +81,8 @@ const MediaViewer = ({
                     <ChevronRight className="text-white h-8 w-8 rounded-full"/>
                 </button>}
             {selectedid && ((selectedFileType === 'video' &&
-                <VideoPlayer id={selectedid}/>) || (selectedFileType === 'image' &&
-                <ImageViewer id={selectedid}/>))
+                <VideoPlayer id={selectedid} slug={slug}/>) || (selectedFileType === 'image' &&
+                <ImageViewer id={selectedid} slug={slug}/>))
             }
         </div>
     </Modal>);

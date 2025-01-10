@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\ShareControllers;
 
 use App\Exceptions\PersonalDriveExceptions\ShareFileException;
-use App\Http\Requests\DriveController\ShareFilesGenRequest;
+use App\Http\Requests\DriveRequests\ShareFilesGenRequest;
 use App\Models\LocalFile;
 use App\Models\Share;
 use App\Models\SharedFile;
@@ -55,8 +55,7 @@ class ShareFilesGenController
         }
 
 
-
-        $sharedLink = "site.com/shared/" . $slug ?? 'sdf';
+        $sharedLink = url('/') . "/shared/" . $slug ?? 'sdf';
         return redirect()->back()->with('shared_link', $sharedLink);
 
         return $this->shared($sharedLink);

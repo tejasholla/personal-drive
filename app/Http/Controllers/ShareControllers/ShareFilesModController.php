@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\ShareControllers;
 
-use App\Http\Requests\DriveController\ShareFilesModRequest;
+use App\Http\Requests\DriveRequests\ShareFilesModRequest;
 use App\Models\Share;
 use App\Traits\FlashMessages;
 use Illuminate\Http\RedirectResponse;

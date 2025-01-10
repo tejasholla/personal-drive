@@ -13,6 +13,10 @@ class LPathService
     {
         $this->uuidService = $uuidService;
     }
+    public function cleanDrivePublicPath(string $path): string
+    {
+        return preg_replace('#^/drive/#', '', $path);
+    }
 
     public function getStorageDirPath(): string
     {
@@ -43,6 +47,7 @@ class LPathService
         if ($publicPath === '') {
             return $privateRoot . DIRECTORY_SEPARATOR;
         }
+        $publicPath = $this->cleanDrivePublicPath($publicPath);
         $privatePath = $privateRoot . DIRECTORY_SEPARATOR . $publicPath . DIRECTORY_SEPARATOR;
 
         if (file_exists($privatePath)) {
