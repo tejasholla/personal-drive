@@ -7,7 +7,6 @@ use App\Http\Controllers\ShareControllers;
 use App\Http\Controllers\ShareControllers\ShareFilesGuestController;
 use App\Http\Middleware\HandleAuthOrGuestMiddleware;
 use App\Http\Middleware\HandleGuestShareMiddleware;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -70,6 +69,13 @@ Route::get(
 
 
 Route::get('/testdownload', [DriveControllers\DownloadController::class, 'test']);
+
+Route::get('/', function () {
+    return to_route('drive');
+});
+Route::fallback(function () {
+    return to_route('rejected');
+});
 
 
 require __DIR__ . '/auth.php';
