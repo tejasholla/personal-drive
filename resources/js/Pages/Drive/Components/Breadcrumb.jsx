@@ -6,17 +6,13 @@ export default function Breadcrumb({path, isAdmin}) {
     let links = [];
     if (path) {
         let pathArr = path.split('/');
-        console.log('pathArr ', pathArr, path);
         pathArr.shift();
         pathArr.shift();
-        console.log('pathArr ', pathArr);
         for (let link of pathArr) {
             rootLink += '/' + link;
             links.push({name: link, href: rootLink});
         }
     }
-
-    console.log(' links ', links);
 
     return (<nav aria-label="Breadcrumb" className="mb-4 ">
         <ol className="flex flex-wrap h-10 pr-2">

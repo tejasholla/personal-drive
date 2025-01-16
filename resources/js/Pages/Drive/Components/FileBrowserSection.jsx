@@ -6,14 +6,13 @@ import TileViewOne from "./FileList/TileViewOne.jsx";
 import ListView from "./FileList/ListView.jsx";
 import Breadcrumb from "@/Pages/Drive/Components/Breadcrumb.jsx";
 import useSelectionUtil from "@/Pages/Drive/Hooks/useSelectionutil.jsx";
-import useSearchUtil from "@/Pages/Drive/Hooks/useSearchUtil.jsx";
 import AlertBox from "@/Pages/Drive/Components/AlertBox.jsx";
 import ShareModal from "@/Pages/Drive/Components/Shares/ShareModal.jsx";
 import DownloadButton from "@/Pages/Drive/Components/DownloadButton.jsx";
 import ShowShareModalButton from "@/Pages/Drive/Components/Shares/ShowShareModalButton.jsx";
 import DeleteButton from "@/Pages/Drive/Components/DeleteButton.jsx";
 import UploadMenu from "@/Pages/Drive/Components/UploadMenu.jsx";
-
+import { usePage } from '@inertiajs/react';
 
 const FileBrowserSection = memo(({files, path, token, isAdmin, slug}) => {
 
@@ -26,7 +25,9 @@ const FileBrowserSection = memo(({files, path, token, isAdmin, slug}) => {
         handlerSelectFileMemo
     } = useSelectionUtil();
 
-    const {isSearch} = useSearchUtil();
+    const { url } = usePage();
+
+    const [isSearch, setIsSearch] = useState(false);
     const [statusMessage, setStatusMessage] = useState('')
     const [filesToShare, setFilesToShare] = useState(new Set());
     const [isShareModalOpen, setIsShareModalOpen] = useState(false);
@@ -105,7 +106,7 @@ const FileBrowserSection = memo(({files, path, token, isAdmin, slug}) => {
     }
 
     useEffect(() => {
-        console.log('useeffect filefolderrows filesCopy', filesCopy);
+        // console.log('useeffect filefolderrows filesCopy', filesCopy);
         // initial sort
         let previewAbleFilesPotential;
         if (sortDetails.current.key) {
@@ -118,14 +119,17 @@ const FileBrowserSection = memo(({files, path, token, isAdmin, slug}) => {
         }
         // Generate previewable files
         previewAbleFiles.current = previewAbleFilesPotential;
-        console.log('useeffect filefolderrows filesCopy end', filesCopy);
+        // console.log('useeffect filefolderrows filesCopy end', filesCopy);
+
+        if (url.includes('search-files')) {
+            setIsSearch(true);
+        }
 
     }, [files]);
 
     useEffect(() => {
         setFilesToShare(selectedFiles);
     }, [selectedFiles]);
-
 
     return (
         <div className=" min-h-screen rounded-md overflow-hidden px-2 ">
@@ -142,13 +146,16 @@ const FileBrowserSection = memo(({files, path, token, isAdmin, slug}) => {
                 <Breadcrumb path={path} isAdmin={isAdmin}/>
                 <div className="flex gap-x-5">
                     {selectedFiles.size > 0 &&
-                        <div  className='flex gap-x-1'>
+                        <div className='flex gap-x-1'>
                             <DownloadButton setSelectedFiles={setSelectedFiles} selectedFiles={selectedFiles}
                                             setStatusMessage={setStatusMessage} statusMessage={statusMessage}
                                             setSelectAllToggle={setSelectAllToggle}/>
-                            <ShowShareModalButton setIsShareModalOpen={setIsShareModalOpen}/>
-                            <DeleteButton setSelectedFiles={setSelectedFiles} selectedFiles={selectedFiles}
-                                          setSelectAllToggle={setSelectAllToggle}/>
+                            {isAdmin &&
+                                <>
+                                    <ShowShareModalButton setIsShareModalOpen={setIsShareModalOpen}/>
+                                    <DeleteButton setSelectedFiles={setSelectedFiles} selectedFiles={selectedFiles}
+                                                  setSelectAllToggle={setSelectAllToggle}/></>
+                            }
                         </div>
 
                     }
@@ -178,67 +185,67 @@ const FileBrowserSection = memo(({files, path, token, isAdmin, slug}) => {
                          previewAbleFiles={previewAbleFiles} slug={slug}/>
             {/*Files viewer*/}
 
-           <div className="my-12">
-               {filesCopy.length > 0 && (
-                   <>
-                       {currentViewMode === 'TileViewOne' &&
-                           <TileViewOne
-                               filesCopy={filesCopy}
-                               token={token}
-                               setStatusMessage={setStatusMessage}
-                               handleFileClick={handleFileClickM}
-                               isSearch={isSearch}
-                               sortCol={sortCol}
-                               sortDetails={sortDetails}
-                               setFilesCopy={setFilesCopy}
-                               path={path}
-                               selectedFiles={selectedFiles}
-                               handlerSelectFile={handlerSelectFileMemo}
-                               selectAllToggle={selectAllToggle}
-                               handleSelectAllToggle={handleSelectAllToggle}
-                               setIsShareModalOpen={setIsShareModalOpen}
-                               setFilesToShare={setFilesToShare}
-                               isAdmin={isAdmin}
-                               slug={slug}
-                           />
-                       }
-                       {currentViewMode === 'ListView' &&
-                           <ListView
-                               filesCopy={filesCopy}
-                               token={token}
-                               setStatusMessage={setStatusMessage}
-                               handleFileClick={handleFileClickM}
-                               isSearch={isSearch}
-                               sortCol={sortCol}
-                               sortDetails={sortDetails}
-                               setFilesCopy={setFilesCopy}
-                               path={path}
-                               selectedFiles={selectedFiles}
-                               handlerSelectFile={handlerSelectFileMemo}
-                               selectAllToggle={selectAllToggle}
-                               handleSelectAllToggle={handleSelectAllToggle}
-                               setIsShareModalOpen={setIsShareModalOpen}
-                               setFilesToShare={setFilesToShare}
-                               isAdmin={isAdmin}
-                               slug={slug}
-                           />
-                       }
-                   </>
-               )}
+            <div className="my-12">
+                {filesCopy.length > 0 && (
+                    <>
+                        {currentViewMode === 'TileViewOne' &&
+                            <TileViewOne
+                                filesCopy={filesCopy}
+                                token={token}
+                                setStatusMessage={setStatusMessage}
+                                handleFileClick={handleFileClickM}
+                                isSearch={isSearch}
+                                sortCol={sortCol}
+                                sortDetails={sortDetails}
+                                setFilesCopy={setFilesCopy}
+                                path={path}
+                                selectedFiles={selectedFiles}
+                                handlerSelectFile={handlerSelectFileMemo}
+                                selectAllToggle={selectAllToggle}
+                                handleSelectAllToggle={handleSelectAllToggle}
+                                setIsShareModalOpen={setIsShareModalOpen}
+                                setFilesToShare={setFilesToShare}
+                                isAdmin={isAdmin}
+                                slug={slug}
+                            />
+                        }
+                        {currentViewMode === 'ListView' &&
+                            <ListView
+                                filesCopy={filesCopy}
+                                token={token}
+                                setStatusMessage={setStatusMessage}
+                                handleFileClick={handleFileClickM}
+                                isSearch={isSearch}
+                                sortCol={sortCol}
+                                sortDetails={sortDetails}
+                                setFilesCopy={setFilesCopy}
+                                path={path}
+                                selectedFiles={selectedFiles}
+                                handlerSelectFile={handlerSelectFileMemo}
+                                selectAllToggle={selectAllToggle}
+                                handleSelectAllToggle={handleSelectAllToggle}
+                                setIsShareModalOpen={setIsShareModalOpen}
+                                setFilesToShare={setFilesToShare}
+                                isAdmin={isAdmin}
+                                slug={slug}
+                            />
+                        }
+                    </>
+                )}
 
-               {filesCopy.length === 0 && (
-                   <div className="py-20 w-full">
-                       <div className="flex items-center justify-center gap-x-4 ">
-                           <span className="text-xl">Empty Results</span>
-                           <button className="p-2 rounded-md bg-gray-700 hover:bg-gray-600"
-                                   onClick={() => navigate(-1)}>
-                               <StepBackIcon className={`text-gray-500 inline`} size={22}/>
-                               <span className={`mx-1`}>Go Back</span>
-                           </button>
-                       </div>
-                   </div>
-               )}
-           </div>
+                {filesCopy.length === 0 && (
+                    <div className="py-20 w-full">
+                        <div className="flex items-center justify-center gap-x-4 ">
+                            <span className="text-xl">Empty Results</span>
+                            <button className="p-2 rounded-md bg-gray-700 hover:bg-gray-600"
+                                    onClick={() => navigate(-1)}>
+                                <StepBackIcon className={`text-gray-500 inline`} size={22}/>
+                                <span className={`mx-1`}>Go Back</span>
+                            </button>
+                        </div>
+                    </div>
+                )}
+            </div>
 
 
         </div>

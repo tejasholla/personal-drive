@@ -24,15 +24,6 @@ export default function ShareFilesGuestHome({files, path, token, slug}) {
                 <div className="rounded-md gap-x-2 flex items-start relative ">
                     <AlertBox message={statusMessage}/>
                 </div>
-                <div className="rounded-md gap-x-2 flex items-start mb-2  justify-between">
-                        {selectedFiles.size > 0 &&
-                            <>
-                                <DownloadButton setSelectedFiles={setSelectedFiles} selectedFiles={selectedFiles}
-                                                setStatusMessage={setStatusMessage} statusMessage={statusMessage}
-                                                setSelectAllToggle={setSelectAllToggle} slug={slug}/>
-                            </>
-                        }
-                </div>
             </div>
             <FileBrowserSection files={files} path={path} isSearch={false} token={token}
                                 setStatusMessage={setStatusMessage} selectAllToggle={selectAllToggle}

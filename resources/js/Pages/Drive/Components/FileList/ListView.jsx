@@ -57,8 +57,7 @@ const ListView = ({
                     <SortIcon classes={`${sortDetails.key === 'file_type' ? 'text-blue-500' : 'gray'} `} />
                 </div>
             </div>
-
-            {(path || isSearch || path !== '/shared') && (
+            {(isSearch || ( path && path !== '/shared' && path !== '/drive')) && (
                 <div className="cursor-pointer hover:bg-gray-700 p-4 px-8 w-full" title="Go back"
                      onClick={() => navigate(-1)}>..</div>
             )}

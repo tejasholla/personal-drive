@@ -22,7 +22,6 @@ class HandleGuestShareMiddleware
         if (!Session::get("shared_{$slug}_authenticated")) {
             return redirect()->route('shared.password.check', ['slug' => $slug]);
         }
-        Log::info('HandleGuestShareMiddleware passed ' . $slug);
 
         return $next($request);
     }

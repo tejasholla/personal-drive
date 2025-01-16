@@ -7,3 +7,14 @@
     RewriteRule ^ index.php [L]
 </IfModule>
 SetEnv XDEBUG_SESSION_START 1
+
+# Prevent directory listing
+Options -Indexes
+
+# Protect .htaccess file
+<Files ~ "\.(htaccess|git|env)$">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Prevent access to sensitive files

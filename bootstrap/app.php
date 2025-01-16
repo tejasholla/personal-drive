@@ -8,6 +8,7 @@ use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -35,10 +36,10 @@ return Application::configure(basePath: dirname(__DIR__))
                 session()->flash('status', false);
                 return redirect()->back()->withErrors($e->errors());
             }
-            if (!$e instanceof AuthenticationException) {
+            Log::info(json_encode($e));
+            if ($e instanceof  Exception && !$e instanceof AuthenticationException) {
                 session()->flash('message', 'Something went wrong!' . $e->getMessage());
                 session()->flash('status', false);
-                return redirect()->back();
             }
         });
     })->create();

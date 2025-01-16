@@ -24,8 +24,6 @@ class HandleInertiaMiddlware extends Middleware
 
     /**
      * Define the props that are shared by default.
-     *
-     * @return array<string, mixed>
      */
     public function share(Request $request): array
     {
@@ -39,9 +37,6 @@ class HandleInertiaMiddlware extends Middleware
         }
         return [
             ...parent::share($request),
-            'auth' => [
-                'user' => $request->user(),
-            ],
             'flash' => $flashA,
         ];
     }

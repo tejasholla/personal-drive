@@ -10,7 +10,6 @@ const FileItem = React.memo(function FileItem({ file, isSearch, token, setStatus
         <div
             className={` flex items-center  hover:bg-gray-900 justify-between`}
         >
-
             <div className="flex p-4 " onClick={(e) => handleFileClick(file)}>
                 <File className={`mr-2 text-gray-300 `} size={20}/>
                 <span className="overflow-hidden text-ellipsis whitespace-nowrap max-w-2xl">

@@ -17,6 +17,7 @@ Route::middleware('auth')->group(callback: function () {
     Route::get('/admin-config', [AdminConfigController::class, 'index'])->name('admin-config');
     Route::post('/admin-config/update', [AdminConfigController::class, 'update'])->name('admin-config.update');
 
+
     // Drive routes
     Route::get('/drive/{path?}', [DriveControllers\FileManagerController::class, 'index'])
         ->where('path', '.*')
@@ -35,16 +36,13 @@ Route::middleware('auth')->group(callback: function () {
     Route::post('/share-files', [ShareControllers\ShareFilesGenController::class, 'index']);
     Route::get('/all-shares', [ShareControllers\SharedListController::class, 'index'])->name('all-shares');
 
-
-    // Test
-    Route::get('test', [DriveControllers\TestController::class, 'index']);
 });
 
 // share guest home
 Route::get('/shared/{slug}/{path?}', [ShareControllers\ShareFilesGuestController::class, 'index'])->where(
     'path',
     '.*'
-)->middleware([HandleGuestShareMiddleware::class]);
+)->middleware([HandleGuestShareMiddleware::class])->name('shared');
 
 // admin or shared
 Route::get('/fetch-file/{id}/{slug?}', [DriveControllers\FetchFileController::class, 'index'])
@@ -55,27 +53,18 @@ Route::post('/download-files', [DriveControllers\DownloadController::class, 'ind
     ->middleware([HandleAuthOrGuestMiddleware::class]);
 
 //public for shared
-Route::post('/shared-check-password', [ShareFilesGuestController::class, 'checkPassword']);
+Route::post('/shared-check-password', [ShareFilesGuestController::class, 'checkPassword'])->middleware(['throttle:shared']);
 Route::get('/shared-password/{slug}', [ShareFilesGuestController::class, 'passwordPage'])
-    ->name('shared.password.check');
+    ->name('shared.password.check')->middleware(['throttle:shared']);
+
+//Route::get('/', fn () => to_route('drive'));
+Route::fallback(fn () => to_route('rejected'));
+
+Route::get('/rejected', fn () => Inertia::render('Rejected'))->name('rejected');
 
 
-Route::get(
-    '/rejected',
-    function () {
-        return Inertia::render('Rejected');
-    }
-)->name('rejected');
-
-
+// Test
+Route::get('test', [DriveControllers\TestController::class, 'index']);
 Route::get('/testdownload', [DriveControllers\DownloadController::class, 'test']);
-
-Route::get('/', function () {
-    return to_route('drive');
-});
-Route::fallback(function () {
-    return to_route('rejected');
-});
-
 
 require __DIR__ . '/auth.php';
