@@ -18,10 +18,8 @@ export default function AdminConfig({
         php_post_max_size: php_post_max_size,
         php_max_file_uploads: php_max_file_uploads
     })
-    console.log('formData ', formData);
 
     function handleChange(e) {
-        console.log('handleChange');
         setFormData(oldValues => ({...oldValues, [e.target.id]: e.target.value}))
     }
 
@@ -81,10 +79,12 @@ export default function AdminConfig({
                         </div>
                     </form>
                     <div>
-                        <p className=" text-blue-200 text-xl font-bold mb-2 ">
-                            PHP Upload Size Limits
-                        </p>
+                        <h2 className=" text-blue-200 text-2xl font-bold mt-2 mb-2 ">Server Settings</h2>
+                        <p className=" mb-6 ">PHP's default upload limits may be too less for most people. Please configure your server accordingly</p>
 
+                        <p className=" text-blue-200 text-lg font-bold mt-10 mb-5  ">
+                            Current Server PHP Upload Size Limits
+                        </p>
                         <div className=" mb-0 flex  mx-auto items-baseline gap-x-2 w-full">
                             <p className="  font-bold ">
                                 Max upload size:
@@ -110,9 +110,7 @@ export default function AdminConfig({
                             </p>
                         </div>
 
-                        <p className="text-lg text-blue-200 mt-10 mb-5 font-bold">Ensure PHP settings are
-
-                            configured correctly</p>
+                        <p className="text-lg text-blue-200 mt-10 mb-5 font-bold">Common methods of configuring:</p>
                         <div className="flex flex-col ">
                             If you are on a VPS and using php-fpm. Edit the www.conf file. restart php-fpm
                             <pre className="mt-1 mb-5 text-sm text-gray-400">
@@ -140,7 +138,7 @@ php_value max_file_uploads 10000`}
 
                         <h2 className=" text-blue-200 text-xl font-bold mb-2 ">Refresh Database and cancel all
                             Shares </h2>
-                        <p className="mb-4">This is a 'reset' option, and will reindex all files. Remove all
+                        <p className="mb-4">This is a 'reset' option, and will reindex all files, remove all
                             shares</p>
                         <RefreshButton/>
 

@@ -23,7 +23,6 @@ const TileViewOne = ({
                          isAdmin,
                          slug,
                      }) => {
-    console.log('TileViewOne ')
 
     useEffect(() => {
         useThumbnailGenerator(filesCopy);
@@ -43,7 +42,7 @@ const TileViewOne = ({
                     <label className=" hover:cursor-pointer">Select All</label>
                 </div>
                 <div className="hover:cursor-pointer flex items-center gap-x-2">
-                    <label>Sort by:</label>
+                    <label></label>
                     <button
                         className={`p-1 mx-1 rounded-md bg-gray-700 hover:bg-gray-500  ${sortDetails.key === 'filename' ? 'bg-gray-900 border border-gray-500/80 text-blue-400' : ''}`}
                         onClick={(e) => handleSortClick(e, 'filename')}

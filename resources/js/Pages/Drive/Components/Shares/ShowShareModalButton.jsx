@@ -1,4 +1,5 @@
-import {ShareIcon} from "lucide-react";
+import {ShareIcon, Trash2Icon} from "lucide-react";
+import Button from "@/Pages/Drive/Components/Generic/Button.jsx";
 
 
 const ShowShareModalButton = ({setIsShareModalOpen, classes = '', setFilesToShare, filesToShare}) => {
@@ -7,11 +8,11 @@ const ShowShareModalButton = ({setIsShareModalOpen, classes = '', setFilesToShar
         setFilesToShare(filesToShare);
     }
     return (
-        <button className={`p-2 rounded-md flex items-center w-auto bg-red-950  ${classes}`}
-                onClick={() => handleShareButton()}>
+        <Button classes={`border border-blue-900 text-blue-200 hover:bg-blue-950 active:bg-gray-900 ${classes}`} onClick={() => handleShareButton()}>
             <ShareIcon className={`text-blue-500 inline`} size={22}/>
             {!classes && <span className={`mx-1`}>Share</span>}
-        </button>);
+        </Button>
+    );
 };
 
 export default ShowShareModalButton;

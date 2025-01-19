@@ -22,11 +22,9 @@ function useSelectionUtil( ) {
     function handleSelectAllToggle(files) {
         // if false -> select all files | else -> deselect all files
         if (selectAllToggle) {
-            // console.log('selectAllMode.current', selectAllToggle);
             setSelectedFiles(new Set());
             setSelectAllToggle(false);
         } else {
-            // console.log('selectAllMode.current', selectAllToggle);
             setSelectedFiles(new Set(files.map(file => file.id)));
             setSelectAllToggle(true);
         }

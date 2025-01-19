@@ -13,7 +13,6 @@ const MediaViewer = ({
                          previewAbleFiles,
                          slug
                      }) => {
-    // console.log('previewAbleFiles ');
     const [isActive, setIsActive] = useState(false);
     const timeoutRef = useRef(null);
     let currentFileIndex = previewAbleFiles.current.findIndex(file => file.id === selectedid);

@@ -12,7 +12,6 @@ const ShareModal = ({
                         setSelectAllToggle,
                     }) => {
 
-    console.log('sharemodal selectedFiles ', selectedFiles);
     let formDefaultData = {password: '', expiry: 7, slug: ''};
     const [formData, setFormData] = useState({...formDefaultData});
     const [sharedLink, setSharedLink] = useState('');
@@ -26,7 +25,6 @@ const ShareModal = ({
     };
 
     function handleCloseShareModal(status) {
-        console.log('handleCloseShareModal ');
         setIsShareModalOpen(status)
         setSelectedFiles?.(new Set());
         setSelectAllToggle?.(false);
@@ -53,7 +51,6 @@ const ShareModal = ({
             only: ['flash', 'errors'],
             onSuccess: (response) => {
                 if (response.props?.flash?.shared_link) {
-                    console.log('response.props?.flash?.shared_link ', response.props?.flash?.shared_link);
                     setSharedLink(response.props.flash.shared_link);
                 }
                 // show link from response and its associated controls like copy. also button to see all shares

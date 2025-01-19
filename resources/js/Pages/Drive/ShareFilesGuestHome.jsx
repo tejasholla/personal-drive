@@ -7,7 +7,6 @@ import ShowShareModalButton from "@/Pages/Drive/Components/Shares/ShowShareModal
 import {useState} from "react";
 
 export default function ShareFilesGuestHome({files, path, token, slug}) {
-    console.log('render GuestHome files', files);
     const {
         selectAllToggle,
         handleSelectAllToggle,

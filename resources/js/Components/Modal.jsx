@@ -12,7 +12,6 @@ export default function Modal({
     closeable = true,
     onClose = () => {},
 }) {
-    console.log('modal ', show)
     const close = () => {
         if (closeable) {
             onClose();

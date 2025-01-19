@@ -18,7 +18,6 @@ const FolderItem = React.memo(function FolderItem({
                                                       path,
                                                       slug
                                                   }) {
-    // console.log('Folderitem render')
 
     return (
         <div

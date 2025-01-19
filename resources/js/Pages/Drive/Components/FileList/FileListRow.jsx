@@ -16,7 +16,6 @@ const FileListRow = React.memo(function FileListRow({
                                                         path,
                                                         slug
                                                     }) {
-    // console.log('filelistrow', isSelected);
 
         return (
             <div  className="cursor-pointer hover:bg-gray-700 group flex flex-row w-full">

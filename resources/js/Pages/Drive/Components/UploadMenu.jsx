@@ -9,7 +9,6 @@ import {UploadCloudIcon} from "lucide-react";
 
 
 const UploadMenu = ({path, setStatusMessage, files}) => {
-    // console.log('render upload menu ');
     const [isMenuOpen, setIsMenuOpen] = useState(false)
     const [uploadedFiles, setUploadedFiles] = useState([]);
 
@@ -30,7 +29,6 @@ const UploadMenu = ({path, setStatusMessage, files}) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const uploadFile = async (event, isFolder = false) => {
-        console.log('upload folder called');
         let selectedFileForUpload = Array.from(event.target.files || []);
         if (!selectedFileForUpload.length) return;
 
@@ -46,7 +44,6 @@ const UploadMenu = ({path, setStatusMessage, files}) => {
         router.post('/upload', formData, {
             only: ['files', 'flash'],
             onSuccess: (response) => {
-                console.log('response on successs ', response);
                 setUploadedFiles(selectedFileForUpload);
             },
             onFinish: () => {
@@ -58,7 +55,7 @@ const UploadMenu = ({path, setStatusMessage, files}) => {
     }
 
     useEffect(() => {
-        if (uploadedFiles.length > 0 ) {
+        if (uploadedFiles.length > 0) {
             useThumbnailGenerator(files);
         }
     }, [uploadedFiles]);
@@ -70,7 +67,7 @@ const UploadMenu = ({path, setStatusMessage, files}) => {
                         setIsMenuOpen(!isMenuOpen)
                     }}
             >
-                <UploadCloudIcon />
+                <UploadCloudIcon/>
                 New
             </button>
             {isMenuOpen && (
@@ -103,8 +100,25 @@ const UploadMenu = ({path, setStatusMessage, files}) => {
                     </div>
                 </div>
             )}
-
             <CreateFolderModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} path={path}/>
+
+            <div className="relative inline-block">
+                <input
+                    type="file"
+                    ref={fileInputRef}
+                    className="hidden"
+                    onChange={(e) => uploadFile(e)}
+                    multiple
+                />
+                <input
+                    type="file"
+                    ref={folderInputRef}
+                    className="hidden"
+                    onChange={(e) => uploadFile(e, true)}
+                    webkitdirectory="true"
+                    directory="true"
+                />
+            </div>
 
         </div>
     )

@@ -5,17 +5,14 @@ import {usePage} from "@inertiajs/react";
 const AlertBox = React.memo(function AlertBox({message}) {
     let icon;
     let bgStatus = 'bg-gray-500';
-
     let {flash, errors} = usePage().props;
+    // flash.message = 'f';
     const [alertBoxData, setAlertBoxData] = useState(flash);
-    // console.log('message,type, alertBoxData', message, alertBoxData)
     // Effect to update messageToPrint when props change
     useEffect(() => {
         if (!flash.message && Object.keys(errors).length === 0 && message) {
-            // console.log('message in useeffect download flash', message, status, flash);
             let alertBoxDataCopy = {message: message, status: true}
             setAlertBoxData(alertBoxDataCopy);
-            // console.log('alertBoxDataCopy mess', alertBoxDataCopy)
         } else {
             let alertBoxDataCopy = Object.assign({}, flash);
             ;
@@ -29,7 +26,7 @@ const AlertBox = React.memo(function AlertBox({message}) {
         }
         const timer = setTimeout(() => {
             setAlertBoxData({message: '', status: true});
-        }, 5000);
+        }, 45000);
 
     }, [flash, errors, message]);
 

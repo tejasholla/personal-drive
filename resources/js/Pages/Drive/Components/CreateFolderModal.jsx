@@ -14,9 +14,6 @@ const CreateFolderModal = ({isModalOpen, setIsModalOpen, path  }) => {
         setIsModalOpen(false);
         router.post('/create-folder', formData, {
             only: ['files', 'flash'],
-            onSuccess: (response) => {
-                console.log('response on successs ' , response);
-            },
         });
     }
 

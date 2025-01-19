@@ -2,7 +2,6 @@ import {router} from '@inertiajs/react'
 
 const useThumbnailGenerator = (files) => {
     const generateThumbnails = async (ids) => {
-        // console.log('generateThumbnails ', ids);
         try {
             await router.post('/gen-thumbs', {ids});
         } catch (error) {
@@ -14,7 +13,6 @@ const useThumbnailGenerator = (files) => {
     const thumbnailIds = files
         .filter(file => !file.has_thumbnail && ['image', 'video'].includes(file.file_type))
         .map(file => file.id);
-    console.log('generating thumb for ', files, thumbnailIds);
     if (thumbnailIds.length > 0) {
         generateThumbnails(thumbnailIds);
     }

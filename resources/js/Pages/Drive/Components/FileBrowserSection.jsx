@@ -69,7 +69,6 @@ const FileBrowserSection = memo(({files, path, token, isAdmin, slug}) => {
     let sortDetails = useRef({key: '', order: 'desc'});
 
     function sortArrayByKey(arr, key, direction) {
-        console.log('sortby key ', arr);
         return [...arr].sort((a, b) => {
             const valA = a[key]?.toLowerCase?.() || a[key] || '';
             const valB = b[key]?.toLowerCase?.() || b[key] || '';
@@ -106,7 +105,6 @@ const FileBrowserSection = memo(({files, path, token, isAdmin, slug}) => {
     }
 
     useEffect(() => {
-        // console.log('useeffect filefolderrows filesCopy', filesCopy);
         // initial sort
         let previewAbleFilesPotential;
         if (sortDetails.current.key) {
@@ -119,7 +117,6 @@ const FileBrowserSection = memo(({files, path, token, isAdmin, slug}) => {
         }
         // Generate previewable files
         previewAbleFiles.current = previewAbleFilesPotential;
-        // console.log('useeffect filefolderrows filesCopy end', filesCopy);
 
         if (url.includes('search-files')) {
             setIsSearch(true);
@@ -138,18 +135,17 @@ const FileBrowserSection = memo(({files, path, token, isAdmin, slug}) => {
                         setSelectedFiles={setSelectedFiles} selectedFiles={filesToShare}
                         setSelectAllToggle={setSelectAllToggle} path={path}/>
 
-            <div className="rounded-md gap-x-2 flex items-start relative ">
-                <AlertBox message={statusMessage}/>
-            </div>
             {/*breadcrumb bar*/}
-            <div className="px-3 rounded-md gap-x-2 flex items-start mb-3  justify-between">
+            <div className="px-3 rounded-md gap-x-2 flex items-start my-6  justify-between">
+                <AlertBox message={statusMessage}/>
+
                 <Breadcrumb path={path} isAdmin={isAdmin}/>
                 <div className="flex gap-x-5">
                     {selectedFiles.size > 0 &&
                         <div className='flex gap-x-1'>
                             <DownloadButton setSelectedFiles={setSelectedFiles} selectedFiles={selectedFiles}
                                             setStatusMessage={setStatusMessage} statusMessage={statusMessage}
-                                            setSelectAllToggle={setSelectAllToggle}/>
+                                            setSelectAllToggle={setSelectAllToggle} slug={slug}/>
                             {isAdmin &&
                                 <>
                                     <ShowShareModalButton setIsShareModalOpen={setIsShareModalOpen}/>

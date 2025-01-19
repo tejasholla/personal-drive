@@ -14,7 +14,6 @@ class HandleGuestShareMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         $slug = $request->route('slug') ?? $request->input('slug');
-//        Log::info('slug in handle guest share ' . $slug);
         $share = Share::whereBySlug($slug)->first();
         if (!$share || !$share->enabled) {
             return redirect()->route('rejected');

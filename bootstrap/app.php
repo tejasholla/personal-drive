@@ -36,7 +36,6 @@ return Application::configure(basePath: dirname(__DIR__))
                 session()->flash('status', false);
                 return redirect()->back()->withErrors($e->errors());
             }
-            Log::info(json_encode($e));
             if ($e instanceof  Exception && !$e instanceof AuthenticationException) {
                 session()->flash('message', 'Something went wrong!' . $e->getMessage());
                 session()->flash('status', false);

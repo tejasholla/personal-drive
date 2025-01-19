@@ -62,7 +62,7 @@ const DownloadButton = ({setSelectedFiles, selectedFiles, classes, setStatusMess
 
     };
     return (
-        <Button classes={`bg-green-800 ${classes} ${statusMessage ? 'bg-gray-700 text-green-100 cursor-not-allowed' : 'bg-blue-700 hover:bg-blue-600 active:bg-blue-700'}`}
+        <Button classes={`border border-green-700 text-green-200 hover:bg-green-950 active:bg-gray-900 ${classes} ${statusMessage ? 'cursor-not-allowed' : ''}`}
                 disabled={statusMessage}
                 onClick={handleDownload}
         >
