@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\File;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -13,16 +12,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-
         User::factory()->create([
             'name' => 'The admin',
-            'email' => 'test@example.com',
+            'email' => 'demo@personaldrive.com',
             'is_admin' => 1,
-            'password' => bcrypt('1234'),
+            'password' => bcrypt('peace'),
         ]);
-
-
     }
-    
-    
 }
