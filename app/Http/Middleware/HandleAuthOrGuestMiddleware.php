@@ -17,5 +17,6 @@ class HandleAuthOrGuestMiddleware
         } catch (\Illuminate\Auth\AuthenticationException $e) {
             // If not authenticated, delegate to the HandleGuestShareRequests middleware
             return app(HandleGuestShareMiddleware::class)->handle($request, $next);
-        }    }
+        }
+    }
 }

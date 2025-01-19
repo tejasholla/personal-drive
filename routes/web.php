@@ -35,7 +35,6 @@ Route::middleware('auth')->group(callback: function () {
     Route::post('/delete-share', [ShareControllers\ShareFilesModController::class, 'delete']);
     Route::post('/share-files', [ShareControllers\ShareFilesGenController::class, 'index']);
     Route::get('/all-shares', [ShareControllers\SharedListController::class, 'index'])->name('all-shares');
-
 });
 
 // share guest home
@@ -53,14 +52,17 @@ Route::post('/download-files', [DriveControllers\DownloadController::class, 'ind
     ->middleware([HandleAuthOrGuestMiddleware::class]);
 
 //public for shared
-Route::post('/shared-check-password', [ShareFilesGuestController::class, 'checkPassword'])->middleware(['throttle:shared']);
+Route::post(
+    '/shared-check-password',
+    [ShareFilesGuestController::class, 'checkPassword']
+)->middleware(['throttle:shared']);
 Route::get('/shared-password/{slug}', [ShareFilesGuestController::class, 'passwordPage'])
     ->name('shared.password.check')->middleware(['throttle:shared']);
 
-//Route::get('/', fn () => to_route('drive'));
-Route::fallback(fn () => to_route('rejected'));
+Route::get('/', fn () => to_route('login'));
+Route::fallback(fn() => to_route('rejected'));
 
-Route::get('/rejected', fn () => Inertia::render('Rejected'))->name('rejected');
+Route::get('/rejected', fn() => Inertia::render('Rejected'))->name('rejected');
 
 
 // Test
