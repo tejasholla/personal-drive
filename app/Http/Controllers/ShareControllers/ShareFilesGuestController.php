@@ -57,7 +57,7 @@ class ShareFilesGuestController
             throw ShareFileException::couldNotShare();
         }
 
-        if (Hash::check($password, $share->password) && $share->created_at->addDays($share->expiry)->gt(now())) {
+        if (Hash::check($password, $share->password)) {
             // Set session authenticated key
             Session::put("shared_{$slug}_authenticated", true);
             return redirect("/shared/{$slug}");
