@@ -18,7 +18,7 @@ class HandleGuestShareMiddleware
         if (!$share || !$share->enabled) {
             return redirect()->route('rejected');
         }
-        if (!Session::get("shared_{$slug}_authenticated")) {
+        if ($share->password && !Session::get("shared_{$slug}_authenticated")) {
             return redirect()->route('shared.password.check', ['slug' => $slug]);
         }
 
