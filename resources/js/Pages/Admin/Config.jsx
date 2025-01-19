@@ -110,7 +110,7 @@ export default function AdminConfig({
                             </p>
                         </div>
 
-                        <p className="text-lg text-blue-200 mt-10 mb-5 font-bold">Common methods of configuring:</p>
+                        <p className="text-lg text-blue-200 mt-10 mb-5 font-bold">Configure :</p>
                         <div className="flex flex-col ">
                             If you are on a VPS and using php-fpm. Edit the www.conf file. restart php-fpm
                             <pre className="mt-1 mb-5 text-sm text-gray-400">
@@ -130,6 +130,12 @@ max_file_uploads = 10000`}
                                 {`php_value upload_max_filesize 64M
 php_value post_max_size 64M
 php_value max_file_uploads 10000`}
+                            </pre>
+                            If you are running nginx, client_max_body_size param may need to be increased
+                            <pre className="mt-1 mb-5 text-sm text-gray-400">
+                                {`http {
+client_max_body_size 100M;
+}`}
                             </pre>
                         </div>
                     </div>
