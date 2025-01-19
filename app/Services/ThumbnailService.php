@@ -92,7 +92,7 @@ class ThumbnailService
     private function imageResize(string $privateFilePath, string $fullFileThumbnailPath, int $size): bool
     {
         try {
-            Image::useImageDriver(ImageDriver::Imagick)->loadFile($privateFilePath)
+            Image::useImageDriver(ImageDriver::Gd)->loadFile($privateFilePath)
                 ->width($size)
                 ->height($size)
                 ->save($fullFileThumbnailPath);
