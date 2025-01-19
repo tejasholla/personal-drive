@@ -25,7 +25,7 @@ const FileTileViewCard = React.memo(function FileTileViewCard({
 
         return (
             <div
-                className={`group relative overflow-hidden rounded-lg border border-gray-800 bg-gray-900/50 p-3 transition-all duration-200 hover:border-gray-700 hover:shadow-lg w-[295px] flex flex-col justify-between  ${isSelected ? 'bg-gray-950' : ''} `}
+                className={`group relative overflow-hidden rounded-lg border border-gray-800 bg-gray-900/50 p-3 transition-all duration-200 hover:border-gray-700 hover:shadow-lg w-[285px] flex flex-col justify-between  ${isSelected ? 'bg-gray-950' : ''} `}
             >
 
                 <div className="">
@@ -72,15 +72,13 @@ const FileTileViewCard = React.memo(function FileTileViewCard({
 
                     {file.is_dir === 1 &&
                         <div
-                            className="flex cursor-pointer justify-center pb-3 transition-transform duration-200  h-[220px]"
+                            className="flex justify-center pb-3 transition-transform duration-200  "
                         >
                             <Link
                                 href={path + '/' + file.filename}
-                                className={`flex items-center `} preserveScroll
+                                className={`flex items-center  cursor-pointer h-[220px] w-[220px] justify-center`} preserveScroll
                             >
                                 <Folder className={`mr-2 text-yellow-600`} size={120}/>
-                                path {path} ||
-                                file.public_path {file.public_path}
                             </Link>
                         </div>
                     }

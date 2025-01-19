@@ -11,6 +11,7 @@ class FileDeleteService
     public function deleteFiles(Builder $filesInDB, string $rootPath): int
     {
         $filesDeleted = 0;
+
         foreach ($filesInDB->get() as $file) {
             $privateFilePathName = $file->getPrivatePathNameForFile();
             if (!file_exists($privateFilePathName)) {
@@ -23,7 +24,6 @@ class FileDeleteService
                 $file->deleteFromPublicPath()
             ) {
                 File::deleteDirectory($privateFilePathName);
-
                 $filesDeleted++;
             }
 
@@ -32,7 +32,6 @@ class FileDeleteService
                 $filesDeleted++;
             }
         }
-
         return $filesDeleted;
     }
 

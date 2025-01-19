@@ -40,10 +40,11 @@ export default function Header({  }) {
                                 <div className="relative group">
                                     <button
                                         className="py-2.5 peer rounded font-semibold">
-                                        <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor"
-                                             viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                                  d="M19 9l-7 7-7-7"></path>
+                                        <svg className="w-6 h-6 rotate-90"
+                                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                             stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                  d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"/>
                                         </svg>
                                     </button>
                                     <div

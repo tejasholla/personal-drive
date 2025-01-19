@@ -67,7 +67,7 @@ const TileViewOne = ({
                     </button>
                 </div>
             </div>
-            <div className="w-full flex flex-wrap gap-4 ">
+            <div className="w-full flex flex-wrap gap-5 ">
                 {filesCopy.map((file) => (
                     <FileTileViewCard
                         key={file.id}
