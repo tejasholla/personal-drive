@@ -29,7 +29,7 @@ class LocalFileStatsService
                 'public_path' => $publicPath,
                 'private_path' => $itemPrivatePathname,
                 'size' => '',
-                'user_id' => Auth::user()->id ?? 1, // Set the appropriate user ID
+                'user_id' => Auth::user()?->id ?? 1,
             ]);
         } catch (\Exception $e) {
             throw  UploadFileException::nonewdir();
