@@ -76,7 +76,7 @@ class LocalFileStatsService
                 'public_path' => $publicPathname,
                 'private_path' => $itemPrivatePathname,
                 'size' => $item->isDir() ? $dirSizes[$item->getPathname()] ?? '' : $item->getSize(),
-                'user_id' => Auth::user()->id, // Set the appropriate user ID
+                'user_id' => Auth::user()?->id ?? 1, // Set the appropriate user ID
                 'file_type' => $this->getFileType($item)
             ];
             // Insert in chunks of 100
