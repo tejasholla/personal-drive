@@ -73,13 +73,13 @@ class ThumbnailService
     public function getFullFileThumbnailPath(LocalFile $file): string
     {
         $thumbnailPathDir = $this->pathService->getThumbnailDirPath();
-        $fileThumbnailDirPath = $thumbnailPathDir . DIRECTORY_SEPARATOR . $file->public_path;
+        $fileThumbnailDirPath = $thumbnailPathDir . ($file->public_path ? DIRECTORY_SEPARATOR . $file->public_path : '');
 
         if (!file_exists($fileThumbnailDirPath)) {
             UploadFileHelper::makeFolder($fileThumbnailDirPath);
         }
         $imageExt = $file->file_type === 'video' ? $this->imageExt : '';
-        return $thumbnailPathDir . DIRECTORY_SEPARATOR . $file->getPublicPathname() . $imageExt;
+        return $thumbnailPathDir .  ($file->public_path ? DIRECTORY_SEPARATOR :''). $file->getPublicPathname() . $imageExt;
     }
 
     public function resizeImageUpdateHasThumbnail(

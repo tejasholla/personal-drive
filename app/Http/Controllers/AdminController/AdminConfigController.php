@@ -34,6 +34,7 @@ class AdminConfigController extends Controller
     public function update(AdminConfigRequest $request): RedirectResponse
     {
         $storagePath = $request->validated('storage_path');
+        $storagePath = trim(rtrim($storagePath, '/'));
         $updateStoragePathRes = $this->adminConfigService->updateStoragePath($storagePath);
         session()->flash('message', $updateStoragePathRes['message']);
         session()->flash('status', $updateStoragePathRes['status']);
