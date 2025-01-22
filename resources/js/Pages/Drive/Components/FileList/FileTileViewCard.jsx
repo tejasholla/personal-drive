@@ -75,7 +75,7 @@ const FileTileViewCard = React.memo(function FileTileViewCard({
                             className="flex justify-center pb-3 transition-transform duration-200  "
                         >
                             <Link
-                                href={path + '/' + file.filename}
+                                href={(isSearch ? '/drive/' + (file.public_path ? file.public_path + '/':'') : path + '/') + file.filename}
                                 className={`flex items-center  cursor-pointer h-[220px] w-[220px] justify-center`} preserveScroll
                             >
                                 <Folder className={`mr-2 text-yellow-600`} size={120}/>
