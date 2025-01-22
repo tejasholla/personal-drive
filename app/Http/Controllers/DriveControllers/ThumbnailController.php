@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\DriveControllers;
 
-use App\Helpers\EncryptHelper;
-use App\Helpers\ResponseHelper;
 use App\Http\Requests\DriveRequests\GetThumbnailRequest;
 use App\Services\ThumbnailService;
 use App\Traits\FlashMessages;
-use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
+use Inertia\Inertia;
 
 class ThumbnailController
 {
@@ -19,17 +19,28 @@ class ThumbnailController
     {
         $this->thumbnailService = $thumbnailService;
     }
-
     public function update(GetThumbnailRequest $request)
     {
         $fileIds = $request->validated('ids');
-        if (!$fileIds) {
-            return $this->error('Could not generate thumbnails');
-        }
-        $thumbsGenerated = $this->thumbnailService->genThumbnailsForFileIds($fileIds);
-        if ($thumbsGenerated === 0) {
-            return $this->error('No thumbnails generated. No valid files found');
-        }
-    }
 
+        if (!$fileIds) {
+            Log::info('!$fileIds');
+            return response()->json([
+                'message' => 'Could not generate thumbnails',
+                'status' => false,
+            ]);
+        }
+
+        $thumbsGenerated = $this->thumbnailService->genThumbnailsForFileIds($fileIds);
+        Log::info('$thumbsGenerated: ' . $thumbsGenerated);
+
+        if ($thumbsGenerated === 0) {
+            return response()->json([
+                'message' => 'No thumbnails generated. No valid files found',
+                'status' => false,
+            ]);
+        }
+
+//        return redirect()->back();
+    }
 }

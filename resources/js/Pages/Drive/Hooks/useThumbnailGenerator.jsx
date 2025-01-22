@@ -3,7 +3,8 @@ import {router} from '@inertiajs/react'
 const useThumbnailGenerator = (files) => {
     const generateThumbnails = async (ids) => {
         try {
-            await router.post('/gen-thumbs', {ids});
+            const response = await axios.post('/gen-thumbs', { ids });
+            console.log('Thumbnails generated successfully:', response.data);
         } catch (error) {
             console.error('Error generating thumbnails:', error);
         }

@@ -7,7 +7,9 @@ use App\Helpers\UploadFileHelper;
 use App\Models\LocalFile;
 use FFMpeg\Coordinate\TimeCode;
 use FFMpeg\FFMpeg;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 use Spatie\Image\Enums\ImageDriver;
 use Spatie\Image\Image;
 
@@ -31,7 +33,7 @@ class ThumbnailService
         return $this->generateThumbnailsForFiles($filesToGenerateFor);
     }
 
-    public function getGeneratableFiles(array $fileIds)
+    public function getGeneratableFiles(array $fileIds): Builder
     {
         return LocalFile::getByIds($fileIds)->whereIn('file_type', ['video', 'image']);
     }
