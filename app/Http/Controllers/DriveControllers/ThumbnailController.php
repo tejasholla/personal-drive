@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\DriveControllers;
 
+use App\Helpers\ResponseHelper;
 use App\Http\Requests\DriveRequests\GetThumbnailRequest;
 use App\Services\ThumbnailService;
 use App\Traits\FlashMessages;
@@ -25,20 +26,14 @@ class ThumbnailController
 
         if (!$fileIds) {
             Log::info('!$fileIds');
-            return response()->json([
-                'message' => 'Could not generate thumbnails',
-                'status' => false,
-            ]);
+            return ResponseHelper::json('Could not generate thumbnails', false);
         }
 
         $thumbsGenerated = $this->thumbnailService->genThumbnailsForFileIds($fileIds);
         Log::info('$thumbsGenerated: ' . $thumbsGenerated);
 
         if ($thumbsGenerated === 0) {
-            return response()->json([
-                'message' => 'No thumbnails generated. No valid files found',
-                'status' => false,
-            ]);
+            return ResponseHelper::json('No thumbnails generated. No valid files found', false);
         }
 
 //        return redirect()->back();

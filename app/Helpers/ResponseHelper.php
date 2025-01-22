@@ -6,12 +6,12 @@ use Illuminate\Http\JsonResponse;
 
 class ResponseHelper
 {
-    public static function json(string $message, bool $ok = true): JsonResponse
+    public static function json(string $message, bool $status = true): JsonResponse
     {
         return response()->json([
-            'ok' => $ok,
+            'status' => $status,
             'message' => $message
-        ], $ok ? 200 : 400);
+        ], $status ? 200 : 400);
     }
 
 }
