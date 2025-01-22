@@ -38,6 +38,9 @@ const MediaViewer = ({
         if (event.key === 'ArrowRight') {
             nextClick();
         }
+        if (event.key === 'Escape') {
+            setIsModalOpen(false);
+        }
     }, [prevClick, nextClick]);
 
     useEffect(() => {
@@ -59,7 +62,7 @@ const MediaViewer = ({
         }
         timeoutRef.current = setTimeout(() => {
             setIsActive(false);
-        }, 2000);
+        }, 10000);
     }
 
 
