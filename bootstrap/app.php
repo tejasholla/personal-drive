@@ -1,5 +1,6 @@
 <?php
 
+use App\Exceptions\PersonalDriveExceptions\FetchFileException;
 use App\Exceptions\PersonalDriveExceptions\PersonalDriveException;
 use App\Http\Middleware\HandleInertiaMiddlware;
 use Illuminate\Auth\AuthenticationException;
@@ -26,6 +27,9 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function (Throwable $e) {
+            if ($e instanceof FetchFileException) {
+                return redirect()->route('rejected', ['message' => $e->getMessage()]);
+            }
             if ($e instanceof PersonalDriveException) {
                 session()->flash('message', $e->getMessage());
                 session()->flash('status', false);

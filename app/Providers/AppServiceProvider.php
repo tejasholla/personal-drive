@@ -31,7 +31,13 @@ class AppServiceProvider extends ServiceProvider
 
         RateLimiter::for('login', function (Request $request) {
             return [
-                Limit::perMinute(5),
+                Limit::perMinute(5)->response(function (Request $request, array $headers) {
+//                    session()->flash('message', 'Too many requests');
+//                    return redirect()->back();
+                    return redirect()->route('rejected', ['message' => 'Too many requests.']);
+
+//                    return response('Too Many requests..', 429, $headers);
+                }),
             ];
         });
 

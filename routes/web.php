@@ -7,6 +7,7 @@ use App\Http\Controllers\ShareControllers;
 use App\Http\Controllers\ShareControllers\ShareFilesGuestController;
 use App\Http\Middleware\HandleAuthOrGuestMiddleware;
 use App\Http\Middleware\HandleGuestShareMiddleware;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -62,8 +63,11 @@ Route::get('/shared-password/{slug}', [ShareFilesGuestController::class, 'passwo
 Route::get('/', fn () => to_route('login'));
 Route::fallback(fn() => to_route('rejected'));
 
-Route::get('/rejected', fn() => Inertia::render('Rejected'))->name('rejected');
-
+Route::get('/rejected', fn(Request $request) =>
+Inertia::render('Rejected', [
+    'message' => $request->query('message', 'Default rejection message')
+])
+)->name('rejected');
 
 // Test
 Route::get('test', [DriveControllers\TestController::class, 'index']);
