@@ -32,7 +32,7 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
-        return redirect()->intended(route('drive', absolute: false));
+        return redirect(route('drive', absolute: false));
     }
 
     /**
