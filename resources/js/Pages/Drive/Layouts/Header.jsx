@@ -11,7 +11,7 @@ export default function Header({  }) {
             <nav className=" dark:bg-gray-800">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex h-16 justify-between ">
-                        <div className="hidden space-x-8 sm:-my-px px-3 sm:flex">
+                        <div className="space-x-4 sm:space-x-8 sm:-my-px px-3 flex">
                             <NavLink
                                 href={route('drive')}
                                 active={route().current('drive')}

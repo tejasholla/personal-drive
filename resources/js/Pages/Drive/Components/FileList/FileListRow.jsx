@@ -30,7 +30,7 @@ const FileListRow = React.memo(function FileListRow({
                         }}
                     />
                 </div>
-                <div className="w-full">
+                <div className="w-full overflow-hidden">
                     {file.is_dir ? (
                         <FolderItem
                             file={file}
