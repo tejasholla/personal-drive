@@ -46,6 +46,11 @@ const UploadMenu = ({path, setStatusMessage, files}) => {
             onSuccess: (response) => {
                 setUploadedFiles(selectedFileForUpload);
             },
+            onError: (error) => {
+                if (error.response?.status === 413) {
+                    setStatusMessage('File too large for server to handle. Please upload a smaller file.');
+                }
+            },
             onFinish: () => {
                 setStatusMessage('');
                 setIsMenuOpen(false);

@@ -65,7 +65,7 @@ Route::fallback(fn() => to_route('rejected'));
 
 Route::get('/rejected', fn(Request $request) =>
 Inertia::render('Rejected', [
-    'message' => $request->query('message', 'Default rejection message')
+    'message' => $request->query('message', 'No Permission or error')
 ])
 )->name('rejected');
 
