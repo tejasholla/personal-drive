@@ -160,13 +160,13 @@ const FileBrowserSection = memo(({files, path, token, isAdmin, slug}) => {
                     }
                     <div>
                         <button
-                            className={`p-2 mx-1 rounded-md ${currentViewMode === 'TileViewOne' ? 'bg-gray-900 border border-gray-700' : 'bg-gray-600'} hover:bg-gray-500`}
+                            className={`p-2 mx-1 rounded-md ${currentViewMode === 'TileViewOne' ? 'bg-gray-900 border border-gray-600' : 'bg-gray-600'} hover:bg-gray-500 active:bg-gray-800`}
                             onClick={() => handleViewModeClick('TileViewOne')}
                         >
                             <Grid/>
                         </button>
                         <button
-                            className={`p-2 mx-1 rounded-md ${currentViewMode === 'ListView' ? 'bg-gray-900 border border-gray-700' : 'bg-gray-600'} hover:bg-gray-500`}
+                            className={`p-2 mx-1 rounded-md ${currentViewMode === 'ListView' ? 'bg-gray-900 border border-gray-600' : 'bg-gray-600'} hover:bg-gray-500 active:bg-gray-800`}
                             onClick={() => handleViewModeClick('ListView')}
                         >
                             <List/>

@@ -14,6 +14,7 @@ const ShareModal = ({
 
     let formDefaultData = {password: '', expiry: 7, slug: ''};
     const [formData, setFormData] = useState({...formDefaultData});
+    const [copyToClipboard, setCopyToClipboard] = useState('Copy to clipboard');
     const [sharedLink, setSharedLink] = useState('');
 
     const handleChange = (e) => {
@@ -35,8 +36,7 @@ const ShareModal = ({
     const handleCopy = (e) => {
         e.preventDefault();
         navigator.clipboard?.writeText(sharedLink).then(() => {
-            e.target.querySelector('span').textContent = 'Copied';
-
+            setCopyToClipboard('Copied!');
         });
     }
 
@@ -62,6 +62,7 @@ const ShareModal = ({
             }
         });
     }
+
     return (
         <Modal isOpen={isShareModalOpen} onClose={handleCloseShareModal} title={`Share ${selectedFiles.size} files`}
                classes="max-w-md ">
@@ -147,8 +148,8 @@ const ShareModal = ({
                                         className={`p-2 mx-1 rounded-md bg-gray-600 hover:bg-gray-500  relative group active:bg-gray-600`}
                                 ><CopyIcon/>
                                     <span
-                                    className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-max px-2 py-1 text-xs text-white bg-black rounded opacity-0 group-hover:opacity-100">
-                                        Copy to clipboard
+                                        className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-max px-2 py-1 text-xs text-white bg-black rounded opacity-0 group-hover:opacity-100">
+                                        {copyToClipboard}
                                     </span>
                                 </button>
 

@@ -72,7 +72,7 @@ const FileTileViewCard = React.memo(function FileTileViewCard({
 
                     {file.is_dir === 1 &&
                         <div
-                            className="flex justify-center pb-3 transition-transform duration-200  "
+                            className="flex justify-center pb-3 transition-transform duration-200"
                         >
                             <Link
                                 href={(isSearch ? '/drive/' + (file.public_path ? file.public_path + '/':'') : path + '/') + file.filename}
@@ -86,22 +86,25 @@ const FileTileViewCard = React.memo(function FileTileViewCard({
 
                 {/* Action Buttons */}
                 <div
-                    className="justify-between absolute bottom-0 left-1/2 transform -translate-x-1/2 w-4/5 mb-2 opacity-60 group-hover:flex hidden">
-                    {isAdmin && <div className="flex-1">
-                        <DeleteButton
-                            classes=" bg-red-500/10 hover:bg-red-500/20 text-red-500 py-2 px-4 rounded-md transition-colors duration-200"
-                            selectedFiles={selectedFileSet}/></div>}
-                    <div className="flex-1 flex ">
-                        <DownloadButton
-                            classes="w-full  bg-blue-500/10 hover:bg-blue-500/20 text-blue-500 py-2 px-4 rounded-md transition-colors duration-200"
-                            selectedFiles={selectedFileSet}
-                            token={token}
-                            setStatusMessage={setStatusMessage}
-                            slug={slug}/>
-                        {isAdmin && <ShowShareModalButton classes="hidden group-hover:block mr-2  z-10"
-                                                          setIsShareModalOpen={setIsShareModalOpen}
-                                                          setFilesToShare={setFilesToShare}
-                                                          filesToShare={new Set([file.id])}/>}</div>
+                    className="justify-between absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full px-3 mb-2 opacity-60 group-hover:flex hidden">
+                    {isAdmin &&
+                        <div className="flex-1">
+                            <DeleteButton
+                                classes=" bg-red-500/10 hover:bg-red-500/20 text-red-500 py-2 px-4 rounded-md transition-colors duration-200"
+                                selectedFiles={selectedFileSet}/></div>
+                    }
+                        <div className="flex-1 flex ">
+                            {isAdmin && <ShowShareModalButton classes="hidden group-hover:block mr-2  z-10"
+                                                              setIsShareModalOpen={setIsShareModalOpen}
+                                                              setFilesToShare={setFilesToShare}
+                                                              filesToShare={new Set([file.id])}/>}
+                            <DownloadButton
+                                classes="w-full  justify-center  text-center hover:bg-blue-500/20 text-blue-500 py-2 rounded-md "
+                                selectedFiles={selectedFileSet}
+                                token={token}
+                                setStatusMessage={setStatusMessage}
+                                slug={slug}/>
+                            </div>
                 </div>
             </div>
         )

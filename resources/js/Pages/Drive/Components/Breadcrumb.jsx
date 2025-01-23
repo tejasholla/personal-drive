@@ -18,10 +18,10 @@ export default function Breadcrumb({path, isAdmin}) {
         <ol className="flex flex-wrap h-10 pr-2">
             {isAdmin &&
                 <li className="flex items-center">
-                    <Link className="hover:bg-gray-600 p-2 rounded-md inline-flex w-auto bg-gray-700" href='/drive'
+                    <Link className="hover:bg-gray-600 p-2 rounded-md inline-flex w-auto bg-gray-700  active:bg-gray-900" href='/drive'
                           preserveScroll>
-                        <HomeIcon className={`text-gray-500 inline`} size={22}/>
-                        <span className={`mx-1`}>Base Folder</span>
+                        <HomeIcon className={`text-gray-400 inline`} size={22}/>
+                        <span className={``}></span>
                     </Link>
                     {links.length > 0 && path && (
                         <ChevronRight className="w-4 h-4 text-gray-400 mx-2" aria-hidden="true"/>)}
@@ -35,7 +35,7 @@ export default function Breadcrumb({path, isAdmin}) {
                           </span>) :
                         (<>
                             <Link href={link.href}
-                                  className="text-blue-600 hover:text-blue-800 transition-colors duration-200"
+                                  className="text-blue-400 hover:text-blue-300 transition-colors duration-200"
                                   preserveScroll>
                                 {link.name}
                             </Link>

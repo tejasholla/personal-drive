@@ -25,7 +25,7 @@ export default function SearchBar({handleSearch}) {
             </div>
 
             <button onClick={(e) => handleSearch(e, searchValue)}
-                    className="bg-blue-700 text-white font-bold py-2 px-4 rounded hover:bg-blue-600 transition duration-300">Search
+                    className="bg-blue-700 text-white font-bold py-2 px-4 rounded hover:bg-blue-600 active:bg-blue-800">Search
             </button>
         </form>
     </div>);

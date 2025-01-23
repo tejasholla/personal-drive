@@ -66,7 +66,7 @@ const UploadMenu = ({path, setStatusMessage, files}) => {
     }, [uploadedFiles]);
     return (
         <div ref={menuRef} className='relative  m-0 p-0'>
-            <button className="  inline-flex gap-x-1 bg-blue-700 text-white font-bold py-2 px-2 rounded hover:bg-blue-600 transition duration-300
+            <button className="  inline-flex gap-x-1 bg-blue-700 text-white font-bold py-2 px-2 rounded hover:bg-blue-600 active:bg-blue-800
 "
                     onClick={() => {
                         setIsMenuOpen(!isMenuOpen)
@@ -83,21 +83,21 @@ const UploadMenu = ({path, setStatusMessage, files}) => {
                             onClick={() => {
                                 setIsModalOpen(true);
                             }}
-                            className="text-left block w-full px-4 py-2 text-sm bg-gray-700 "
+                            className="text-left block w-full px-4 py-2 text-sm bg-gray-700 hover:bg-gray-600 active:bg-gray-800 "
                             role="menuitem"
                         >
                             Create Folder
                         </button>
                         <button
                             onClick={() => fileInputRef.current.click()}
-                            className="text-left block w-full px-4 py-2 text-sm bg-gray-700 "
+                            className="text-left block w-full px-4 py-2 text-sm bg-gray-700  hover:bg-gray-600 active:bg-gray-800"
                             role="menuitem"
                         >
                             Upload File
                         </button>
                         <button
                             onClick={() => folderInputRef.current.click()}
-                            className="text-left block w-full px-4 py-2 text-sm bg-gray-700"
+                            className="text-left block w-full px-4 py-2 text-sm bg-gray-700 hover:bg-gray-600 active:bg-gray-800"
                             role="menuitem"
                         >
                             Upload Folder
