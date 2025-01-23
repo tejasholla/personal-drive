@@ -34,7 +34,9 @@ const ShareModal = ({
 
     const handleCopy = (e) => {
         e.preventDefault();
-        navigator.clipboard.writeText(sharedLink).then(() => {
+        navigator.clipboard?.writeText(sharedLink).then(() => {
+            e.target.querySelector('span').textContent = 'Copied';
+
         });
     }
 
@@ -142,7 +144,7 @@ const ShareModal = ({
                                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 bg-gray-800 text-gray-300"
                                 />
                                 <button onClick={handleCopy}
-                                        className={`p-2 mx-1 rounded-md bg-gray-600 hover:bg-gray-500  relative group`}
+                                        className={`p-2 mx-1 rounded-md bg-gray-600 hover:bg-gray-500  relative group active:bg-gray-600`}
                                 ><CopyIcon/>
                                     <span
                                     className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-max px-2 py-1 text-xs text-white bg-black rounded opacity-0 group-hover:opacity-100">

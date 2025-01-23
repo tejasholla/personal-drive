@@ -84,7 +84,7 @@ const AlertBox = React.memo(function AlertBox({message}) {
     return (
 
         alertBoxData.message && <div role="alert" className={`-mt-3  absolute  left-1/2 -translate-x-1/2 
-             rounded-lg  text-gray-900 flex  p-3 px-5 ${bgStatus}  z-50 
+             rounded-lg  text-gray-900 flex  p-3 px-5 ${bgStatus}  z-30 
              ${alertBoxData.message ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 -translate-y-4 scale-95'}`}
         >
             {icon}
