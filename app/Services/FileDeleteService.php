@@ -20,10 +20,10 @@ class FileDeleteService
 
             // Handle directory deletion
             if (
-                $this->isDeletableDirectory($file, $privateFilePathName, $rootPath) &&
-                $file->deleteFromPublicPath()
+                $this->isDeletableDirectory($file, $privateFilePathName, $rootPath)
             ) {
                 File::deleteDirectory($privateFilePathName);
+                $file->deleteUsingPublicPath();
                 $filesDeleted++;
             }
 

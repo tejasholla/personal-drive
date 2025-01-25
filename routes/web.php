@@ -60,13 +60,13 @@ Route::post(
 Route::get('/shared-password/{slug}', [ShareFilesGuestController::class, 'passwordPage'])
     ->name('shared.password.check')->middleware(['throttle:shared']);
 
-Route::get('/', fn () => to_route('login'));
+Route::get('/', fn () => to_route('drive'));
 Route::fallback(fn() => to_route('rejected'));
 
 Route::get('/rejected', fn(Request $request) =>
-Inertia::render('Rejected', [
-    'message' => $request->query('message', 'No Permission or error')
-])
+    Inertia::render('Rejected', [
+        'message' => $request->query('message', 'No Permission or error')
+    ])
 )->name('rejected');
 
 // Test

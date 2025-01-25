@@ -42,7 +42,7 @@ class FileDeleteController
 
         //delete files from database
         $response = $localFiles->delete();
-//        dd($filesDeleted, $response);
+
         if (!$response || !$filesDeleted) {
             return $this->error('Could not delete files');
         }

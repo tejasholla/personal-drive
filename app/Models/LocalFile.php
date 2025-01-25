@@ -87,7 +87,7 @@ class LocalFile extends Model
         return self::modifyFileCollectionForDrive($fileItems);
     }
 
-    public function deleteFromPublicPath()
+    public function deleteUsingPublicPath()
     {
         return $this->where('public_path', 'like', $this->getPublicPathname() . '%')->delete();
     }
