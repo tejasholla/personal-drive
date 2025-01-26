@@ -29,12 +29,12 @@ export default function AllShares({shares}) {
     return (
         <>
         <Header/>
-        <div className="p-4 space-y-4 max-w-7xl mx-auto dark:text-gray-200">
+        <div className="p-4 space-y-4 max-w-7xl mx-auto text-gray-200">
             <h2 className="text-center text-5xl my-12 mb-32">All Live Shares</h2>
             <main className="mx-auto max-w-7xl">
                 <AlertBox/>
                 <div className="">
-                    <table className="w-full bg-white dark:bg-gray-800 text-left">
+                    <table className="w-full bg-gray-800 text-left">
                         <thead>
                         <tr>
                             <th className="py-2 px-4 border-b-2 border-gray-700 ">Created</th>

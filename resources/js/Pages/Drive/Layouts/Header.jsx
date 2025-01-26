@@ -7,8 +7,8 @@ import useSearchUtil from '@/Pages/Drive/Hooks/useSearchUtil.jsx';
 export default function Header({  }) {
     const {handleSearch} = useSearchUtil();
     return (
-        <div className=" bg-gray-100 dark:bg-gray-900">
-            <nav className=" dark:bg-gray-800">
+        <div className="bg-gray-900">
+            <nav className="bg-gray-800">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex h-16 justify-between ">
                         <div className="space-x-4 sm:space-x-8 sm:-my-px px-3 flex">
