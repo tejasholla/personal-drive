@@ -2,14 +2,13 @@
 
 use App\Exceptions\PersonalDriveExceptions\FetchFileException;
 use App\Exceptions\PersonalDriveExceptions\PersonalDriveException;
+use App\Http\Middleware\CheckSetup;
 use App\Http\Middleware\HandleInertiaMiddlware;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -23,6 +22,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(append: [
             HandleInertiaMiddlware::class,
             AddLinkHeadersForPreloadedAssets::class,
+        ], prepend: [
+            CheckSetup::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
@@ -40,7 +41,7 @@ return Application::configure(basePath: dirname(__DIR__))
                 session()->flash('status', false);
                 return redirect()->back()->withErrors($e->errors());
             }
-            if ($e instanceof  Exception && !$e instanceof AuthenticationException) {
+            if ($e instanceof Exception && !$e instanceof AuthenticationException) {
                 session()->flash('message', 'Something went wrong!' . $e->getMessage());
                 session()->flash('status', false);
             }

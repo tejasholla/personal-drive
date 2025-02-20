@@ -7,6 +7,7 @@ use App\Http\Requests\AdminRequests\AdminConfigRequest;
 use App\Models\Setting;
 use App\Services\AdminConfigService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -19,8 +20,11 @@ class AdminConfigController extends Controller
         $this->adminConfigService = $adminConfigService;
     }
 
-    public function index(): Response
+    public function index(Request $request): Response
     {
+//        $setupMode = $request->get('setupMode');
+
+//        dd($setupMode);
         $storagePath = Setting::getSettingByKeyName(Setting::$storagePath);
 
         return Inertia::render('Admin/Config', [

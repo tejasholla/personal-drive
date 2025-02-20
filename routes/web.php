@@ -1,23 +1,23 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminController\AdminConfigController;
+use App\Http\Controllers\AdminController\SetupController;
 use App\Http\Controllers\DriveControllers;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ShareControllers;
 use App\Http\Controllers\ShareControllers\ShareFilesGuestController;
 use App\Http\Middleware\HandleAuthOrGuestMiddleware;
 use App\Http\Middleware\HandleGuestShareMiddleware;
+use App\Http\Middleware\PreventSetupAccess;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::middleware('auth')->group(callback: function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/admin-config', [AdminConfigController::class, 'index'])->name('admin-config');
-    Route::post('/admin-config/update', [AdminConfigController::class, 'update'])->name('admin-config.update');
 
+    Route::get('/admin-config', [AdminConfigController::class, 'index'])->name('admin-config');
+    Route::post('/admin-config/update', [AdminConfigController::class, 'update']);
 
     // Drive routes
     Route::get('/drive/{path?}', [DriveControllers\FileManagerController::class, 'index'])
@@ -52,7 +52,7 @@ Route::get('/fetch-thumb/{id}/{slug?}', [DriveControllers\FetchFileController::c
 Route::post('/download-files', [DriveControllers\DownloadController::class, 'index'])
     ->middleware([HandleAuthOrGuestMiddleware::class]);
 
-//public for shared
+//public route for shared
 Route::post(
     '/shared-check-password',
     [ShareFilesGuestController::class, 'checkPassword']
@@ -69,8 +69,19 @@ Route::get('/rejected', fn(Request $request) =>
     ])
 )->name('rejected');
 
+//Setup
+
+Route::middleware([PreventSetupAccess::class])->group(function () {
+    Route::get('/setup/account', [SetupController::class, 'show']);
+    Route::post('/setup/account', [SetupController::class, 'update']);
+//    Route::get('/setup/storage', [SetupController::class, 'setupStorage'])->name('setup.storage');
+    Route::post('/setup/storage', [AdminConfigController::class, 'update']);
+});
+
+
 // Test
 Route::get('test', [DriveControllers\TestController::class, 'index']);
+Route::get('landing', [DriveControllers\TestController::class, 'landing']);
 Route::get('/testdownload', [DriveControllers\DownloadController::class, 'test']);
 
 require __DIR__ . '/auth.php';

@@ -30,7 +30,7 @@ add file search to the application - laravel + react
 ## Grouped Features
 
 ### React
--[ ] File manager functions (list files, preview photos/videos)
+-[x] File manager functions (list files, preview photos/videos)
 -[ ] Pagination for file lists
 -[ ] Upload feature (drag-and-drop support in future)
 -[x] File search UI
