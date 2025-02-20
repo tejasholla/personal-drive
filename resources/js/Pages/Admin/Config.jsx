@@ -20,18 +20,12 @@ export default function AdminConfig({
     })
 
     function handleChange(e) {
-        setFormData(oldValues => ({...oldValues, [e.target.id]: e.target.value}))
+        setFormData(oldValues => ({...oldValues, [e.target.id]: e.target.value}));
     }
 
     function handleSubmit(e) {
-        e.preventDefault()
-        router.post('/admin-config/update', formData, {
-            onSuccess: (res) => {
-                setFormData({
-                    storage_path: res.props.storage_path
-                })
-            }
-        })
+        e.preventDefault();
+        router.post('/admin-config/update', formData);
     }
 
     return (
