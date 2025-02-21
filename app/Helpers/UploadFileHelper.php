@@ -14,17 +14,14 @@ class UploadFileHelper
 
     public static function makeFolder(string $path, int $permission = 0755): bool
     {
-        try {
-            if (!file_exists($path)) {
-                if (!mkdir($path, $permission, true) && !is_dir($path)) {
-                    Log::error('Failed to create directory check permissions ');
-                    return false;
-                }
-            }
+        if (is_dir($path)) {
             return true;
-        } catch (ErrorException $e) {
-            Log::error('Failed to create directory: ' . $e->getMessage());
+        }
+
+        if (!mkdir($path, $permission, true) && !is_dir($path)) {
             return false;
         }
+
+        return true;
     }
 }

@@ -1,6 +1,7 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React from 'react';
 
 import FileListRow from "./FileListRow.jsx";
+import { Link } from '@inertiajs/react';
 
 import {useNavigate} from 'react-router-dom';
 import SortIcon from "../../Svgs/SortIcon.jsx";
@@ -26,8 +27,9 @@ const ListView = ({
                       slug
                   }) => {
     const navigate = useNavigate();
+    console.log('path ', path);
 
-    function handleSortClick(e,  key){
+    function handleSortClick(e, key) {
         let sortedFiles = sortCol(filesCopy, key);
         setFilesCopy(sortedFiles);
     }
@@ -44,22 +46,28 @@ const ListView = ({
                 <div onClick={(e) => handleSortClick(e, 'filename')}
                      className={`text-left w-full p-2 px-4 hover:bg-gray-900 hover:cursor-pointer ${sortDetails.key === 'filename' ? 'text-blue-400' : ''}`}>
                     <span>Name</span>
-                    <SortIcon classes={`${sortDetails.key === 'filename' ? 'text-blue-500' : 'gray'} `} />
+                    <SortIcon classes={`${sortDetails.key === 'filename' ? 'text-blue-500' : 'gray'} `}/>
                 </div>
                 <div onClick={(e) => handleSortClick(e, 'size')}
                      className={`p-2 px-4 w-44 hover:bg-gray-900  hover:cursor-pointer text-right ${sortDetails.key === 'size' ? 'text-blue-400' : ''}`}>
                     <span>Size</span>
-                    <SortIcon classes={`${sortDetails.key === 'size' ? 'text-blue-500' : 'gray'} `} />
+                    <SortIcon classes={`${sortDetails.key === 'size' ? 'text-blue-500' : 'gray'} `}/>
                 </div>
                 <div onClick={(e) => handleSortClick(e, 'file_type')}
                      className={`p-2 px-4 w-44 hover:bg-gray-900  hover:cursor-pointer text-right ${sortDetails.key === 'file_type' ? 'text-blue-400' : ''}`}>
                     <span>Type</span>
-                    <SortIcon classes={`${sortDetails.key === 'file_type' ? 'text-blue-500' : 'gray'} `} />
+                    <SortIcon classes={`${sortDetails.key === 'file_type' ? 'text-blue-500' : 'gray'} `}/>
                 </div>
             </div>
-            {(isSearch || ( path && path !== '/shared' && path !== '/drive')) && (
-                <div className="cursor-pointer hover:bg-gray-700 p-4 px-8 w-full" title="Go back"
-                     onClick={() => navigate(-1)}>..</div>
+            {(isSearch || (path && !path.match(/\/shared\/[a-z0-9_]$/) && path !== '/drive')) && (
+
+                <div >
+                    <Link className="cursor-pointer hover:bg-gray-700 p-4 px-8 w-full block" title="Go Up" href={path.substring(0, path.lastIndexOf('/'))} >..</Link>
+
+
+                </div>
+
+
             )}
             <div className=" flex flex-wrap">
                 {filesCopy.map((file) => (

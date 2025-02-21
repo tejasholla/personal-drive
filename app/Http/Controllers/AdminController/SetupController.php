@@ -31,10 +31,10 @@ class SetupController extends Controller
         ) {
             $message = "Created User successfully";
             $status = true;
-            $request->session()->invalidate(); // Discard the current file-based session
-            config(['session.driver' => 'database']); // Switch to database session
+            $request->session()->invalidate();
+            config(['session.driver' => 'database']);
             Auth::login($user, true);
-            $request->session()->regenerate(); // Start a fresh database-backed session
+            $request->session()->regenerate();
         }
         session()->flash('status', $status);
         session()->flash('message', $message);

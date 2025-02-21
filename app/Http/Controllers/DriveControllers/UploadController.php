@@ -10,6 +10,7 @@ use App\Http\Requests\DriveRequests\UploadRequest;
 use App\Services\LocalFileStatsService;
 use App\Services\LPathService;
 use App\Traits\FlashMessages;
+use Error;
 use Illuminate\Http\RedirectResponse;
 
 class UploadController extends Controller
@@ -29,7 +30,7 @@ class UploadController extends Controller
 
     public function store(UploadRequest $request): RedirectResponse
     {
-        $files = $request->validated('files');
+        $files = $request->validated('files') ?? [];
         $publicPath = $request->validated('path') ?? '';
         $publicPath = $this->lPathService->cleanDrivePublicPath($publicPath);
         $privatePath = $this->lPathService->genPrivatePathWithPublic($publicPath);
@@ -40,8 +41,18 @@ class UploadController extends Controller
         if (!$privatePath) {
             return $this->error('File upload failed. Could not find storage path');
         }
+        $successfulUploads = $this->processFiles($files, $privatePath);
 
-        $successWriteNum = 0;
+        if ($successfulUploads > 0) {
+            $this->localFileStatsService->generateStats($publicPath);
+            return $this->success('Files uploaded: ' . $successfulUploads . ' out of ' . count($files));
+        }
+        return $this->error('Some/All Files upload failed');
+    }
+
+    private function processFiles(array $files, string $privatePath): int
+    {
+        $successfulUploads = 0;
         foreach ($files as $index => $file) {
             $fileNameWithDir = UploadFileHelper::getUploadedFileFullPath($index);
             $filesDirectory = dirname($privatePath . $fileNameWithDir);
@@ -50,19 +61,15 @@ class UploadController extends Controller
             }
             try {
                 if ($file->move($filesDirectory, $file->getClientOriginalName())) {
-                    $successWriteNum++;
+                    $successfulUploads++;
                 }
-            } catch (\Error $e) {
+            } catch (Error $e) {
                 throw UploadFileException::outofmemory();
             }
         }
-        if ($successWriteNum > 0) {
-            $this->localFileStatsService->generateStats($publicPath);
-            return $this->success('Files uploaded: ' . $successWriteNum . ' out of ' . count($files));
-        }
-        return $this->error('Some/All Files upload failed');
-    }
 
+        return $successfulUploads;
+    }
 
     public function createFolder(CreateFolderRequest $request): RedirectResponse
     {

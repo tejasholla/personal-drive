@@ -69,7 +69,7 @@ class Share extends Model
                     ->join('shared_files AS sf', 'l.id', '=', 'sf.file_id')
                     ->join('shares AS s', 'sf.share_id', '=', 's.id')
                     ->where('s.id', $shareID)
-                    ->whereRaw("local_files.public_path LIKE (l.public_path || '/' || l.filename || '%')")
+                    ->whereRaw("local_files.public_path LIKE (l.public_path ||  '%')")
                     ->limit(1);
             })
             ->get();

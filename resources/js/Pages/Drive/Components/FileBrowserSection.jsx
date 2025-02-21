@@ -155,7 +155,7 @@ const FileBrowserSection = memo(({files, path, token, isAdmin, slug}) => {
                         </div>
 
                     }
-                    {!isSearch &&
+                    {!isSearch && isAdmin &&
                         <UploadMenu path={path} setStatusMessage={setStatusMessage} files={files}/>
                     }
                     <div>

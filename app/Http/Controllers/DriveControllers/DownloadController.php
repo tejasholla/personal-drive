@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\DriveControllers;
 
 use App\Exceptions\PersonalDriveExceptions\FetchFileException;
+use App\Helpers\ResponseHelper;
 use App\Http\Requests\DriveRequests\DownloadRequest;
 use App\Models\LocalFile;
 use App\Services\DownloadService;
 use App\Services\LPathService;
+use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Response;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
@@ -23,22 +26,23 @@ class DownloadController
         $this->downloadService = $downloadService;
     }
 
-    public function index(DownloadRequest $request)
+    public function index(DownloadRequest $request): BinaryFileResponse|JsonResponse
     {
         $fileKeyArray = $request->validated('fileList');
         $localFiles = LocalFile::getByIds($fileKeyArray)->get();
         if (!$localFiles || count($localFiles) === 0) {
             throw FetchFileException::notFoundDownload();
         }
-        $downloadFilePath = $this->downloadService->generateDownloadPath($localFiles);
-        if (!file_exists($downloadFilePath)) {
-            return response()->json([
-                'status' => false,
-                'message' => "Perhaps trying to download empty dir ? "
-            ]);
-        }
+        try {
+            $downloadFilePath = $this->downloadService->generateDownloadPath($localFiles);
+            if (!file_exists($downloadFilePath)) {
+                return ResponseHelper::json("Perhaps trying to download empty dir ? ", false);
+            }
 
-        return $this->getDownloadResponse($downloadFilePath);
+            return $this->getDownloadResponse($downloadFilePath);
+        } catch (Exception $e) {
+            return ResponseHelper::json($e->getMessage(), false);
+        }
     }
 
     public function getDownloadResponse(string $downloadFilePath): BinaryFileResponse
@@ -46,14 +50,7 @@ class DownloadController
         return Response::download(
             $downloadFilePath,
             basename($downloadFilePath),
-            [
-                'Content-Disposition' => 'attachment; filename="'.basename($downloadFilePath).'"'
-            ]
+            [ 'Content-Disposition' => 'attachment; filename="'.basename($downloadFilePath).'"' ]
         );
-    }
-
-    public function test(): BinaryFileResponse
-    {
-        return $this->getDownloadResponse('/var/www/html/personal3/3d794827-8ef7-431a-82db-6800c013c3b1/base/GX010037.MP4');
     }
 }

@@ -25,17 +25,15 @@ class ThumbnailController
         $fileIds = $request->validated('ids');
 
         if (!$fileIds) {
-            Log::info('!$fileIds');
             return ResponseHelper::json('Could not generate thumbnails', false);
         }
 
         $thumbsGenerated = $this->thumbnailService->genThumbnailsForFileIds($fileIds);
-        Log::info('$thumbsGenerated: ' . $thumbsGenerated);
 
         if ($thumbsGenerated === 0) {
             return ResponseHelper::json('No thumbnails generated. No valid files found', false);
         }
+        return ResponseHelper::json('');
 
-//        return redirect()->back();
     }
 }

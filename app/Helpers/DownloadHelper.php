@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use App\Exceptions\PersonalDriveExceptions\FetchFileException;
 use Illuminate\Database\Eloquent\Collection;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -9,12 +10,15 @@ use ZipArchive;
 
 class DownloadHelper
 {
+    /**
+     * @throws FetchFileException
+     */
     public static function createZipArchive(Collection $localFiles, string $outputZipPath): ZipArchive
     {
         $zip = new ZipArchive();
 
         if ($zip->open($outputZipPath, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
-            throw new \Exception("Cannot create zip file");
+            throw FetchFileException::couldNotZip();
         }
 
         foreach ($localFiles as $localFile) {

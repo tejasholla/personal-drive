@@ -13,5 +13,4 @@ class ResponseHelper
             'message' => $message
         ], $status ? 200 : 400);
     }
-
 }

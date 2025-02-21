@@ -22,13 +22,13 @@ const VideoPlayer = ({id, slug}) => {
     };
 
     return (
-        <div className="flex justify-center flex-col gap-y-2">
+        <div className="flex justify-center flex-col gap-y-2 ">
             <video
                 ref={videoRef}
                 key={id}
                 controls
                 autoPlay={autoplay}
-                className="max-w-2xl rounded-lg shadow-lg"
+                className="max-w-2xl rounded-lg shadow-lg max-h-[90vh]"
             >
                 <source
                     src={src}
