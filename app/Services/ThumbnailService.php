@@ -90,6 +90,7 @@ class ThumbnailService
         LocalFile $file
     ): bool {
         $this->imageResize($privateFilePath, $fullFileThumbnailPath, self::IMAGESIZE);
+        // deliberately has_thumbnail true, to prevent repeated thumb gen
         $file->has_thumbnail = true;
         return $file->save();
     }

@@ -54,11 +54,8 @@ class ShareFilesGenController
             throw ShareFileException::couldNotShare();
         }
 
-
-        $sharedLink = url('/') . "/shared/" . $slug ?? 'sdf';
+        $sharedLink = url('/') . "/shared/" . $slug ;
         return redirect()->back()->with('shared_link', $sharedLink);
-
-        return $this->shared($sharedLink);
 
     }
 }

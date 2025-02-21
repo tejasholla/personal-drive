@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+    <!-- Hut Structure -->
+    <path d="M50 20L20 50V80H80V50L50 20Z" fill="none" stroke="#FF8E72" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M20 50H80" fill="none" stroke="#FF8E72" stroke-width="2" stroke-linecap="round"/>
+
+    <!-- Clouds Inside -->
+    <path d="M35 60a8 8 0 0 1 16 0 6 6 0 0 1 6 6 6 6 0 0 1-6 6H35a6 6 0 0 1 0-12z" fill="#64B5F6" stroke="#64B5F6" stroke-width="1"/>
+    <path d="M55 50a6 6 0 0 1 12 0 5 5 0 0 1 5 5 5 5 0 0 1-5 5H55a5 5 0 0 1 0-10z" fill="#90CAF9" stroke="#90CAF9" stroke-width="1"/>
+
+    <!-- Door (Optional) -->
+    <rect x="45" y="65" width="10" height="15" fill="#FF8E72" stroke="#FF8E72" stroke-width="1"/>
+</svg>

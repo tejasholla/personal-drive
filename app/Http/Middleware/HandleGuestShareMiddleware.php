@@ -25,11 +25,6 @@ class HandleGuestShareMiddleware
         return $next($request);
     }
 
-    /**
-     * @param $share
-     * @param  mixed  $slug
-     * @return bool
-     */
     public function isNeedsPassword($share, mixed $slug): bool
     {
         return $share->password && !Session::get("shared_{$slug}_authenticated");
