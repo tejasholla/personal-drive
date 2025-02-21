@@ -3,6 +3,7 @@ import VideoPlayer from "./VideoPlayer.jsx";
 import ImageViewer from "./ImageViewer.jsx";
 import {ChevronLeft, ChevronRight} from 'lucide-react';
 import {useCallback, useEffect, useRef, useState} from "react";
+import PdfViewer from "@/Pages/Drive/Components/FileList/PdfViewer.jsx";
 
 const MediaViewer = ({
                          selectedid,
@@ -50,10 +51,10 @@ const MediaViewer = ({
             window.removeEventListener('keydown', handleKeyDown);
             window.removeEventListener('mousemove', handleMouseMove);
         };
-    },[isModalOpen ]);
+    }, [isModalOpen]);
 
     function handleMouseMove() {
-        if (!isModalOpen){
+        if (!isModalOpen) {
             return;
         }
         setIsActive(true);
@@ -66,28 +67,29 @@ const MediaViewer = ({
     }
 
 
-    return (<Modal isOpen={isModalOpen} onClose={setIsModalOpen} classes={` mx-auto`}>
-        <div className=" mx-auto "
-        >
-            {previewAbleFiles && previewAbleFiles.current[currentFileIndex] && previewAbleFiles.current[currentFileIndex].prev &&
-                <button onClick={prevClick}
-                        className={`absolute ${isActive ? 'block' : 'hidden'}  left-32 top-1/2   p-2 rounded-full hover:bg-gray-500 bg-gray-500  opacity-40  focus:outline-none z-10`}
-                >
-                    <ChevronLeft className="text-white h-8 w-8 rounded-full"/>
-                </button>}
+    return (
+        <Modal isOpen={isModalOpen} onClose={setIsModalOpen} classes={` mx-auto`}>
+            <div className=" mx-auto ">
+                {previewAbleFiles && previewAbleFiles.current[currentFileIndex] && previewAbleFiles.current[currentFileIndex].prev &&
+                    <button onClick={prevClick}
+                            className={`absolute ${isActive ? 'block' : 'hidden'}  left-32 top-1/2   p-2 rounded-full hover:bg-gray-500 bg-gray-500  opacity-40  focus:outline-none z-10`}
+                    >
+                        <ChevronLeft className="text-white h-8 w-8 rounded-full"/>
+                    </button>}
 
-            {previewAbleFiles && previewAbleFiles.current[currentFileIndex] && previewAbleFiles.current[currentFileIndex].next &&
-                <button onClick={nextClick}
-                        className={`absolute ${isActive ? 'block' : 'hidden'}   right-32 top-1/2   p-2 rounded-full hover:bg-gray-500 bg-gray-500  opacity-40  focus:outline-none z-10`}
-                >
-                    <ChevronRight className="text-white h-8 w-8 rounded-full"/>
-                </button>}
-            {selectedid && ((selectedFileType === 'video' &&
-                <VideoPlayer id={selectedid} slug={slug}/>) || (selectedFileType === 'image' &&
-                <ImageViewer id={selectedid} slug={slug}/>))
-            }
-        </div>
-    </Modal>);
+                {previewAbleFiles && previewAbleFiles.current[currentFileIndex] && previewAbleFiles.current[currentFileIndex].next &&
+                    <button onClick={nextClick}
+                            className={`absolute ${isActive ? 'block' : 'hidden'}   right-32 top-1/2   p-2 rounded-full hover:bg-gray-500 bg-gray-500  opacity-40  focus:outline-none z-10`}
+                    >
+                        <ChevronRight className="text-white h-8 w-8 rounded-full"/>
+                    </button>}
+                {selectedid && (
+                    (selectedFileType === 'video' && <VideoPlayer id={selectedid} slug={slug}/>) ||
+                    (selectedFileType === 'image' && <ImageViewer id={selectedid} slug={slug}/>) ||
+                    (selectedFileType === 'pdf' && <PdfViewer id={selectedid} slug={slug}/>))
+                }
+            </div>
+        </Modal>);
 };
 
 export default MediaViewer;

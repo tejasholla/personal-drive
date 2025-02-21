@@ -62,3 +62,11 @@ laravel -
 - try eloquent strict mode https://www.youtube.com/watch?v=kyIgkopP-MI
 - implement renderable handler for exceptions and custom exceptions https://www.youtube.com/watch?v=0AAg47xygTI
 - use custom requests + DTO's https://www.youtube.com/watch?v=kyIgkopP-MI
+
+
+TODO:
+security audit | dig in validation
+Readme
+txt pdf preview
+drag and drop
+rewrite dialog
