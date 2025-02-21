@@ -6,7 +6,7 @@ import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Pages/Drive/Layouts/GuestLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
 
-export default function Login({ status, canResetPassword }) {
+export default function Login({ status }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         username: '',
         password: '',
@@ -17,7 +17,9 @@ export default function Login({ status, canResetPassword }) {
         e.preventDefault();
 
         post(route('login'), {
-            onFinish: () => reset('password'),
+            onFinish: () => {
+                reset('password');
+            },
         });
     };
 
@@ -81,14 +83,6 @@ export default function Login({ status, canResetPassword }) {
                 </div>
 
                 <div className="mt-4 flex items-center justify-end">
-                    {canResetPassword && (
-                        <Link
-                            href={route('password.request')}
-                            className="rounded-md text-sm  underline focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 text-gray-400 hover:text-gray-100 focus:ring-offset-gray-800"
-                        >
-                            Forgot your password?
-                        </Link>
-                    )}
 
                     <PrimaryButton className="ms-4" disabled={processing}>
                         Log in
