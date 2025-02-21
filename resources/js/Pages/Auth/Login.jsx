@@ -38,7 +38,7 @@ export default function Login({ status, canResetPassword }) {
                     <TextInput
                         id="username"
                         type="username"
-                        name="username"
+                        name="name"
                         value={data.username}
                         className="mt-1 block w-full p-2  border"
                         autoComplete="username"

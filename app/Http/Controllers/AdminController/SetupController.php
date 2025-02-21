@@ -23,8 +23,8 @@ class SetupController extends Controller
         Artisan::call('migrate:fresh');
         $status = false;
         $message = "Error. could not create user. Try re-installing, checking permissions for storage folder";
-        if ($user = User::factory()->create([
-            'name' => $request->username,
+        if ($user = User::create([
+            'username' => $request->username,
             'is_admin' => 1,
             'password' => bcrypt($request->password),
         ])
@@ -41,11 +41,5 @@ class SetupController extends Controller
 
         return redirect()->route('admin-config', ['setupMode' => true]);
     }
-
-    public function setupStorage()
-    {
-        return Inertia::render('Admin/SetupStorage');
-    }
-
 
 }

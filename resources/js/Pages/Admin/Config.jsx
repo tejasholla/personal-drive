@@ -8,12 +8,13 @@ export default function AdminConfig({
                                         storage_path,
                                         php_max_upload_size,
                                         php_post_max_size,
-                                        php_max_file_uploads
+                                        php_max_file_uploads,
+                                        setupMode,
                                     }) {
 
     console.log( storage_path, php_max_upload_size, php_post_max_size, php_max_file_uploads);
     const [formData, setFormData] = useState({
-        storage_path: storage_path,
+        storage_path: storage_path || '/opt/personaldrive/storage',
         php_max_upload_size: php_max_upload_size,
         php_post_max_size: php_post_max_size,
         php_max_file_uploads: php_max_file_uploads
@@ -30,7 +31,7 @@ export default function AdminConfig({
 
     return (
         <>
-        <Header/>
+        {!setupMode && <Header/> }
 
         <div className="p-4 space-y-4 max-w-7xl mx-auto text-gray-200">
             <h2 className="text-center text-5xl my-12 mb-32">Admin Settings</h2>
@@ -48,6 +49,17 @@ export default function AdminConfig({
                                        className="block text-blue-200 text-xl font-bold ">
                                     Storage Path:
                                 </label>
+                                <p className="  mt-1">
+                                    <p className=" mb-1 ">Set the local folder where your files will be stored.</p>
+                                    <p className="text-sm text-gray-400">
+                                    - Root Path of all files<br/>
+                                    - Changing will NOT move files !<br/>
+                                    - Files will be stored in a subFolder<br/>
+                                    - All Shares will get reset !
+                                    </p>
+
+                                </p>
+
                                 <input
                                     type="text"
                                     id="storage_path"
@@ -58,17 +70,12 @@ export default function AdminConfig({
                                 />
                             </div>
 
-                            <div className="flex justify-between">
-                                <p className="text-sm text-gray-400 text-right mt-1">Root Path of all files</p>
-                                <p className="text-sm text-gray-400 text-right mt-1 font-bold">Changing will NOT
-                                    move
-                                    files !! </p>
-                            </div>
                         </div>
                         <div className="flex justify-center mt-1">
                             <button
                                 className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 active:bg-blue-800 ">
-                                Update Settings
+                                {setupMode && 'Set Root Folder'}
+                                {!setupMode && 'Update Settings'}
                             </button>
                         </div>
                     </form>

@@ -28,7 +28,7 @@ export default function Setup({}) {
                         Username
                     </label>
                     <input
-                        name="storage_path"
+                        name="username"
                         value={formData.username}
                         onChange={handleChange}
                         id="username"

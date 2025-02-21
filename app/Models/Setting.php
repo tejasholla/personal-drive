@@ -17,7 +17,8 @@ class Setting extends Model
             ['key' => $key],
             ['value' => $value]
         );
-        return $result->wasRecentlyCreated || $result->wasChanged();
+
+        return $result->wasRecentlyCreated || $result->wasChanged() || $result->exists;
     }
 
     public static function getSettingByKeyName(string $key): string

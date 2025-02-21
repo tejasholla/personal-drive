@@ -11,7 +11,7 @@ return new class extends Migration {
     {
         DB::table('settings')->insert([
             [
-                'key' => 'storage_path', 'value' => '/opt/personaldrive/storage', 'created_at' => now(),
+                'key' => 'storage_path', 'value' => '', 'created_at' => now(),
                 'updated_at' => now()
             ],
             [

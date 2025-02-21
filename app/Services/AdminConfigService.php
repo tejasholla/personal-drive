@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Helpers\UploadFileHelper;
 use App\Models\Setting;
+use Exception;
 
 class AdminConfigService
 {
@@ -17,25 +18,49 @@ class AdminConfigService
 
     public function updateStoragePath(string $storagePath): array
     {
+        try {
+            $paths = $this->preparePaths($storagePath);
 
-        $uuidStorageFiles = $this->uuidService->getStorageFilesUUID();
-        $uuidThumbnails = $this->uuidService->getThumbnailsUUID();
-        if (file_exists($storagePath . DIRECTORY_SEPARATOR . $uuidStorageFiles)) {
-            return ['status' => false, 'message' => 'Storage directory already exists'];
-        }
-        if (!UploadFileHelper::makeFolder($storagePath . DIRECTORY_SEPARATOR . $uuidStorageFiles)) {
-            return ['status' => false, 'message' => 'Could not make storage directory. Check permissions'];
-        }
-        if (!UploadFileHelper::makeFolder($storagePath . DIRECTORY_SEPARATOR . $uuidThumbnails)) {
-            return ['status' => false, 'message' => 'Could not make thumbnail directory. Check permissions'];
-        }
+            if (file_exists($storagePath) && !is_writable($storagePath)) {
+                return ['status' => false, 'message' => 'Storage directory exists but is not writable' ];
+            }
 
-        if (!Setting::updateSetting('storage_path', $storagePath)) {
-            return ['status' => false, 'message' => 'No changes were made'];
-        }
+            if (!$this->ensureDirectoryExists($paths['storageFiles'])) {
+                return ['status' => false, 'message' => 'Unable to create or write to storage directory. Check Permissions' ];
+            }
 
-        return ['status' => true, 'message' => 'Storage path updated successfully'];
+            if (!$this->ensureDirectoryExists($paths['thumbnails'])) {
+                return ['status' => false, 'message' => 'Unable to create or write to thumbnail directory. Check Permissions' ];
+            }
+
+            if (!Setting::updateSetting('storage_path', $storagePath)) {
+                return ['status' => false, 'message' => 'Failed to save storage path setting' ];
+            }
+
+            return  ['status' => true, 'message' => 'Storage path updated successfully'];
+        } catch (Exception $e) {
+            return ['status' => false, 'message' => 'An unexpected error occurred: ' . $e->getMessage() ];
+        }
     }
+
+    private function preparePaths(string $storagePath): array
+    {
+        return [
+            'storageFiles' => $storagePath . DIRECTORY_SEPARATOR . $this->uuidService->getStorageFilesUUID(),
+            'thumbnails' => $storagePath . DIRECTORY_SEPARATOR . $this->uuidService->getThumbnailsUUID()
+        ];
+    }
+
+
+    private function ensureDirectoryExists(string $path): bool
+    {
+        if (file_exists($path)) {
+            return is_writable($path);
+        }
+
+        return UploadFileHelper::makeFolder($path) && is_writable($path);
+    }
+
 
     public function getPhpUploadMaxFilesize(): string
     {
