@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Exceptions\PersonalDriveExceptions\UploadFileException;
 use App\Models\LocalFile;
+use Exception;
 use FilesystemIterator;
 use Illuminate\Support\Facades\Auth;
 use RecursiveDirectoryIterator;
@@ -31,7 +32,7 @@ class LocalFileStatsService
                 'size' => '',
                 'user_id' => Auth::user()?->id ?? 1,
             ]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw  UploadFileException::nonewdir();
         }
     }

@@ -3,15 +3,12 @@
 namespace App\Http\Controllers\DriveControllers;
 
 use App\Exceptions\PersonalDriveExceptions\FetchFileException;
-use App\Helpers\EncryptHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DriveRequests\FetchFileRequest;
 use App\Models\LocalFile;
 use App\Services\LocalFileStatsService;
 use App\Services\ThumbnailService;
 use App\Traits\FlashMessages;
-use Illuminate\Contracts\Encryption\DecryptException;
-use Illuminate\Support\Facades\Crypt;
 use Iman\Streamer\VideoStreamer;
 
 class FetchFileController extends Controller

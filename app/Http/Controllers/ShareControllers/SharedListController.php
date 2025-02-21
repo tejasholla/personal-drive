@@ -6,8 +6,8 @@ use App\Models\Share;
 use App\Services\LocalFileStatsService;
 use App\Services\LPathService;
 use App\Traits\FlashMessages;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class SharedListController
 {
@@ -24,7 +24,7 @@ class SharedListController
         $this->pathService = $pathService;
     }
 
-    public function index(Request $request)
+    public function index(): Response
     {
         $shares = Share::getAllUnExpired();
         return Inertia::render('Drive/Shares/AllShares', ['shares' => $shares]);

@@ -16,7 +16,7 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Register any application services.
      */
-    public function register()
+    public function register(): void
     {
         $this->app->singleton(UUIDService::class, function () {
             return new UUIDService();
@@ -38,18 +38,14 @@ class AppServiceProvider extends ServiceProvider
         }
         RateLimiter::for('login', function (Request $request) {
             return [
-                Limit::perMinute(5)->response(function (Request $request, array $headers) {
-//                    session()->flash('message', 'Too many requests');
-//                    return redirect()->back();
+                Limit::perMinute(5)->response(function () {
                     return redirect()->route('rejected', ['message' => 'Too many requests.']);
-
-//                    return response('Too Many requests..', 429, $headers);
                 }),
             ];
         });
 
         RateLimiter::for('shared', function (Request $request) {
-            return Limit::perMinute(6)
+            return Limit::perMinute(10)
                 ->response(function (Request $request, array $headers) {
                     return response('Too Many requests..', 429, $headers);
                 });

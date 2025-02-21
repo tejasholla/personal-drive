@@ -2,9 +2,6 @@
 
 namespace App\Helpers;
 
-use ErrorException;
-use Illuminate\Support\Facades\Log;
-
 class UploadFileHelper
 {
     public static function getUploadedFileFullPath($fileIndex): string

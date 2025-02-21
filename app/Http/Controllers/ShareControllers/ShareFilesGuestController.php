@@ -60,7 +60,7 @@ class ShareFilesGuestController
         if (Hash::check($password, $share->password)) {
             // Set session authenticated key
             Session::put("shared_{$slug}_authenticated", true);
-            return redirect("/shared/{$slug}");
+            return redirect("/shared/$slug");
         }
 
         throw ShareFileException::shareWrongPassword();

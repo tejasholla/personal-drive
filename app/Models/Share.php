@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class Share extends Model
@@ -62,7 +61,7 @@ class Share extends Model
 
     public static function getFilenamesByPath(int $shareID, string $path)
     {
-        $localFiles = LocalFile::where('public_path', $path)
+        return LocalFile::where('public_path', $path)
             ->whereExists(function ($query) use ($shareID) {
                 $query->select(DB::raw(1))
                     ->from('local_files AS l')
@@ -73,17 +72,6 @@ class Share extends Model
                     ->limit(1);
             })
             ->get();
-        return $localFiles;
-
-        /*
-         *
-            select * from (select l.public_path || '/' || l.filename as base
-                           from local_files l
-                                    join shared_files sf on l.id = sf.file_id
-                                    join shares s on sf.share_id = s.id
-                           where s.slug = 'sub1share') f JOIN local_files l2 ON f.base = l2.public_path
-         */
-        // get public_path + filename of the shared path
     }
 
     public function getExpiryTimeAttribute(): string

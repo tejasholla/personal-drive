@@ -6,9 +6,6 @@ use App\Helpers\ResponseHelper;
 use App\Http\Requests\DriveRequests\GetThumbnailRequest;
 use App\Services\ThumbnailService;
 use App\Traits\FlashMessages;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Log;
-use Inertia\Inertia;
 
 class ThumbnailController
 {
@@ -20,7 +17,7 @@ class ThumbnailController
     {
         $this->thumbnailService = $thumbnailService;
     }
-    public function update(GetThumbnailRequest $request)
+    public function update(GetThumbnailRequest $request): JsonResponse
     {
         $fileIds = $request->validated('ids');
 

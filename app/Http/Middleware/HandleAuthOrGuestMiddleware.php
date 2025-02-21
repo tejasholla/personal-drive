@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Auth\Middleware\Authenticate;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,7 +15,7 @@ class HandleAuthOrGuestMiddleware
         $authMiddleware = app(Authenticate::class);
         try {
             return $authMiddleware->handle($request, $next);
-        } catch (\Illuminate\Auth\AuthenticationException $e) {
+        } catch (AuthenticationException $e) {
             // If not authenticated, delegate to the HandleGuestShareRequests middleware
             return app(HandleGuestShareMiddleware::class)->handle($request, $next);
         }

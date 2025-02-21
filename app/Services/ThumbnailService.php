@@ -5,11 +5,11 @@ namespace App\Services;
 use App\Exceptions\PersonalDriveExceptions\ImageRelatedException;
 use App\Helpers\UploadFileHelper;
 use App\Models\LocalFile;
+use Exception;
 use FFMpeg\Coordinate\TimeCode;
 use FFMpeg\FFMpeg;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Log;
 use Spatie\Image\Enums\ImageDriver;
 use Spatie\Image\Image;
 
@@ -102,7 +102,7 @@ class ThumbnailService
                 ->width($size)
                 ->height($size)
                 ->save($fullFileThumbnailPath);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
         return true;

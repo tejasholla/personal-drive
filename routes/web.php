@@ -1,10 +1,8 @@
 <?php
 
-use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminController\AdminConfigController;
 use App\Http\Controllers\AdminController\SetupController;
 use App\Http\Controllers\DriveControllers;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ShareControllers;
 use App\Http\Controllers\ShareControllers\ShareFilesGuestController;
 use App\Http\Middleware\HandleAuthOrGuestMiddleware;
@@ -70,18 +68,10 @@ Route::get('/rejected', fn(Request $request) =>
 )->name('rejected');
 
 //Setup
-
 Route::middleware([PreventSetupAccess::class])->group(function () {
     Route::get('/setup/account', [SetupController::class, 'show']);
     Route::post('/setup/account', [SetupController::class, 'update']);
-//    Route::get('/setup/storage', [SetupController::class, 'setupStorage'])->name('setup.storage');
     Route::post('/setup/storage', [AdminConfigController::class, 'update']);
 });
-
-
-// Test
-Route::get('test', [DriveControllers\TestController::class, 'index']);
-Route::get('landing', [DriveControllers\TestController::class, 'landing']);
-Route::get('/testdownload', [DriveControllers\DownloadController::class, 'test']);
 
 require __DIR__ . '/auth.php';

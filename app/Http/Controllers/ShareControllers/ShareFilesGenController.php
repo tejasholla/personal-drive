@@ -10,6 +10,7 @@ use App\Models\SharedFile;
 use App\Services\LocalFileStatsService;
 use App\Services\LPathService;
 use App\Traits\FlashMessages;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -28,7 +29,7 @@ class ShareFilesGenController
         $this->pathService = $pathService;
     }
 
-    public function index(ShareFilesGenRequest $request)
+    public function index(ShareFilesGenRequest $request): RedirectResponse
     {
         $fileKeyArray = $request->validated('fileList');
         $slug = $request->validated('slug');
