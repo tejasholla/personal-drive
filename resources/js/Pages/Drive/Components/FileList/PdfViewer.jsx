@@ -24,7 +24,7 @@ const PdfViewer = ({ id, slug }) => {
             </p>
             <Document
                 file={src} onLoadSuccess={onDocumentLoadSuccess}
-                className="text-gray-800  bg-blue-600 w-full "
+                className=""
                 onLoadError={(error) => console.error('Error loading PDF:', error)}
             >
                 <Page pageNumber={pageNumber} width="1000" />
