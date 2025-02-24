@@ -61,10 +61,8 @@ const ListView = ({
             </div>
             {(isSearch || (path && !path.match(/\/shared\/[a-z0-9_]$/) && path !== '/drive')) && (
 
-                <div >
-                    <Link className="cursor-pointer hover:bg-gray-700 p-4 px-8 w-full block" title="Go Up" href={path.substring(0, path.lastIndexOf('/'))} >..</Link>
-
-
+                <div>
+                    <Link className="cursor-pointer hover:bg-gray-700 p-4 px-8 w-full block" title="Go Up" href={path ? path.substring(0, path.lastIndexOf('/')) : '/drive'} >..</Link>
                 </div>
 
 
