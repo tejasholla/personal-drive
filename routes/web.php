@@ -13,10 +13,8 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::middleware('auth')->group(callback: function () {
-
     Route::get('/admin-config', [AdminConfigController::class, 'index'])->name('admin-config');
     Route::post('/admin-config/update', [AdminConfigController::class, 'update']);
-
     // Drive routes
     Route::get('/drive/{path?}', [DriveControllers\FileManagerController::class, 'index'])
         ->where('path', '.*')
@@ -64,8 +62,8 @@ Route::fallback(fn () => to_route('rejected'));
 Route::get(
     '/rejected',
     fn (Request $request) => Inertia::render('Rejected', [
-    'message' => $request->query('message', 'No Permission or error'),
-])
+        'message' => $request->query('message', 'No Permission or error'),
+    ])
 )->name('rejected');
 
 // Setup

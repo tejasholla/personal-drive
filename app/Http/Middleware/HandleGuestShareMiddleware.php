@@ -13,6 +13,9 @@ class HandleGuestShareMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         $slug = $request->route('slug') ?? $request->input('slug');
+        if (!$slug) {
+            return redirect()->route('rejected');
+        }
         $share = Share::whereBySlug($slug)->first();
         if (! $share || ! $share->enabled || ($share->expiry && $share->created_at->addDays($share->expiry)->lt(now()))) {
             return redirect()->route('rejected');

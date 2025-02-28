@@ -14,7 +14,7 @@ class UploadRequest extends FormRequest
                 'required',
                 'file',
                 function ($attribute, $file, $fail) {
-                    if (str_contains($file->getClientOriginalName(), '..') ) {
+                    if (str_contains($file->getClientOriginalName(), '..')) {
                         $fail('Invalid filename.');
                     }
                 }
