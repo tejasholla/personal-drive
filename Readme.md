@@ -22,12 +22,12 @@ A self hosted alternative to google drive. For those who can setup their own ser
 
 ### Features:  
 
-- Share specific files. Lots of other sharing related features
+- Share files. Many features
   - password protect
   - set expiry 
   - set custom url
   - A sharing control panel, to pause and delete existing shares
-- Media player. Slideshow.
+- Media player. Slideshow:
   - Play and view images and videos
   - Preview text and pdf files
   - Keyboard shortcuts available during slideshow . Left, right, escape 
