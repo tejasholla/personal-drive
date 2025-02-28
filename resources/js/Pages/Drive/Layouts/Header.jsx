@@ -16,7 +16,7 @@ export default function Header({  }) {
                                 href={route('drive')}
 
                             >
-                                <img src="/img/personal_drive_logo.png" alt="Logo" className="w-16 inline-block " />
+                                <img src="/img/logo.png" alt="Logo" className="w-16 inline-block " />
                             </NavLink>
                             <NavLink
                                 href={route('drive')}

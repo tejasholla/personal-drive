@@ -1,5 +1,5 @@
 export default function ApplicationLogo() {
     return (
-       <img src="/img/personal_drive_logo.png" />
+       <img src="/img/logo.png" />
     );
 }
