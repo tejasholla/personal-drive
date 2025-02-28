@@ -37,8 +37,8 @@ class AppServiceProvider extends ServiceProvider
         }
         RateLimiter::for('login', function (Request $request) {
             return [
-                Limit::perMinute(5)->response(function () {
-                    return redirect()->route('rejected', ['message' => 'Too many requests.']);
+                Limit::perMinute(9)->response(function () {
+                    return redirect()->route('rejected', ['message' => 'Too many requests too fast! Wait at least a minute before trying again']);
                 }),
             ];
         });

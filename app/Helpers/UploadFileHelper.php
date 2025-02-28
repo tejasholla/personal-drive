@@ -9,7 +9,7 @@ class UploadFileHelper
         return $_FILES['files']['full_path'][$fileIndex];
     }
 
-    public static function makeFolder(string $path, int $permission = 0755): bool
+    public static function makeFolder(string $path, int $permission = 0750): bool
     {
         if (is_dir($path)) {
             return true;
