@@ -41,7 +41,7 @@ export default function AllShares({shares}) {
                                 <th className="py-3 mb-6 px-4 border-b border-gray-700 ">Share
                                     Details
                                 </th>
-                                <th className="py-2 px-4 border-b-2 border-gray-700 ">Has Password</th>
+                                <th className="py-2 mb-6 px-4 border-b border-gray-700 ">Has Password</th>
                                 <th className="py-3 mb-6 px-4 border-b border-gray-700 ">Expiring on
                                 </th>
                                 <th className="py-3 mb-6 px-4 border-b border-gray-700 ">Enabled</th>
@@ -56,7 +56,7 @@ export default function AllShares({shares}) {
                                     <td className="py-4 px-4 text-sm ">{new Date(share.created_at).toLocaleDateString()}</td>
                                     <td className="py-4 px-4 flex gap-y-2 flex-col max-w-[500px]">
                                         <div className="flex gap-10 items-center ">
-                                            <span className="font-semibold text-lg text-indigo-800">
+                                            <span className="font-semibold text-lg text-indigo-300">
                                                 {window.location.hostname + '/shared/' + share.slug}
                                             </span>
                                             <div className="flex items-center justify-center gap-1">
