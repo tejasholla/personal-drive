@@ -53,7 +53,9 @@ export default function AllShares({shares}) {
 
                             {shares.map((share) => (
                                 <tr key={share.id} className={` hover:bg-gray-800 ${share.enabled ? '' : 'bg-red-800/50'}`}>
-                                    <td className="py-4 px-4 text-sm ">{new Date(share.created_at).toLocaleDateString()}</td>
+                                    <td className="py-4 px-4 text-sm ">
+                                        {new Date(share.created_at).toLocaleDateString()}
+                                    </td>
                                     <td className="py-4 px-4 flex gap-y-2 flex-col max-w-[500px]">
                                         <div className="flex gap-10 items-center ">
                                             <span className="font-semibold text-lg text-indigo-300">
@@ -66,18 +68,20 @@ export default function AllShares({shares}) {
                                                 <span className="text-sm text-gray-400">
                                                     files
                                                 </span>
-
                                             </div>
                                         </div>
                                         <div>
-                                            {share.shared_files.slice(0, 2).map(file => file.local_file.filename).join(' || ')} {share.shared_files.length > 1 ? '...' : ''}</div>
+                                            {share.shared_files.slice(0, 2).map(file => file.local_file.filename).join(' || ')} {share.shared_files.length > 1 ? '...' : ''}
+                                        </div>
                                     </td>
-                                    <td className="py-4 px-4  ">{share.password ? 'Yes' : 'No'}</td>
                                     <td className="py-4 px-4  ">
+
+                                        {share.password ? 'Yes' : 'No'}</td>
+                                    <td className="py-4 px-4">
                                         {share.expiry && share.expiry_time}
                                         {!share.expiry && "Never"}
                                     </td>
-                                    <td className="py-2 px-4  ">
+                                    <td className="py-2 px-4">
                                         <Button
                                             onClick={() => {
                                                 handlePause(share.id)
@@ -90,7 +94,7 @@ export default function AllShares({shares}) {
                                                 <span><PlayIcon className="text-green-200 inline"/> Resume </span>}
                                         </Button>
                                     </td>
-                                    <td className="py-4 px-4  text-red-200">
+                                    <td className="py-4 px-4 text-red-200">
                                         <Button
                                             onClick={() => {
                                                 handleDelete(share.id)

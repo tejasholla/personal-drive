@@ -37,7 +37,6 @@ const ListView = ({
     return (
         <div className="w-full">
             <hr className=" text-gray-500 border-gray-600"/>
-
             <div className="flex items-center justify-between text-gray-400 border-b border-b-gray-600 w-full">
                 <div className="p-2 px-6 w-20 text-center hover:bg-gray-900 hover:cursor-pointer"
                      onClick={(e) => handleSelectAllToggle(filesCopy)}>
@@ -60,12 +59,9 @@ const ListView = ({
                 </div>
             </div>
             {(isSearch || (path && !path.match(/\/shared\/[a-z0-9_]$/) && path !== '/drive')) && (
-
                 <div>
-                    <Link className="cursor-pointer hover:bg-gray-700 p-4 px-8 w-full block" title="Go Up" href={path ? path.substring(0, path.lastIndexOf('/')) : '/drive'} >..</Link>
+                    <Link className="cursor-pointer hover:bg-gray-700 p-4 px-8 w-full block" title="Go Up" href={path ? path.substring(0, path.lastIndexOf('/')) : `/drive`} >..</Link>
                 </div>
-
-
             )}
             <div className=" flex flex-wrap">
                 {filesCopy.map((file) => (
