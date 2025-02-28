@@ -14,7 +14,6 @@ class ShareFilesGuestRequest extends FormRequest
         ];
     }
 
-
     protected function prepareForValidation(): void
     {
         // Bind the route parameter 'hash' into the request data

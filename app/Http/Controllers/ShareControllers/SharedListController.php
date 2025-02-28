@@ -14,6 +14,7 @@ class SharedListController
     use FlashMessages;
 
     protected LPathService $pathService;
+
     protected LocalFileStatsService $localFileStatsService;
 
     public function __construct(
@@ -27,6 +28,7 @@ class SharedListController
     public function index(): Response
     {
         $shares = Share::getAllUnExpired();
+
         return Inertia::render('Drive/Shares/AllShares', ['shares' => $shares]);
     }
 }

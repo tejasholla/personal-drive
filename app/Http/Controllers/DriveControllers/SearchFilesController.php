@@ -18,7 +18,7 @@ class SearchFilesController extends Controller
 
         return Inertia::render('Drive/DriveHome', [
             'files' => $files,
-            'searchResults' => true
+            'searchResults' => true,
         ]);
     }
 }

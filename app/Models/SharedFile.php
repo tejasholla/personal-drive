@@ -11,7 +11,6 @@ class SharedFile extends Model
 {
     use HasFactory;
 
-
     public function share(): BelongsTo
     {
         return $this->belongsTo(Share::class);
@@ -24,7 +23,8 @@ class SharedFile extends Model
 
     public static function addArray(Collection $localFiles, int $shareId): bool
     {
-        $sharedFiles = $localFiles->map(fn($localFile) => self::getFileIds($shareId, $localFile))->toArray();
+        $sharedFiles = $localFiles->map(fn ($localFile) => self::getFileIds($shareId, $localFile))->toArray();
+
         return SharedFile::insert($sharedFiles);
     }
 

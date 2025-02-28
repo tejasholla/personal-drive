@@ -12,7 +12,7 @@ class AdminConfigRequest extends FormRequest
             'storage_path' => [
                 'required',
                 'string',
-                'regex:/^[0-9a-z\/\_]+$/'
+                'regex:/^[0-9a-z\/\_]+$/',
             ],
         ];
     }

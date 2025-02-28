@@ -8,6 +8,7 @@ class ShareFileException extends PersonalDriveException
     {
         return new self('No valid files to share. Database issue ? Try a Resync');
     }
+
     public static function shareWrongPassword(): ShareFileException
     {
         return new self('Wrong password');

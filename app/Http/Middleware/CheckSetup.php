@@ -11,8 +11,9 @@ class CheckSetup
 {
     public function handle(Request $request, Closure $next): Response
     {
-        if (!Schema::hasTable('migrations') && !$request->is('setup*')) {
+        if (! Schema::hasTable('migrations') && ! $request->is('setup*')) {
             config(['session.driver' => 'array']); // Use a non-persistent session driver
+
             return redirect('/setup/account');
         }
 

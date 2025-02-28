@@ -8,6 +8,7 @@ use App\Models\Setting;
 class UUIDService
 {
     private string $storageFilesUUID;
+
     private string $thumbnailsUUID;
 
     /**
@@ -18,7 +19,7 @@ class UUIDService
         $this->storageFilesUUID = Setting::getSettingByKeyName('uuidForStorageFiles') ?: '';
         $this->thumbnailsUUID = Setting::getSettingByKeyName('uuidForThumbnails') ?: '';
 
-        if (!$this->storageFilesUUID || !$this->thumbnailsUUID) {
+        if (! $this->storageFilesUUID || ! $this->thumbnailsUUID) {
             throw UUIDException::nouuid();
         }
     }

@@ -21,19 +21,20 @@ class ShareFilesGuestController
         $path = $request->validated('path');
         $share = Share::whereBySlug($slug)->first();
 
-        if (!$share) {
+        if (! $share) {
             throw ShareFileException::couldNotShare();
         }
 
         if ($path) {
-            $files = Share::getFilenamesByPath($share->id, ($share->public_path ? $share->public_path . DIRECTORY_SEPARATOR : '') . $path);
+            $files = Share::getFilenamesByPath($share->id, ($share->public_path ? $share->public_path.DIRECTORY_SEPARATOR : '').$path);
         } else {
             $files = Share::getFilenamesBySlug($slug);
         }
         $files = LocalFile::modifyFileCollectionForGuest($files, $share->public_path);
+
         return Inertia::render('Drive/ShareFilesGuestHome', [
             'files' => $files,
-            'path' => '/shared/' . $slug . ($path ? '/' . $path : ''),
+            'path' => '/shared/'.$slug.($path ? '/'.$path : ''),
             'token' => csrf_token(),
             'guest' => 'on',
             'slug' => $slug,
@@ -53,13 +54,14 @@ class ShareFilesGuestController
         $password = $request->validated('password');
         $share = Share::whereBySlug($slug)->first();
 
-        if (!$share) {
+        if (! $share) {
             throw ShareFileException::couldNotShare();
         }
 
         if (Hash::check($password, $share->password)) {
             // Set session authenticated key
             Session::put("shared_{$slug}_authenticated", true);
+
             return redirect("/shared/$slug");
         }
 

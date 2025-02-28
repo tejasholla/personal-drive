@@ -15,8 +15,10 @@ use Spatie\Image\Image;
 
 class ThumbnailService
 {
-    private const  IMAGESIZE = 210;
+    private const IMAGESIZE = 210;
+
     private LPathService $pathService;
+
     private string $imageExt = '.jpeg';
 
     public function __construct(LPathService $pathService)
@@ -30,6 +32,7 @@ class ThumbnailService
     public function genThumbnailsForFileIds(array $fileIds): int
     {
         $filesToGenerateFor = $this->getGeneratableFiles($fileIds)->get();
+
         return $this->generateThumbnailsForFiles($filesToGenerateFor);
     }
 
@@ -40,7 +43,7 @@ class ThumbnailService
 
     public function generateThumbnailsForFiles(Collection $files): int
     {
-        if (!extension_loaded('gd')) {
+        if (! extension_loaded('gd')) {
             throw ImageRelatedException::invalidImageDriver();
         }
         $thumbsGenerated = 0;
@@ -54,6 +57,7 @@ class ThumbnailService
                     break;
             }
         }
+
         return $thumbsGenerated;
     }
 
@@ -61,7 +65,7 @@ class ThumbnailService
     {
         $privateFilePath = $file->getPrivatePathNameForFile();
 
-        if (!file_exists($privateFilePath)) {
+        if (! file_exists($privateFilePath)) {
             return false;
         }
 
@@ -69,19 +73,21 @@ class ThumbnailService
         $ffmpeg = FFMpeg::create();
         $video = $ffmpeg->open($privateFilePath);
         $video->frame(TimeCode::fromSeconds(1))->save($fullFileThumbnailPath);
+
         return $this->resizeImageUpdateHasThumbnail($fullFileThumbnailPath, $fullFileThumbnailPath, $file);
     }
 
     public function getFullFileThumbnailPath(LocalFile $file): string
     {
         $thumbnailPathDir = $this->pathService->getThumbnailDirPath();
-        $fileThumbnailDirPath = $thumbnailPathDir . ($file->public_path ? DIRECTORY_SEPARATOR . $file->public_path : '');
+        $fileThumbnailDirPath = $thumbnailPathDir.($file->public_path ? DIRECTORY_SEPARATOR.$file->public_path : '');
 
-        if (!file_exists($fileThumbnailDirPath)) {
+        if (! file_exists($fileThumbnailDirPath)) {
             UploadFileHelper::makeFolder($fileThumbnailDirPath);
         }
         $imageExt = $file->file_type === 'video' ? $this->imageExt : '';
-        return $thumbnailPathDir .  ($file->public_path ? DIRECTORY_SEPARATOR :''). $file->getPublicPathname() . $imageExt;
+
+        return $thumbnailPathDir.($file->public_path ? DIRECTORY_SEPARATOR : '').$file->getPublicPathname().$imageExt;
     }
 
     public function resizeImageUpdateHasThumbnail(
@@ -92,6 +98,7 @@ class ThumbnailService
         $this->imageResize($privateFilePath, $fullFileThumbnailPath, self::IMAGESIZE);
         // deliberately has_thumbnail true, to prevent repeated thumb gen
         $file->has_thumbnail = true;
+
         return $file->save();
     }
 
@@ -105,16 +112,18 @@ class ThumbnailService
         } catch (Exception $e) {
             return false;
         }
+
         return true;
     }
 
     private function generateImageThumbnail(LocalFile $file): bool
     {
         $privateFilePath = $file->getPrivatePathNameForFile();
-        if (!file_exists($privateFilePath)) {
+        if (! file_exists($privateFilePath)) {
             return false;
         }
         $fullFileThumbnailPath = $this->getFullFileThumbnailPath($file);
+
         return $this->resizeImageUpdateHasThumbnail($privateFilePath, $fullFileThumbnailPath, $file);
     }
 }

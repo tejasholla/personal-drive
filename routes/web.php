@@ -27,9 +27,9 @@ Route::middleware('auth')->group(callback: function () {
     Route::post('/resync', [DriveControllers\ReSyncController::class, 'index']);
     Route::post('/gen-thumbs', [DriveControllers\ThumbnailController::class, 'update']);
     Route::post('/search-files', [DriveControllers\SearchFilesController::class, 'index']);
-    Route::get('/search-files', fn() => redirect('/drive'));
+    Route::get('/search-files', fn () => redirect('/drive'));
 
-    //Share Routes
+    // Share Routes
     Route::post('/pause-share', [ShareControllers\ShareFilesModController::class, 'pause']);
     Route::post('/delete-share', [ShareControllers\ShareFilesModController::class, 'delete']);
     Route::post('/share-files', [ShareControllers\ShareFilesGenController::class, 'index']);
@@ -50,7 +50,7 @@ Route::get('/fetch-thumb/{id}/{slug?}', [DriveControllers\FetchFileController::c
 Route::post('/download-files', [DriveControllers\DownloadController::class, 'index'])
     ->middleware([HandleAuthOrGuestMiddleware::class]);
 
-//public route for shared
+// public route for shared
 Route::post(
     '/shared-check-password',
     [ShareFilesGuestController::class, 'checkPassword']
@@ -59,19 +59,20 @@ Route::get('/shared-password/{slug}', [ShareFilesGuestController::class, 'passwo
     ->name('shared.password.check')->middleware(['throttle:shared']);
 
 Route::get('/', fn () => to_route('drive'));
-Route::fallback(fn() => to_route('rejected'));
+Route::fallback(fn () => to_route('rejected'));
 
-Route::get('/rejected', fn(Request $request) =>
-    Inertia::render('Rejected', [
-        'message' => $request->query('message', 'No Permission or error')
-    ])
+Route::get(
+    '/rejected',
+    fn (Request $request) => Inertia::render('Rejected', [
+    'message' => $request->query('message', 'No Permission or error'),
+])
 )->name('rejected');
 
-//Setup
+// Setup
 Route::middleware([PreventSetupAccess::class])->group(function () {
     Route::get('/setup/account', [SetupController::class, 'show']);
     Route::post('/setup/account', [SetupController::class, 'update']);
     Route::post('/setup/storage', [AdminConfigController::class, 'update']);
 });
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';

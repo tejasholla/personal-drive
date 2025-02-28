@@ -33,7 +33,7 @@ class LocalFileStatsService
                 'user_id' => Auth::user()?->id ?? 1,
             ]);
         } catch (Exception $e) {
-            throw  UploadFileException::nonewdir();
+            throw UploadFileException::nonewdir();
         }
     }
 
@@ -41,9 +41,10 @@ class LocalFileStatsService
     {
         $rootPathLen = strlen($this->pathService->getStorageDirPath()) + 1;
         $privatePath = $this->pathService->genPrivatePathWithPublic($path);
-        if (!$privatePath || !$rootPathLen) {
+        if (! $privatePath || ! $rootPathLen) {
             return false;
         }
+
         return $this->populateLocalFileWithStats($privatePath, $rootPathLen);
     }
 
@@ -52,11 +53,11 @@ class LocalFileStatsService
         $insertArr = [];
         $dirSizes = [];
         $iterator = $this->createFileIterator($privatePath);
-        $filesUpdated = 0 ;
+        $filesUpdated = 0;
         foreach ($iterator as $item) {
             $itemPrivatePathname = $item->getPath();
             $currentDir = dirname($item->getPathname());
-            if (!$item->isDir()) {
+            if (! $item->isDir()) {
                 $dirSizes[$currentDir] = array_key_exists(
                     $currentDir,
                     $dirSizes
@@ -75,7 +76,7 @@ class LocalFileStatsService
                 'private_path' => $itemPrivatePathname,
                 'size' => $item->isDir() ? $dirSizes[$item->getPathname()] ?? '' : $item->getSize(),
                 'user_id' => Auth::user()?->id ?? 1, // Set the appropriate user ID
-                'file_type' => $this->getFileType($item)
+                'file_type' => $this->getFileType($item),
             ];
             // Insert in chunks of 100
             if (count($insertArr) === 100) {
@@ -84,9 +85,10 @@ class LocalFileStatsService
             }
         }
         // Insert remaining items if any
-        if (!empty($insertArr)) {
-            $filesUpdated +=  LocalFile::insertRows($insertArr);
+        if (! empty($insertArr)) {
+            $filesUpdated += LocalFile::insertRows($insertArr);
         }
+
         return $filesUpdated;
     }
 
@@ -119,6 +121,7 @@ class LocalFileStatsService
         } else {
             $fileType = $item->getExtension();
         }
+
         return $fileType;
     }
 }

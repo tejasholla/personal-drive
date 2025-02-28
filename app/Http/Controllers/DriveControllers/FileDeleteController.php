@@ -15,7 +15,9 @@ class FileDeleteController
     use FlashMessages;
 
     protected LocalFileStatsService $localFileStatsService;
+
     protected LPathService $pathService;
+
     protected FileDeleteService $fileDeleteService;
 
     public function __construct(
@@ -28,24 +30,24 @@ class FileDeleteController
         $this->fileDeleteService = $fileDeleteService;
     }
 
-
     public function deleteFiles(FileDeleteRequest $request): RedirectResponse
     {
         $fileKeyArray = $request->validated('fileList');
         $rootPath = $this->pathService->getStorageDirPath();
         $localFiles = LocalFile::getByIds($fileKeyArray);
-        if (!$localFiles->count()) {
+        if (! $localFiles->count()) {
             return $this->error('No valid files in database. Try a ReSync first');
         }
 
         $filesDeleted = $this->fileDeleteService->deleteFiles($localFiles, $rootPath);
 
-        //delete files from database
+        // delete files from database
         $response = $localFiles->delete();
 
-        if (!$response || !$filesDeleted) {
+        if (! $response || ! $filesDeleted) {
             return $this->error('Could not delete files');
         }
-        return $this->success('Deleted ' . $filesDeleted . ' files');
+
+        return $this->success('Deleted '.$filesDeleted.' files');
     }
 }

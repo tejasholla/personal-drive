@@ -23,7 +23,6 @@ class AppServiceProvider extends ServiceProvider
         });
     }
 
-
     /**
      * Bootstrap any application services.
      */
@@ -33,7 +32,7 @@ class AppServiceProvider extends ServiceProvider
             URL::forceScheme('https');
         }
         Vite::prefetch(concurrency: 3);
-        if (!Schema::hasTable('sessions')) {
+        if (! Schema::hasTable('sessions')) {
             config(['session.driver' => 'file']);
         }
         RateLimiter::for('login', function (Request $request) {

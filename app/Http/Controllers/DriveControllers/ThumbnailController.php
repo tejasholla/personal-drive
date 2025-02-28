@@ -17,11 +17,12 @@ class ThumbnailController
     {
         $this->thumbnailService = $thumbnailService;
     }
+
     public function update(GetThumbnailRequest $request): JsonResponse
     {
         $fileIds = $request->validated('ids');
 
-        if (!$fileIds) {
+        if (! $fileIds) {
             return ResponseHelper::json('Could not generate thumbnails', false);
         }
 
@@ -30,6 +31,7 @@ class ThumbnailController
         if ($thumbsGenerated === 0) {
             return ResponseHelper::json('No thumbnails generated. No valid files found', false);
         }
+
         return ResponseHelper::json('');
 
     }

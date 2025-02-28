@@ -15,7 +15,7 @@ class UploadFileHelper
             return true;
         }
 
-        if (!mkdir($path, $permission, true) && !is_dir($path)) {
+        if (! mkdir($path, $permission, true) && ! is_dir($path)) {
             return false;
         }
 

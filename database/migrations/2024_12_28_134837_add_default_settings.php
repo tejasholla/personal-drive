@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
 
-return new class extends Migration {
+return new class () extends Migration {
     /**
      * Run the migrations.
      */
@@ -12,18 +12,17 @@ return new class extends Migration {
         DB::table('settings')->insert([
             [
                 'key' => 'storage_path', 'value' => '', 'created_at' => now(),
-                'updated_at' => now()
+                'updated_at' => now(),
             ],
             [
                 'key' => 'uuidForStorageFiles',
-                'value' => 'storage_personaldrive' , 'created_at' => now(),
-                'updated_at' => now()
+                'value' => 'storage_personaldrive', 'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
-                'key' => 'uuidForThumbnails', 'value' => 'thumbnail_personaldrive' , 'created_at' => now(),
-                'updated_at' => now()
-            ]
+                'key' => 'uuidForThumbnails', 'value' => 'thumbnail_personaldrive', 'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
     }
-
 };

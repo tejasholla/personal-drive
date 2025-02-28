@@ -16,6 +16,7 @@ use Inertia\Response;
 class AdminConfigController extends Controller
 {
     protected AdminConfigService $adminConfigService;
+
     protected LocalFileStatsService $localFileStatsService;
 
     public function __construct(AdminConfigService $adminConfigService, LocalFileStatsService $localFileStatsService)
@@ -34,7 +35,7 @@ class AdminConfigController extends Controller
             'php_max_upload_size' => $this->adminConfigService->getPhpUploadMaxFilesize(),
             'php_post_max_size' => $this->adminConfigService->getPhpPostMaxSize(),
             'php_max_file_uploads' => $this->adminConfigService->getPhpMaxFileUploads(),
-            'setupMode' => $setupMode
+            'setupMode' => $setupMode,
         ]);
     }
 
@@ -45,11 +46,13 @@ class AdminConfigController extends Controller
         $updateStoragePathRes = $this->adminConfigService->updateStoragePath($storagePath);
         session()->flash('message', $updateStoragePathRes['message']);
         session()->flash('status', $updateStoragePathRes['status']);
-        if ($updateStoragePathRes['status']){
+        if ($updateStoragePathRes['status']) {
             LocalFile::clearTable();
             $this->localFileStatsService->generateStats();
+
             return redirect()->route('drive');
         }
+
         return redirect()->back();
 
     }

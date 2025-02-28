@@ -9,7 +9,7 @@ class FetchFileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => 'required|string'
+            'id' => 'required|string',
         ];
     }
 

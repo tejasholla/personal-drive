@@ -23,7 +23,7 @@ class DownloadService
 
     public function isSingleFile(Collection $localFiles): bool
     {
-        return count($localFiles) === 1 && !$localFiles[0]->is_dir;
+        return count($localFiles) === 1 && ! $localFiles[0]->is_dir;
     }
 
     /**
@@ -31,9 +31,9 @@ class DownloadService
      */
     public function createZipFile(Collection $localFiles): string
     {
-        $outputZipPath = '/tmp' . DIRECTORY_SEPARATOR . Str::random(8) . now()->format('Y_m_d') . '.zip';
+        $outputZipPath = '/tmp'.DIRECTORY_SEPARATOR.Str::random(8).now()->format('Y_m_d').'.zip';
         DownloadHelper::createZipArchive($localFiles, $outputZipPath);
+
         return $outputZipPath;
     }
-
 }

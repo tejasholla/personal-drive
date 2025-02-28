@@ -12,6 +12,7 @@ class LPathService
     {
         $this->uuidService = $uuidService;
     }
+
     public function cleanDrivePublicPath(string $path): string
     {
         return preg_replace('#^/drive/?#', '', $path);
@@ -21,39 +22,41 @@ class LPathService
     {
         $storagePath = Setting::getSettingByKeyName(Setting::$storagePath);
         $uuid = $this->uuidService->getStorageFilesUUID();
-        if (!$storagePath || !$uuid) {
+        if (! $storagePath || ! $uuid) {
             return '';
         }
-        return $storagePath . DIRECTORY_SEPARATOR . $uuid;
+
+        return $storagePath.DIRECTORY_SEPARATOR.$uuid;
     }
+
     public function getThumbnailDirPath(): string
     {
         $storagePath = Setting::getSettingByKeyName(Setting::$storagePath);
         $uuid = $this->uuidService->getThumbnailsUUID();
-        if (!$storagePath || !$uuid) {
+        if (! $storagePath || ! $uuid) {
             return '';
         }
-        return $storagePath . DIRECTORY_SEPARATOR . $uuid;
+
+        return $storagePath.DIRECTORY_SEPARATOR.$uuid;
     }
 
     public function genPrivatePathWithPublic(string $publicPath = ''): string
     {
         $privateRoot = $this->getStorageDirPath();
-        if (!$privateRoot) {
+        if (! $privateRoot) {
             return '';
         }
 
         if ($publicPath === '') {
-            return $privateRoot . DIRECTORY_SEPARATOR;
+            return $privateRoot.DIRECTORY_SEPARATOR;
         }
         $publicPath = $this->cleanDrivePublicPath($publicPath);
-        $privatePath = $privateRoot . DIRECTORY_SEPARATOR . $publicPath . DIRECTORY_SEPARATOR;
+        $privatePath = $privateRoot.DIRECTORY_SEPARATOR.$publicPath.DIRECTORY_SEPARATOR;
 
         if (file_exists($privatePath)) {
             return $privatePath;
         }
+
         return '';
     }
-
-
 }

@@ -33,8 +33,9 @@ class HandleInertiaMiddlware extends Middleware
         ];
         $sharedLink = $request->session()->get('shared_link');
         if ($sharedLink) {
-            $flashA['shared_link'] = $sharedLink ;
+            $flashA['shared_link'] = $sharedLink;
         }
+
         return [
             ...parent::share($request),
             'flash' => $flashA,

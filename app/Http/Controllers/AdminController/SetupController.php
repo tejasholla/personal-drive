@@ -22,14 +22,14 @@ class SetupController extends Controller
     {
         Artisan::call('migrate:fresh');
         $status = false;
-        $message = "Error. could not create user. Try re-installing, checking permissions for storage folder";
+        $message = 'Error. could not create user. Try re-installing, checking permissions for storage folder';
         if ($user = User::create([
             'username' => $request->username,
             'is_admin' => 1,
             'password' => bcrypt($request->password),
         ])
         ) {
-            $message = "Created User successfully";
+            $message = 'Created User successfully';
             $status = true;
             $request->session()->invalidate();
             config(['session.driver' => 'database']);
@@ -41,5 +41,4 @@ class SetupController extends Controller
 
         return redirect()->route('admin-config', ['setupMode' => true]);
     }
-
 }

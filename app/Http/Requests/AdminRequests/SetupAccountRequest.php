@@ -9,8 +9,8 @@ class SetupAccountRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'username' => [ 'required', 'string', 'regex:/^[0-9a-z\/\_]+$/' ],
-            'password' => [ 'required', 'string'],
+            'username' => ['required', 'string', 'regex:/^[0-9a-z\/\_]+$/'],
+            'password' => ['required', 'string'],
         ];
     }
 }

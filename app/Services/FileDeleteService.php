@@ -14,7 +14,7 @@ class FileDeleteService
 
         foreach ($filesInDB->get() as $file) {
             $privateFilePathName = $file->getPrivatePathNameForFile();
-            if (!file_exists($privateFilePathName)) {
+            if (! file_exists($privateFilePathName)) {
                 continue;
             }
 
@@ -32,6 +32,7 @@ class FileDeleteService
                 $filesDeleted++;
             }
         }
+
         return $filesDeleted;
     }
 

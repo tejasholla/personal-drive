@@ -13,8 +13,8 @@ use Illuminate\Validation\ValidationException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
-        web: __DIR__ . '/../routes/web.php',
-        commands: __DIR__ . '/../routes/console.php',
+        web: __DIR__.'/../routes/web.php',
+        commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
@@ -34,15 +34,17 @@ return Application::configure(basePath: dirname(__DIR__))
             if ($e instanceof PersonalDriveException) {
                 session()->flash('message', $e->getMessage());
                 session()->flash('status', false);
+
                 return redirect()->back();
             }
             if ($e instanceof ValidationException) {
                 session()->flash('message', 'Please check the form for errors.');
                 session()->flash('status', false);
+
                 return redirect()->back()->withErrors($e->errors());
             }
-            if ($e instanceof Exception && !$e instanceof AuthenticationException) {
-                session()->flash('message', 'Something went wrong!' . $e->getMessage());
+            if ($e instanceof Exception && ! $e instanceof AuthenticationException) {
+                session()->flash('message', 'Something went wrong!'.$e->getMessage());
                 session()->flash('status', false);
             }
         });

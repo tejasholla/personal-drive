@@ -10,6 +10,7 @@ class EncryptHelper
     {
         return Crypt::encryptString($text);
     }
+
     public static function decrypt(string $text): string
     {
         return Crypt::decryptString($text);

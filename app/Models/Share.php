@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 class Share extends Model
 {
     protected $appends = ['expiry_time'];
+
     protected $fillable = ['slug', 'password', 'expiry', 'public_path'];
 
     public static function add(

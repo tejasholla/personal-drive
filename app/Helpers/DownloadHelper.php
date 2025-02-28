@@ -23,7 +23,7 @@ class DownloadHelper
 
         foreach ($localFiles as $localFile) {
             $pathName = $localFile->getPrivatePathNameForFile();
-            if (!file_exists($pathName)) {
+            if (! file_exists($pathName)) {
                 continue;
             }
 
@@ -49,6 +49,7 @@ class DownloadHelper
         }
 
         $zip->close();
+
         return $zip;
     }
 }

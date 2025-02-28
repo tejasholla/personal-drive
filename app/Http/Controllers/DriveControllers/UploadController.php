@@ -18,6 +18,7 @@ class UploadController extends Controller
     use FlashMessages;
 
     protected LPathService $lPathService;
+
     protected LocalFileStatsService $localFileStatsService;
 
     public function __construct(
@@ -35,18 +36,20 @@ class UploadController extends Controller
         $publicPath = $this->lPathService->cleanDrivePublicPath($publicPath);
         $privatePath = $this->lPathService->genPrivatePathWithPublic($publicPath);
 
-        if (!$files) {
+        if (! $files) {
             return $this->error('File upload failed. No files uploaded');
         }
-        if (!$privatePath) {
+        if (! $privatePath) {
             return $this->error('File upload failed. Could not find storage path');
         }
         $successfulUploads = $this->processFiles($files, $privatePath);
 
         if ($successfulUploads > 0) {
             $this->localFileStatsService->generateStats($publicPath);
-            return $this->success('Files uploaded: ' . $successfulUploads . ' out of ' . count($files));
+
+            return $this->success('Files uploaded: '.$successfulUploads.' out of '.count($files));
         }
+
         return $this->error('Some/All Files upload failed');
     }
 
@@ -55,8 +58,8 @@ class UploadController extends Controller
         $successfulUploads = 0;
         foreach ($files as $index => $file) {
             $fileNameWithDir = UploadFileHelper::getUploadedFileFullPath($index);
-            $filesDirectory = dirname($privatePath . $fileNameWithDir);
-            if (!file_exists($filesDirectory)) {
+            $filesDirectory = dirname($privatePath.$fileNameWithDir);
+            if (! file_exists($filesDirectory)) {
                 UploadFileHelper::makeFolder($filesDirectory);
             }
             try {
@@ -77,11 +80,12 @@ class UploadController extends Controller
         $folderName = $request->validated('folderName');
         $publicPath = $this->lPathService->cleanDrivePublicPath($publicPath);
         $privatePath = $this->lPathService->genPrivatePathWithPublic($publicPath);
-        $makeFolderRes = UploadFileHelper::makeFolder($privatePath . $folderName);
-        if (!$makeFolderRes) {
+        $makeFolderRes = UploadFileHelper::makeFolder($privatePath.$folderName);
+        if (! $makeFolderRes) {
             return $this->error('Create folder failed');
         }
         $this->localFileStatsService->addFolderPathStat($folderName, $publicPath);
+
         return $this->success('Created folder successfully');
     }
 }

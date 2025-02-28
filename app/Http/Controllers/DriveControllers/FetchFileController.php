@@ -16,8 +16,8 @@ class FetchFileController extends Controller
     use FlashMessages;
 
     protected LocalFileStatsService $localFileStatsService;
-    private ThumbnailService $thumbnailService;
 
+    private ThumbnailService $thumbnailService;
 
     public function __construct(
         LocalFileStatsService $localFileStatsService,
@@ -32,7 +32,7 @@ class FetchFileController extends Controller
      */
     public function index(FetchFileRequest $request): void
     {
-        $file =  $this->handleHashRequest($request);
+        $file = $this->handleHashRequest($request);
         $filePrivatePathName = $file->getPrivatePathNameForFile();
         VideoStreamer::streamFile($filePrivatePathName);
     }
@@ -43,7 +43,7 @@ class FetchFileController extends Controller
     public function getThumb(FetchFileRequest $request): void
     {
         $file = $this->handleHashRequest($request);
-        if (!$file->has_thumbnail) {
+        if (! $file->has_thumbnail) {
             throw FetchFileException::notFoundStream();
         }
         $filePrivatePathName = $this->thumbnailService->getFullFileThumbnailPath($file);
@@ -58,7 +58,7 @@ class FetchFileController extends Controller
         $fileId = $request->validated('id');
 
         $file = LocalFile::find($fileId);
-        if (!$file || !$file->file_type) {
+        if (! $file || ! $file->file_type) {
             throw FetchFileException::notFoundStream();
         }
 

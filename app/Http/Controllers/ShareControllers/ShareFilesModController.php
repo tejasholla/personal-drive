@@ -17,6 +17,7 @@ class ShareFilesModController
         if (Share::whereById($shareId)->delete()) {
             return $this->success('Successfully deleted share');
         }
+
         return $this->error('Error! could not delete share');
     }
 
@@ -25,14 +26,15 @@ class ShareFilesModController
         $shareId = $request->validated('id');
         $share = Share::whereById($shareId)->first();
 
-        if (!$share) {
+        if (! $share) {
             return $this->error('Error! could not find share');
         }
 
-        $update = Share::whereById($shareId)->update(['enabled' => !$share->enabled]);
+        $update = Share::whereById($shareId)->update(['enabled' => ! $share->enabled]);
         if ($update) {
             return $this->success('Paused');
         }
+
         return $this->error('Error! could not pause share');
     }
 }
