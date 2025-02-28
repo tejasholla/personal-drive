@@ -1,20 +1,53 @@
+# PERSONAL DRIVE
+
+A self hosted alternative to google drive. For those who can setup their own server
 
 
+## Requirements:
+- PHP 8, sqlite
+
+### Installation:
+- copy or clone repo
+- composer install
+- npm build
+- setup server to point your site or  sub_domain to /public
+- Open site. Follow the on-screen wizard to create admin account and setup storage folder
+
+### Configuration:
+- Storage folder can be changed from 'Settings'
+- increasing upload limits is vital and will depend on the server type and web server app - apache, nginx. Detailed instructions are present on the 'settings' page after app installation.
+- Increasing PHP memory limits is also important if you plan to upload large files.
+- Please also make sure the server has write permissions to the storage folder
 
 
-### Features
+### Features:  
+
+- Share specific files. Lots of other sharing related features
+  - password protect
+  - set expiry 
+  - set custom url
+  - A sharing control panel, to pause and delete existing shares
+- Media player. Slideshow.
+  - Play and view images and videos
+  - Preview text and pdf files
+  - Keyboard shortcuts available during slideshow . Left, right, escape 
+- Dynamically generated thumbnails
+- Upload multiple files or folder at one go ! Folders are uploaded recursively
+- Ability to Select one or all files in a folder
+- Download, delete, share selected files.
+- 2 layouts. list view and tile view 
+- Fast sort, even for thousands of files
+- Breadcrumb view
+
+### Development:
+This is made in Laravel 11 and react. Project uses inertia.js to tie together react components with the laravel backend.  
 
 
-- **Refresh Button**: Allows users to sync data with external file system changes with a loading indicator.
-- **Download Button**: Enables users to download selected files.
-- Zip downloads
-- **Directory Deletion**: Supports deletion of directories , recursively
-- **File Upload**: Handles multi file uploads with validation.
-- create directories
-- upload directories
-- sort files.
-- **Breadcrumb Navigation**: Helps users navigate through directories.
-- search all files
-- easy fluid file navigation, react based UI
-- select all files in current folder
-- maintain 
+### Known Issues:
+
+- thumbnails, don't show before reload after first upload
+- Files are overwritten without giving an option to rename existing files
+
+### Todo:
+- Drag and Drag Upload
+- Rename
