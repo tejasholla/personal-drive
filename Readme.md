@@ -40,7 +40,8 @@ A self hosted alternative to google drive. For those who can setup their own ser
 - Breadcrumb view
 
 ### Development:
-This is made in Laravel 11 and react. Project uses inertia.js to tie together react components with the laravel backend.  
+Project has been developed in Laravel 11 and react. We use inertia.js to tie together react components with the laravel backend.
+PHP code follows psr-12 standard
 
 
 ### Known Issues:
