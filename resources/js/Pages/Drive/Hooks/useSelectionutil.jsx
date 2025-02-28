@@ -20,7 +20,7 @@ function useSelectionUtil( ) {
     const handlerSelectFileMemo = useCallback(handlerSelectFile, [])
 
     function handleSelectAllToggle(files) {
-        // if false -> select all files | else -> deselect all files
+        // if false -> select all files | else ->   deselect all files
         if (selectAllToggle) {
             setSelectedFiles(new Set());
             setSelectAllToggle(false);

@@ -136,7 +136,7 @@ const FileBrowserSection = memo(({files, path, token, isAdmin, slug}) => {
                         setSelectAllToggle={setSelectAllToggle} path={path}/>
 
             {/*breadcrumb bar*/}
-            <div className="px-3 rounded-md gap-x-2 flex items-start my-6  justify-between">
+            <div className="px-4 rounded-md gap-x-2 flex items-start my-6  justify-between">
                 <AlertBox message={statusMessage}/>
 
                 <Breadcrumb path={path} isAdmin={isAdmin}/>

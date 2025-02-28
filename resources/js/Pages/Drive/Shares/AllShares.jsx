@@ -29,8 +29,8 @@ export default function AllShares({shares}) {
     return (
         <>
         <Header/>
-        <div className="p-4 space-y-4 max-w-7xl mx-auto text-gray-200">
-            <h2 className="text-center text-5xl my-12 mb-32">All Live Shares</h2>
+        <div className="p-4 space-y-4 max-w-7xl mx-auto text-gray-300">
+            <h2 className="text-center text-4xl my-12 mb-32 font-semibold">All Live Shares</h2>
             <main className="mx-auto max-w-7xl">
                 <AlertBox/>
                 <div className="">
@@ -58,7 +58,8 @@ export default function AllShares({shares}) {
                                 </td>
                                 <td className="py-2 px-4 border-b border-gray-700 ">{share.password ? 'Yes' : 'No'}</td>
                                 <td className="py-2 px-4 border-b border-gray-700 ">
-                                    {share.expiry_time}
+                                    {share.expiry && share.expiry_time}
+                                    {!share.expiry && "Never"}
                                 </td>
                                 <td className="py-2 px-4 border-b border-gray-700 text-green-200  ">
                                     <Button

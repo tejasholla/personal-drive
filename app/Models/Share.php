@@ -31,7 +31,10 @@ class Share extends Model
     public static function getAllUnExpired(): Collection
     {
         return static::with(['sharedFiles.localFile:id,filename'])
-            ->whereRaw("datetime(created_at, '+' || expiry || ' days') > datetime('now')")
+            ->where(function ($query) {
+                $query->whereRaw("datetime(created_at, '+' || expiry || ' days') > datetime('now')")
+                    ->orWhereNull('expiry');
+            })
             ->orderBy('created_at', 'desc')
             ->get();
     }

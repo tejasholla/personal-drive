@@ -36,7 +36,7 @@ const TileViewOne = ({
     return (
         <div className="w-full flex flex-col flex-wrap ">
             <div className=" text-center flex items-center gap-x-2 justify-between mb-6 text-sm text-gray-400 px-3">
-                <div className="text-center hover:bg-gray-900 hover:cursor-pointer flex items-center gap-x-2"
+                <div className="text-center hover:bg-gray-900 hover:cursor-pointer flex items-center gap-x-2 p-3 -ml-2"
                      onClick={(e) => handleSelectAllToggle(filesCopy)}>
                     <input className=" hover:cursor-pointer" type="checkbox" checked={selectAllToggle} readOnly/>
                     <label className=" hover:cursor-pointer">Select All</label>

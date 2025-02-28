@@ -1,5 +1,5 @@
-export default function ApplicationLogo(props) {
+export default function ApplicationLogo() {
     return (
-       <img src="/img/logo.svg" />
+       <img src="/img/personal_drive_logo.png" />
     );
 }
