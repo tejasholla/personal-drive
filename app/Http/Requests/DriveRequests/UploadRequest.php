@@ -10,8 +10,24 @@ class UploadRequest extends FormRequest
     {
         return [
             'files' => 'required|array',
-            'files.*' => 'required|file', // max 10MB per file
-            'path' => 'max:255',
+            'files.*' => [
+                'required',
+                'file',
+                function ($attribute, $file, $fail) {
+                    if (str_contains($file->getClientOriginalName(), '..') ) {
+                        $fail('Invalid filename.');
+                    }
+                }
+            ],
+            'path' => [
+                'string',
+                'max:255',
+                function ($attribute, $value, $fail) {
+                    if (str_contains($value, '..') || str_starts_with($value, '/.')) {
+                        $fail('Invalid path.');
+                    }
+                }
+            ],
         ];
     }
 }
