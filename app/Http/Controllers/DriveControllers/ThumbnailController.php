@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\DriveControllers;
 
-use App\Helpers\ResponseHelper;
 use App\Http\Requests\DriveRequests\GetThumbnailRequest;
 use App\Services\ThumbnailService;
 use App\Traits\FlashMessages;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
+use Inertia\Inertia;
 
 class ThumbnailController
 {
@@ -19,21 +19,22 @@ class ThumbnailController
         $this->thumbnailService = $thumbnailService;
     }
 
-    public function update(GetThumbnailRequest $request): JsonResponse
+    public function update(GetThumbnailRequest $request)
     {
         $fileIds = $request->validated('ids');
-
-        if (! $fileIds) {
-            return ResponseHelper::json('Could not generate thumbnails', false);
+        $publicPath = $request->validated('path') ?? '';
+        $publicPath = preg_replace('#^/drive/?#','',$publicPath);
+        if (!$fileIds) {
+            session()->flash('message', 'Could not generate thumbnails');
         }
-
         $thumbsGenerated = $this->thumbnailService->genThumbnailsForFileIds($fileIds);
-
         if ($thumbsGenerated === 0) {
-            return ResponseHelper::json('No thumbnails generated. No valid files found', false);
+            session()->flash('message', 'No thumbnails generated. No valid files found');
         }
+        return redirect()->route('drive', ['path' => $publicPath]);
 
-        return ResponseHelper::json('');
-
+//        return Inertia::render('Drive/DriveHome', [
+//            'token' => csrf_token(),
+//        ]);
     }
 }

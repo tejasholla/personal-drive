@@ -61,7 +61,7 @@ const UploadMenu = ({path, setStatusMessage, files}) => {
 
     useEffect(() => {
         if (uploadedFiles.length > 0) {
-            useThumbnailGenerator(files);
+            useThumbnailGenerator(files, path);
         }
     }, [uploadedFiles]);
     return (

@@ -47,6 +47,8 @@ export default function Breadcrumb({path, isAdmin}) {
                 </li>)
             )}
         </ol>
-    </nav>))
+            )}
+    </nav>
+    )
 }
 

@@ -11,6 +11,7 @@ class GetThumbnailRequest extends FormRequest
         return [
             'ids' => 'required|array|min:1',
             'ids.*' => 'required|string|alpha_num',
+            'path' => 'string|max:255',
         ];
     }
 }

@@ -25,7 +25,7 @@ const TileViewOne = ({
                      }) => {
 
     useEffect(() => {
-        useThumbnailGenerator(filesCopy);
+        useThumbnailGenerator(filesCopy, path);
     }, []);
 
     function handleSortClick(e, key) {
