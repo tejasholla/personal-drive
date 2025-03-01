@@ -9,7 +9,7 @@ const ShowShareModalButton = ({setIsShareModalOpen, classes = '', setFilesToShar
         setFilesToShare(filesToShare);
     }
     return (
-        <Button classes={`border border-blue-700 text-blue-200 hover:bg-blue-950 active:bg-gray-900 ${classes}`} onClick={() => handleShareButton()}>
+        <Button classes={`border border-blue-700 text-blue-200 hover:bg-blue-950 active:bg-gray-900 ${classes}`} onClick={(e) => handleShareButton(e)}>
             <Share2Icon className={`text-blue-500 inline`} size={22}/>
             {!classes && <span className={`mx-1`}>Share</span>}
         </Button>

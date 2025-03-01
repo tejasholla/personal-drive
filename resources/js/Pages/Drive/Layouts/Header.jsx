@@ -43,9 +43,9 @@ export default function Header({  }) {
                             <SearchBar handleSearch={handleSearch}/>
 
                             <div className="">
-                                <div className="relative group">
+                                <div className="relative group text-gray-300">
                                     <button
-                                        className="py-2.5 peer rounded font-semibold">
+                                        className="py-2.5 peer rounded font-semibold ">
                                         <svg className="w-6 h-6 rotate-90"
                                              xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                              stroke="currentColor">
