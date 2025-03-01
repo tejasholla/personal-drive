@@ -14,12 +14,14 @@ export default function Breadcrumb({path, isAdmin}) {
         }
     }
 
-    return (<nav aria-label="Breadcrumb" className="">
+    return (links.length > 0 && (<nav aria-label="Breadcrumb" className="">
         <ol className="flex flex-wrap h-10 pr-2">
             {isAdmin &&
                 <li className="flex items-center">
-                    <Link className="hover:bg-gray-600 p-2 rounded-md inline-flex w-auto bg-gray-700  active:bg-gray-900" href='/drive'
-                          preserveScroll>
+                    <Link
+                        className="hover:bg-gray-600 p-2 rounded-md inline-flex w-auto bg-gray-700  active:bg-gray-900"
+                        href='/drive'
+                        preserveScroll>
                         <HomeIcon className={`text-gray-400 inline`} size={22}/>
                         <span className={``}></span>
                     </Link>
@@ -45,6 +47,6 @@ export default function Breadcrumb({path, isAdmin}) {
                 </li>)
             )}
         </ol>
-    </nav>)
+    </nav>))
 }
 
