@@ -73,4 +73,4 @@ Route::middleware([PreventSetupAccess::class])->group(function () {
     Route::post('/setup/storage', [AdminConfigController::class, 'update']);
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

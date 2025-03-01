@@ -2,7 +2,8 @@ import {DownloadIcon} from "lucide-react";
 import Button from "./Generic/Button.jsx"
 
 const DownloadButton = ({setSelectedFiles, selectedFiles, classes, setStatusMessage, statusMessage, setSelectAllToggle, slug}) => {
-    const handleDownload = async () => {
+    const handleDownload = async (e) => {
+        e.stopPropagation();
         let response = {};
         try {
             setStatusMessage('Downloading...');

@@ -7,6 +7,7 @@ use App\Models\LocalFile;
 use Exception;
 use FilesystemIterator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use SplFileInfo;
@@ -33,6 +34,7 @@ class LocalFileStatsService
                 'user_id' => Auth::user()?->id ?? 1,
             ]);
         } catch (Exception $e) {
+            Log::error($e->getMessage());
             throw UploadFileException::nonewdir();
         }
     }
@@ -118,6 +120,8 @@ class LocalFileStatsService
             $fileType = 'video';
         } elseif ($mimeType === 'application/pdf') {
             $fileType = 'pdf';
+        } elseif (str_starts_with($mimeType, 'text/')) {
+            $fileType = 'text';
         } else {
             $fileType = $item->getExtension();
         }

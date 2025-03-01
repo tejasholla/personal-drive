@@ -114,7 +114,7 @@ const ShareModal = ({
                     </div>
                     <div>
                         <label htmlFor="slug" className="block text-sm font-medium ">
-                            Custom Url slug
+                            Custom URL slug
                         </label>
                         <input
                             type="text"

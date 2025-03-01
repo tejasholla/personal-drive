@@ -29,11 +29,11 @@ export default function AllShares({shares}) {
     return (
         <>
             <Header/>
-            <div className="p-4 space-y-4 max-w-7xl mx-auto text-gray-300">
+            <div className="p-4 space-y-4 max-w-7xl mx-auto text-gray-300  bg-gray-800 min-h-screen">
                 <h2 className="text-center text-4xl my-12 mb-32 font-semibold">All Live Shares</h2>
                 <main className="mx-auto max-w-7xl">
                     <AlertBox/>
-                    <div className="">
+                    <div className="bg-blue-900/15">
                         <table className="w-full text-left  ">
                             <thead>
                             <tr className="border-spacing-y-10 text-gray-500 border-gray-700 border-t font-light ">
@@ -52,7 +52,7 @@ export default function AllShares({shares}) {
                             <tbody className="">
 
                             {shares.map((share) => (
-                                <tr key={share.id} className={` hover:bg-gray-800 ${share.enabled ? '' : 'bg-red-800/50'}`}>
+                                <tr key={share.id} className={` hover:bg-gray-700/20 ${share.enabled ? '' : 'bg-red-800/50'}`}>
                                     <td className="py-4 px-4 text-sm ">
                                         {new Date(share.created_at).toLocaleDateString()}
                                     </td>
@@ -66,7 +66,8 @@ export default function AllShares({shares}) {
                                                     {share.shared_files.length}
                                                 </span>
                                                 <span className="text-sm text-gray-400">
-                                                    files
+                                                   {share.shared_files.length > 1 && `files` }
+                                                   {share.shared_files.length <= 1  && `file` }
                                                 </span>
                                             </div>
                                         </div>

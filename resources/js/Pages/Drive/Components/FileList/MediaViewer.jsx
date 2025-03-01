@@ -88,7 +88,7 @@ const MediaViewer = ({
                     (selectedFileType === 'video' && <VideoPlayer id={selectedid} slug={slug}/>) ||
                     (selectedFileType === 'image' && <ImageViewer id={selectedid} slug={slug}/>) ||
                     (selectedFileType === 'pdf' && <PdfViewer id={selectedid} slug={slug}/>) ||
-                    (selectedFileType === 'txt' && <TxtViewer id={selectedid} slug={slug}/>))
+                    (selectedFileType === 'text' && <TxtViewer id={selectedid} slug={slug}/>))
                 }
             </div>
         </Modal>);

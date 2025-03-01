@@ -33,8 +33,8 @@ export default function AdminConfig({
         <>
         {!setupMode && <Header/> }
 
-        <div className="p-4 space-y-4 max-w-7xl mx-auto text-gray-200">
-            <h2 className="text-center text-5xl my-12 mb-32">Admin Settings</h2>
+        <div className="p-4 space-y-4 max-w-7xl mx-auto text-gray-200  bg-gray-800 ">
+            <h2 className="text-center text-4xl font-semibold text-gray-300 my-12 mb-32">Admin Settings</h2>
             <main className="mx-auto max-w-7xl ">
                 <AlertBox/>
 

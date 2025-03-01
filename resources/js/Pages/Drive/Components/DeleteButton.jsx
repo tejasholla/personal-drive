@@ -3,7 +3,8 @@ import {router} from "@inertiajs/react";
 import Button from "./Generic/Button.jsx"
 
 const DeleteButton = ({setSelectedFiles, selectedFiles, classes, setSelectAllToggle}) => {
-    async function deleteFilesComponentHandler() {
+    async function deleteFilesComponentHandler(e) {
+        e.stopPropagation();
         router.post('/delete-files', {
             fileList: Array.from(selectedFiles)
         }, {

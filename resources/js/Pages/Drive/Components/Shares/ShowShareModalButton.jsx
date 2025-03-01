@@ -3,7 +3,8 @@ import Button from "@/Pages/Drive/Components/Generic/Button.jsx";
 
 
 const ShowShareModalButton = ({setIsShareModalOpen, classes = '', setFilesToShare, filesToShare}) => {
-    function handleShareButton(){
+    function handleShareButton(e){
+        e.stopPropagation();
         setIsShareModalOpen(true);
         setFilesToShare(filesToShare);
     }

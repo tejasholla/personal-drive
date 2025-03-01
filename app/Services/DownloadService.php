@@ -31,7 +31,7 @@ class DownloadService
      */
     public function createZipFile(Collection $localFiles): string
     {
-        $outputZipPath = '/tmp'.DIRECTORY_SEPARATOR.Str::random(8).now()->format('Y_m_d').'.zip';
+        $outputZipPath = '/tmp'.DIRECTORY_SEPARATOR.'personal_drive_'.Str::random(4).'_'.now()->format('Y_m_d').'.zip';
         DownloadHelper::createZipArchive($localFiles, $outputZipPath);
 
         return $outputZipPath;

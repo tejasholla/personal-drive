@@ -61,9 +61,7 @@ class LocalFile extends Model
     public static function modifyFileCollectionForGuest(Collection $fileItems, string $publicPath = ''): Collection
     {
         return $fileItems->map(function ($item) use ($publicPath) {
-            if ($item->size) {
-                $item->sizeText = FileSizeFormatter::format((int) $item->size);
-            }
+            $item->sizeText = self::getItemSizeText($item);
             if ($publicPath) {
                 $item->public_path = ltrim(substr($item->public_path, strlen($publicPath)), '/');
             }
@@ -75,17 +73,16 @@ class LocalFile extends Model
     public static function modifyFileCollectionForDrive(Collection $fileItems): Collection
     {
         return $fileItems->map(function ($item) {
-            if ($item->size) {
-                $item->sizeText = FileSizeFormatter::format((int) $item->size);
-            }
-
+            $item->sizeText = self::getItemSizeText($item);
             return $item;
         });
     }
 
     public static function searchFiles(string $searchQuery): Collection
     {
-        $fileItems = static::where('filename', 'like', $searchQuery.'%')->get();
+        $fileItems = static::where('filename', 'like', $searchQuery.'%')
+            ->orWhere('filename', 'like', '%'.$searchQuery)
+            ->get();
 
         return self::modifyFileCollectionForDrive($fileItems);
     }
@@ -93,5 +90,11 @@ class LocalFile extends Model
     public function deleteUsingPublicPath()
     {
         return $this->where('public_path', 'like', $this->getPublicPathname().'%')->delete();
+    }
+
+
+    public static function getItemSizeText($item): string
+    {
+        return $item->size || $item->is_dir ? FileSizeFormatter::format((int) $item->size) : '0 KB' ;
     }
 }

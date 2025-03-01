@@ -35,7 +35,7 @@ const FileBrowserSection = memo(({files, path, token, isAdmin, slug}) => {
     const navigate = useNavigate();
 
     // Preview
-    let previewAbleTypes = useRef(['image', 'video', 'pdf', 'txt']);
+    let previewAbleTypes = useRef(['image', 'video', 'pdf', 'text']);
     let previewAbleFiles = useRef([]);
     const [previewFileIndex, setPreviewFileIndex] = useState(null);
     const [previewFileType, setPreviewFileType] = useState(null);
