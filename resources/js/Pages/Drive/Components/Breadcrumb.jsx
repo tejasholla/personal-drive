@@ -14,8 +14,9 @@ export default function Breadcrumb({path, isAdmin}) {
         }
     }
 
-    return (links.length > 0 && (<nav aria-label="Breadcrumb" className="">
-        <ol className="flex flex-wrap h-10 pr-2">
+    return (
+        <nav aria-label="Breadcrumb" className="">
+            { links.length > 0 && ( <ol className="flex flex-wrap h-10 pr-2">
             {isAdmin &&
                 <li className="flex items-center">
                     <Link
