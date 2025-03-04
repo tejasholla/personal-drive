@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\DriveRequests;
 
+use App\Http\Requests\CommonRequest;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ShareFilesGuestRequest extends FormRequest
@@ -9,17 +10,14 @@ class ShareFilesGuestRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'slug' => 'required|string|alpha_num',
-            'path' => 'nullable|string',
-        ];
+            'slug' => CommonRequest::slugRules(),
+            'path' => CommonRequest::pathRules()        ];
     }
 
     protected function prepareForValidation(): void
     {
-        // Bind the route parameter 'hash' into the request data
         $this->merge([
-            'slug' => $this->route('slug'),
-            'path' => $this->route('path'),
-        ]);
+            'slug' => CommonRequest::slugRules(),
+            'path' => CommonRequest::pathRules()        ]);
     }
 }

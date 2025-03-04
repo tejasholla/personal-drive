@@ -18,10 +18,10 @@ class HandleGuestShareMiddleware
         }
         $share = Share::whereBySlug($slug)->first();
         if (! $share || ! $share->enabled || ($share->expiry && $share->created_at->addDays($share->expiry)->lt(now()))) {
-            return redirect()->route('rejected');
+            return redirect()->route('shared.password', ['slug' => $slug]);
         }
         if ($this->isNeedsPassword($share, $slug)) {
-            return redirect()->route('shared.password.check', ['slug' => $slug]);
+            return redirect()->route('shared.password', ['slug' => $slug]);
         }
 
         return $next($request);

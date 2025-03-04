@@ -2,15 +2,17 @@
 
 namespace App\Http\Requests\DriveRequests;
 
+use App\Http\Requests\CommonRequest;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Password;
 
 class ShareFilesGuestPasswordRequest extends FormRequest
 {
     public function rules(): array
     {
         return [
-            'slug' => 'required|string|alpha_num',
-            'password' => 'required|string',
+            'slug' => CommonRequest::slugRules(),
+            'password' => ['required', Password::defaults(), 'confirmed'],
         ];
     }
 }

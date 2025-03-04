@@ -34,11 +34,7 @@ Route::middleware('auth')->group(callback: function () {
     Route::get('/all-shares', [ShareControllers\SharedListController::class, 'index'])->name('all-shares');
 });
 
-// share guest home
-Route::get('/shared/{slug}/{path?}', [ShareControllers\ShareFilesGuestController::class, 'index'])->where(
-    'path',
-    '.*'
-)->middleware([HandleGuestShareMiddleware::class])->name('shared');
+
 
 // admin or shared
 Route::get('/fetch-file/{id}/{slug?}', [DriveControllers\FetchFileController::class, 'index'])
@@ -48,17 +44,21 @@ Route::get('/fetch-thumb/{id}/{slug?}', [DriveControllers\FetchFileController::c
 Route::post('/download-files', [DriveControllers\DownloadController::class, 'index'])
     ->middleware([HandleAuthOrGuestMiddleware::class]);
 
-// public route for shared
+// shared
 Route::post(
     '/shared-check-password',
     [ShareFilesGuestController::class, 'checkPassword']
 )->middleware(['throttle:shared']);
 Route::get('/shared-password/{slug}', [ShareFilesGuestController::class, 'passwordPage'])
-    ->name('shared.password.check')->middleware(['throttle:shared']);
+    ->name('shared.password')->middleware(['throttle:shared']);
+Route::get('/shared/{slug}/{path?}', [ShareControllers\ShareFilesGuestController::class, 'index'])->where(
+    'path',
+    '.*'
+)->middleware([HandleGuestShareMiddleware::class])->name('shared');
 
+// Rejects
 Route::get('/', fn () => to_route('drive'));
 Route::fallback(fn () => to_route('rejected'));
-
 Route::get(
     '/rejected',
     fn (Request $request) => Inertia::render('Rejected', [

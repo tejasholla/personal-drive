@@ -55,13 +55,13 @@ class ShareFilesGuestController
         $share = Share::whereBySlug($slug)->first();
 
         if (! $share) {
-            throw ShareFileException::couldNotShare();
+            throw ShareFileException::shareWrongPassword();
+            // Commented below. We do not want attacker to know share does not exist
+            // throw ShareFileException::couldNotShare();
         }
 
         if (Hash::check($password, $share->password)) {
-            // Set session authenticated key
             Session::put("shared_{$slug}_authenticated", true);
-
             return redirect("/shared/$slug");
         }
 

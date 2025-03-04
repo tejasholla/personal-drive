@@ -5,7 +5,6 @@ namespace App\Http\Controllers\DriveControllers;
 use App\Http\Requests\DriveRequests\GetThumbnailRequest;
 use App\Services\ThumbnailService;
 use App\Traits\FlashMessages;
-use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
 class ThumbnailController
@@ -23,7 +22,7 @@ class ThumbnailController
     {
         $fileIds = $request->validated('ids');
         $publicPath = $request->validated('path') ?? '';
-        $publicPath = preg_replace('#^/drive/?#','',$publicPath);
+        $publicPath = preg_replace('#^/drive/?#', '', $publicPath);
         if (!$fileIds) {
             session()->flash('message', 'Could not generate thumbnails');
         }
@@ -33,8 +32,8 @@ class ThumbnailController
         }
         return redirect()->route('drive', ['path' => $publicPath]);
 
-//        return Inertia::render('Drive/DriveHome', [
-//            'token' => csrf_token(),
-//        ]);
+        //        return Inertia::render('Drive/DriveHome', [
+        //            'token' => csrf_token(),
+        //        ]);
     }
 }

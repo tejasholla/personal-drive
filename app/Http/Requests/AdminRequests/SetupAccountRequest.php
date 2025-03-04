@@ -3,6 +3,7 @@
 namespace App\Http\Requests\AdminRequests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Password;
 
 class SetupAccountRequest extends FormRequest
 {
@@ -10,7 +11,7 @@ class SetupAccountRequest extends FormRequest
     {
         return [
             'username' => ['required', 'string', 'regex:/^[0-9a-z\/\_]+$/'],
-            'password' => ['required', 'string'],
+            'password' => ['required', Password::defaults(), 'confirmed'],
         ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\DriveRequests;
 
+use App\Http\Requests\CommonRequest;
 use Illuminate\Foundation\Http\FormRequest;
 
 class GetThumbnailRequest extends FormRequest
@@ -11,7 +12,6 @@ class GetThumbnailRequest extends FormRequest
         return [
             'ids' => 'required|array|min:1',
             'ids.*' => 'required|string|alpha_num',
-            'path' => 'string|max:255',
-        ];
+            'path' => CommonRequest::pathRules()        ];
     }
 }
