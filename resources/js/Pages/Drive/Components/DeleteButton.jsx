@@ -3,6 +3,12 @@ import {router} from "@inertiajs/react";
 import Button from "./Generic/Button.jsx"
 
 const DeleteButton = ({setSelectedFiles, selectedFiles, classes, setSelectAllToggle}) => {
+    const confirmAndDelete = (e) => {
+        if (window.confirm('Confirm Deletion?')) {
+            deleteFilesComponentHandler(e);
+        }
+    };
+
     async function deleteFilesComponentHandler(e) {
         e.stopPropagation();
         router.post('/delete-files', {
@@ -19,7 +25,8 @@ const DeleteButton = ({setSelectedFiles, selectedFiles, classes, setSelectAllTog
     }
 
     return (
-        <Button classes={`border border-red-900 text-red-200 hover:bg-red-950 active:bg-gray-900 ${classes}`} onClick={deleteFilesComponentHandler}>
+        <Button classes={`border border-red-900 text-red-200 hover:bg-red-950 active:bg-gray-900 ${classes}`}     onClick={confirmAndDelete}
+        >
             <Trash2Icon className={`text-red-500 inline`} size={22} />
             {!classes && <span className={`mx-1`}>Delete</span>}
         </Button>
