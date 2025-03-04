@@ -64,7 +64,7 @@ class ThumbnailService
     private function generateVideoThumbnail(LocalFile $file): bool
     {
         $privateFilePath = $file->getPrivatePathNameForFile();
-
+        $this->setHasThumbnail($file);
         if (! file_exists($privateFilePath)) {
             return false;
         }
@@ -74,7 +74,7 @@ class ThumbnailService
         $video = $ffmpeg->open($privateFilePath);
         $video->frame(TimeCode::fromSeconds(1))->save($fullFileThumbnailPath);
 
-        return $this->resizeImageUpdateHasThumbnail($fullFileThumbnailPath, $fullFileThumbnailPath, $file);
+        return $this->imageResize($privateFilePath, $fullFileThumbnailPath, self::IMAGESIZE);
     }
 
     public function getFullFileThumbnailPath(LocalFile $file): string
@@ -90,17 +90,6 @@ class ThumbnailService
         return $thumbnailPathDir.($file->public_path ? DIRECTORY_SEPARATOR : '').$file->getPublicPathname().$imageExt;
     }
 
-    public function resizeImageUpdateHasThumbnail(
-        string $privateFilePath,
-        string $fullFileThumbnailPath,
-        LocalFile $file
-    ): bool {
-        $this->imageResize($privateFilePath, $fullFileThumbnailPath, self::IMAGESIZE);
-        // deliberately has_thumbnail true, to prevent repeated thumb gen
-        $file->has_thumbnail = true;
-
-        return $file->save();
-    }
 
     private function imageResize(string $privateFilePath, string $fullFileThumbnailPath, int $size): bool
     {
@@ -119,11 +108,19 @@ class ThumbnailService
     private function generateImageThumbnail(LocalFile $file): bool
     {
         $privateFilePath = $file->getPrivatePathNameForFile();
+        $this->setHasThumbnail($file);
         if (! file_exists($privateFilePath)) {
             return false;
         }
         $fullFileThumbnailPath = $this->getFullFileThumbnailPath($file);
 
-        return $this->resizeImageUpdateHasThumbnail($privateFilePath, $fullFileThumbnailPath, $file);
+        return $this->imageResize($privateFilePath, $fullFileThumbnailPath, self::IMAGESIZE);
+    }
+
+    private function setHasThumbnail($file)
+    {
+        // deliberately has_thumbnail true, to prevent repeated thumb gen
+        $file->has_thumbnail = true;
+        $file->save();
     }
 }
