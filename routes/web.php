@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminController\SetupController;
 use App\Http\Controllers\DriveControllers;
 use App\Http\Controllers\ShareControllers;
 use App\Http\Controllers\ShareControllers\ShareFilesGuestController;
+use App\Http\Middleware\CheckAdmin;
 use App\Http\Middleware\HandleAuthOrGuestMiddleware;
 use App\Http\Middleware\HandleGuestShareMiddleware;
 use App\Http\Middleware\PreventSetupAccess;
@@ -12,7 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::middleware('auth')->group(callback: function () {
+Route::middleware(['auth', CheckAdmin::class])->group(callback: function () {
     Route::get('/admin-config', [AdminConfigController::class, 'index'])->name('admin-config');
     Route::post('/admin-config/update', [AdminConfigController::class, 'update']);
     // Drive routes
@@ -33,7 +34,6 @@ Route::middleware('auth')->group(callback: function () {
     Route::post('/share-files', [ShareControllers\ShareFilesGenController::class, 'index']);
     Route::get('/all-shares', [ShareControllers\SharedListController::class, 'index'])->name('all-shares');
 });
-
 
 
 // admin or shared

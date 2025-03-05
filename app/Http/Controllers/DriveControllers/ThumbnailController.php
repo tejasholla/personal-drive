@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\DriveControllers;
 
-use App\Http\Requests\DriveRequests\GetThumbnailRequest;
+use App\Http\Requests\DriveRequests\GenThumbnailRequest;
 use App\Services\ThumbnailService;
 use App\Traits\FlashMessages;
-use Inertia\Inertia;
+use Illuminate\Http\RedirectResponse;
 
 class ThumbnailController
 {
@@ -18,7 +18,7 @@ class ThumbnailController
         $this->thumbnailService = $thumbnailService;
     }
 
-    public function update(GetThumbnailRequest $request)
+    public function update(GenThumbnailRequest $request): RedirectResponse
     {
         $fileIds = $request->validated('ids');
         $publicPath = $request->validated('path') ?? '';
@@ -32,8 +32,5 @@ class ThumbnailController
         }
         return redirect()->route('drive', ['path' => $publicPath]);
 
-        //        return Inertia::render('Drive/DriveHome', [
-        //            'token' => csrf_token(),
-        //        ]);
     }
 }

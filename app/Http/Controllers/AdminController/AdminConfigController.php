@@ -54,6 +54,5 @@ class AdminConfigController extends Controller
         }
 
         return redirect()->back();
-
     }
 }

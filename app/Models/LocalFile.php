@@ -74,6 +74,8 @@ class LocalFile extends Model
     {
         return $fileItems->map(function ($item) {
             $item->sizeText = self::getItemSizeText($item);
+            // Prevent infinite loop on failed thumb generation
+            $item->has_thumbnail = 1;
             return $item;
         });
     }

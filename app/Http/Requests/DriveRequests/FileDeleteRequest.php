@@ -10,6 +10,7 @@ class FileDeleteRequest extends FormRequest
     {
         return [
             'fileList' => 'required|array',
+            'fileList.*' => 'ulid',
         ];
     }
 }

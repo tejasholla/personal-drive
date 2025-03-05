@@ -14,7 +14,7 @@ class CommonRequest extends FormRequest
 
     public static function pathRules(): array
     {
-        return ['nullable', 'string', 'regex:/^[a-zA-Z0-9_\-\/\\\]+$/'];
+        return ['nullable', 'string', 'regex:/^[ a-zA-Z0-9_\-\/\\\]+$/'];
     }
 
     public static function passwordRules(): array

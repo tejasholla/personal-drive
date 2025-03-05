@@ -12,6 +12,7 @@ class ShareFilesGenRequest extends FormRequest
     {
         return [
             'fileList' => 'required|array',
+            'fileList.*' => 'ulid',
             'slug' =>  array_merge(CommonRequest::slugRules(), ['unique:shares']),
             'password' => ['required', Password::defaults(), 'confirmed'],
             'expiry' => 'nullable|integer',

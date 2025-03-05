@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\DriveRequests;
 
+use App\Http\Requests\CommonRequest;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UploadRequest extends FormRequest
@@ -12,22 +13,9 @@ class UploadRequest extends FormRequest
             'files' => 'required|array',
             'files.*' => [
                 'required',
-                'file',
-                function ($attribute, $file, $fail) {
-                    if (str_contains($file->getClientOriginalName(), '..')) {
-                        $fail('Invalid filename.');
-                    }
-                }
+                'ulid',
             ],
-            'path' => [
-                'string',
-                'max:255',
-                function ($attribute, $value, $fail) {
-                    if (str_contains($value, '..') || str_starts_with($value, '/.')) {
-                        $fail('Invalid path.');
-                    }
-                }
-            ],
+            'path' => CommonRequest::pathRules()
         ];
     }
 }
