@@ -10,6 +10,7 @@ class DownloadRequest extends FormRequest
     {
         return [
             'fileList' => 'required|array',
+            'fileList.*' => 'ulid',
         ];
     }
 }

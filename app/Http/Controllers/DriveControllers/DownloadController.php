@@ -46,7 +46,7 @@ class DownloadController
         }
     }
 
-    public function getDownloadResponse(string $downloadFilePath): BinaryFileResponse
+    private function getDownloadResponse(string $downloadFilePath): BinaryFileResponse
     {
         return Response::download(
             $downloadFilePath,

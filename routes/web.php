@@ -27,7 +27,7 @@ Route::middleware('auth')->group(callback: function () {
     Route::post('/search-files', [DriveControllers\SearchFilesController::class, 'index']);
     Route::get('/search-files', fn () => redirect('/drive'));
 
-    // Share Routes
+    // Share control Routes
     Route::post('/pause-share', [ShareControllers\ShareFilesModController::class, 'pause']);
     Route::post('/delete-share', [ShareControllers\ShareFilesModController::class, 'delete']);
     Route::post('/share-files', [ShareControllers\ShareFilesGenController::class, 'index']);
@@ -44,7 +44,7 @@ Route::get('/fetch-thumb/{id}/{slug?}', [DriveControllers\FetchFileController::c
 Route::post('/download-files', [DriveControllers\DownloadController::class, 'index'])
     ->middleware([HandleAuthOrGuestMiddleware::class]);
 
-// shared
+// shared guest routes
 Route::post(
     '/shared-check-password',
     [ShareFilesGuestController::class, 'checkPassword']
