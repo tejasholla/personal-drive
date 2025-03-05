@@ -30,7 +30,7 @@ class LoginRequest extends FormRequest
     {
         return [
             'username' => ['required', 'string'],
-            'password' => ['required', Password::defaults(), 'confirmed'],
+            'password' => ['required', Password::min(8)],
         ];
     }
 

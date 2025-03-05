@@ -11,7 +11,7 @@ class SetupAccountRequest extends FormRequest
     {
         return [
             'username' => ['required', 'string', 'regex:/^[0-9a-z\/\_]+$/'],
-            'password' => ['required', Password::defaults(), 'confirmed'],
+            'password' => ['required', 'password' => ['required', Password::min(8)]],
         ];
     }
 }
