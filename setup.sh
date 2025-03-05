@@ -45,7 +45,7 @@ echo "Generating application key..."
 php artisan key:generate
 
 echo "Running migrations..."
-php artisan migrate
+#php artisan migrate
 
 echo "Setting permissions for storage and bootstrap/cache..."
 chmod -R 775 storage bootstrap/cache
