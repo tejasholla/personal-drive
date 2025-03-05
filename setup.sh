@@ -30,7 +30,8 @@ if [ ! -f database/database.sqlite ]; then
 fi
 
 # Set proper permissions for the database file
-chmod 666 database/database.sqlite
+chmod -R 775 database
+chmod 664 database/database.sqlite
 
 echo "Installing composer dependencies..."
 composer install --no-interaction --prefer-dist
