@@ -53,7 +53,6 @@ chown -R www-data:www-data storage bootstrap/cache
 
 echo "Clearing and caching config..."
 php artisan config:clear
-php artisan cache:clear
 php artisan config:cache
 
 echo "Setup complete!"
