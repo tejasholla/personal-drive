@@ -28,7 +28,6 @@ const CheckSharePassword = ({slug}) => {
                     placeholder="Password"
                     required
                 />
-                {error && <p style={{color: 'red'}}>{error}</p>}
                 <button className="  inline-flex gap-x-1 bg-blue-700 text-white font-bold py-2 px-2 rounded hover:bg-blue-600 transition duration-300
 " type="submit">Submit
                 </button>
