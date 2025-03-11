@@ -25,13 +25,13 @@ const FileTileViewCard = React.memo(function FileTileViewCard({
 
         return (
             <div
-                className={`group relative overflow-hidden rounded-lg border border-gray-800 bg-gray-900/50 p-3 transition-all duration-200 hover:border-gray-700 hover:shadow-lg w-[250px] md:w-[290px] flex flex-col justify-between  ${isSelected ? 'bg-gray-950' : ''} `}
+                className={`group relative overflow-hidden rounded-lg border border-gray-800 bg-gray-900/50 p-3 transition-all duration-200 hover:border-gray-700 hover:shadow-lg w-[180px]  sm:w-[210px] md:w-[270px] lg:w-[250px] flex flex-col justify-between  ${isSelected ? 'bg-gray-950' : ''} `}
             >
 
                 <div className="">
                     {/* Filename and Checkbox Header */}
                     <div className="flex items-center justify-between relative">
-                        <h3 className=" font-medium truncate max-w-[190px] md:max-w-[230px] text-sm text-gray-400 mb-3 mt-1 overflow-hidden" title={(isSearch ? file.public_path + '/' : '') + file.filename}>
+                        <h3 className=" font-medium truncate max-w-[120px] sm:max-w-[180px] md:max-w-[220px] text-sm text-gray-400 mb-3 mt-1 overflow-hidden" title={(isSearch ? file.public_path + '/' : '') + file.filename}>
                             {(isSearch ? file.public_path + '/' : '') + file.filename}
                         </h3>
                         <div

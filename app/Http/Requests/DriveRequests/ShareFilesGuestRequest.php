@@ -11,13 +11,15 @@ class ShareFilesGuestRequest extends FormRequest
     {
         return [
             'slug' => CommonRequest::slugRules(),
-            'path' => CommonRequest::pathRules()        ];
+            'path' => CommonRequest::pathRules()
+        ];
     }
 
     protected function prepareForValidation(): void
     {
         $this->merge([
-            'slug' => CommonRequest::slugRules(),
-            'path' => CommonRequest::pathRules()        ]);
+            'slug' => $this->input('slug', '') ?: $this->route('slug', ''),
+            'path' => $this->input('path', '')
+        ]);
     }
 }

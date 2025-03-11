@@ -129,14 +129,14 @@ const FileBrowserSection = memo(({files, path, token, isAdmin, slug}) => {
     }, [selectedFiles]);
 
     return (
-        <div className=" min-h-screen rounded-md overflow-hidden px-2 ">
+        <div className=" min-h-screen rounded-md overflow-hidden sm:px-2 ">
 
             <ShareModal isShareModalOpen={isShareModalOpen} setIsShareModalOpen={setIsShareModalOpen}
                         setSelectedFiles={setSelectedFiles} selectedFiles={filesToShare}
                         setSelectAllToggle={setSelectAllToggle} path={path}/>
 
             {/*breadcrumb bar*/}
-            <div className="px-4 rounded-md gap-x-2 flex items-start my-6  justify-between">
+            <div className="px-1 rounded-md gap-x-2 flex items-start mt-5  justify-between ">
                 <AlertBox message={statusMessage}/>
 
                 <Breadcrumb path={path} isAdmin={isAdmin}/>
@@ -166,7 +166,7 @@ const FileBrowserSection = memo(({files, path, token, isAdmin, slug}) => {
                             <Grid/>
                         </button>
                         <button
-                            className={`p-2 mx-1 rounded-md ${currentViewMode === 'ListView' ? 'bg-gray-900 border border-gray-600' : 'bg-gray-600'} hover:bg-gray-500 active:bg-gray-800`}
+                            className={`p-2 ml-1 rounded-md ${currentViewMode === 'ListView' ? 'bg-gray-900 border border-gray-600' : 'bg-gray-600'} hover:bg-gray-500 active:bg-gray-800`}
                             onClick={() => handleViewModeClick('ListView')}
                         >
                             <List/>
@@ -181,7 +181,7 @@ const FileBrowserSection = memo(({files, path, token, isAdmin, slug}) => {
                          previewAbleFiles={previewAbleFiles} slug={slug}/>
             {/*Files viewer*/}
 
-            <div className="my-12">
+            <div className="my-1 sm:md-3 md:my-8">
                 {filesCopy.length > 0 && (
                     <>
                         {currentViewMode === 'TileViewOne' &&

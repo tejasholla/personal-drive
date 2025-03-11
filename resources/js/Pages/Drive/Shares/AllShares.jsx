@@ -29,20 +29,19 @@ export default function AllShares({shares}) {
     return (
         <>
             <Header/>
-            <div className="p-4 space-y-4 max-w-7xl mx-auto text-gray-300  bg-gray-800 min-h-screen">
+            <div className="p-1 md:p-4 space-y-4 max-w-7xl mx-auto text-gray-300  bg-gray-800 min-h-screen">
                 <h2 className="text-center text-4xl my-12 mb-32 font-semibold">All Live Shares</h2>
                 <main className="mx-auto max-w-7xl">
                     <AlertBox/>
                     <div className="bg-blue-900/15">
                         <table className="w-full text-left  ">
                             <thead>
-                            <tr className="border-spacing-y-10 text-gray-500 border-gray-700 border-t font-light ">
-                                <th className="py-3 mb-6 px-4 border-b border-gray-700 ">Created</th>
-                                <th className="py-3 mb-6 px-4 border-b border-gray-700 ">Share
-                                    Details
+                            <tr className="border-spacing-y-10 text-gray-500 border-gray-700 border-t font-light text-sm">
+                                <th className="py-3 mb-6 px-4 border-b border-gray-700 hidden md:table-cell">Created</th>
+                                <th className="py-3 mb-6 px-4 border-b border-gray-700 ">Details
                                 </th>
-                                <th className="py-2 mb-6 px-4 border-b border-gray-700 ">Has Password</th>
-                                <th className="py-3 mb-6 px-4 border-b border-gray-700 ">Expiring on
+                                <th className="py-2 mb-6 px-4 border-b border-gray-700 hidden md:table-cell">Has Password</th>
+                                <th className="py-3 mb-6 px-4 border-b border-gray-700 hidden md:table-cell">Expiring on
                                 </th>
                                 <th className="py-3 mb-6 px-4 border-b border-gray-700 ">Enabled</th>
                                 <th className="py-3 mb-6 px-4 border-b border-gray-700 ">Delete</th>
@@ -52,20 +51,20 @@ export default function AllShares({shares}) {
                             <tbody className="">
 
                             {shares.map((share) => (
-                                <tr key={share.id} className={` hover:bg-gray-700/20 ${share.enabled ? '' : 'bg-red-800/50'}`}>
-                                    <td className="py-4 px-4 text-sm ">
+                                <tr key={share.id} className={` hover:bg-gray-700/20 ${share.enabled ? '' : 'bg-red-800/50'} text-sm`}>
+                                    <td className="hidden md:table-cell p-1 sm:p-2 md:p-4  ">
                                         {new Date(share.created_at).toLocaleDateString()}
                                     </td>
-                                    <td className="py-4 px-4 flex gap-y-2 flex-col max-w-[500px]">
+                                    <td className="p-1 sm:p-2 md:p-4  flex gap-y-2 flex-col max-w-[500px]">
                                         <div className="flex gap-10 items-center ">
-                                            <span className="font-semibold text-lg text-indigo-300">
+                                            <span className="font-semibold text-sm sm:text-lg text-indigo-300">
                                                 {window.location.hostname + '/shared/' + share.slug}
                                             </span>
-                                            <div className="flex items-center justify-center gap-1">
-                                                <span className="text-lg text-gray-400 font-semibold">
+                                            <div className="flex items-center justify-center gap-1 hidden md:table-cell">
+                                                <span className="text-sm sm:text-lg text-gray-400 font-semibold">
                                                     {share.shared_files.length}
                                                 </span>
-                                                <span className="text-sm text-gray-400">
+                                                <span className="text-sm text-gray-400 ">
                                                    {share.shared_files.length > 1 && `files` }
                                                    {share.shared_files.length <= 1  && `file` }
                                                 </span>
@@ -75,14 +74,14 @@ export default function AllShares({shares}) {
                                             {share.shared_files.slice(0, 2).map(file => file.local_file.filename).join(' || ')} {share.shared_files.length > 1 ? '...' : ''}
                                         </div>
                                     </td>
-                                    <td className="py-4 px-4  ">
+                                    <td className="p-1 sm:p-2 md:p-4 hidden md:table-cell ">
 
                                         {share.password ? 'Yes' : 'No'}</td>
-                                    <td className="py-4 px-4">
+                                    <td className="p-1 sm:p-2 md:p-4 hidden md:table-cell">
                                         {share.expiry && share.expiry_time}
                                         {!share.expiry && "Never"}
                                     </td>
-                                    <td className="py-2 px-4">
+                                    <td className="p-1 sm:p-2 md:p-4 ">
                                         <Button
                                             onClick={() => {
                                                 handlePause(share.id)

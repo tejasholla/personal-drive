@@ -3,7 +3,7 @@ import {router} from "@inertiajs/react";
 import AlertBox from "@/Pages/Drive/Components/AlertBox.jsx";
 
 
-const PasswordPage = ({slug}) => {
+const CheckSharePassword = ({slug}) => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
 
@@ -38,4 +38,4 @@ const PasswordPage = ({slug}) => {
     );
 };
 
-export default PasswordPage;
+export default CheckSharePassword;

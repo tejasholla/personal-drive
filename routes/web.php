@@ -50,7 +50,7 @@ Route::post(
     [ShareFilesGuestController::class, 'checkPassword']
 )->middleware(['throttle:shared']);
 Route::get('/shared-password/{slug}', [ShareFilesGuestController::class, 'passwordPage'])
-    ->name('shared.password')->middleware(['throttle:shared']);
+    ->name('shared.password'); // ->middleware(['throttle:shared'])
 Route::get('/shared/{slug}/{path?}', [ShareControllers\ShareFilesGuestController::class, 'index'])->where(
     'path',
     '.*'

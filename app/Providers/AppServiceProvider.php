@@ -46,7 +46,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         RateLimiter::for('shared', function (Request $request) {
-            return Limit::perMinute(10)
+            return Limit::perMinute(20)
                 ->response(function (Request $request, array $headers) {
                     return response('Too Many requests..', 429, $headers);
                 });

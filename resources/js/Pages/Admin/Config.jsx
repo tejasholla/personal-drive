@@ -33,12 +33,12 @@ export default function AdminConfig({
         <>
         {!setupMode && <Header/> }
 
-        <div className="p-4 space-y-4 max-w-7xl mx-auto text-gray-200  bg-gray-800 ">
+        <div className="p-1 sm:p-4 space-y-4 max-w-7xl mx-auto text-gray-200  bg-gray-800 ">
             <h2 className="text-center text-4xl font-semibold text-gray-300 my-12 mb-32">Admin Settings</h2>
             <main className="mx-auto max-w-7xl ">
                 <AlertBox/>
 
-                <div className="w-[700px] mx-auto bg-blue-900/15 p-12 min-h-[500px] flex flex-col gap-y-20 ">
+                <div className="max-w-3xl mx-auto bg-blue-900/15 p-4 md:p-12 min-h-[500px] flex flex-col gap-y-20 ">
 
                     <form
                         className="flex flex-col justify-between gap-y-6"

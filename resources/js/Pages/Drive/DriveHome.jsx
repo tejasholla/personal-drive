@@ -6,7 +6,7 @@ export default function DriveHome({files, path, token}) {
         <>
             <Header />
             <div className="max-w-7xl mx-auto  bg-gray-800 text-gray-200">
-                <div className="p-5">
+                <div className="sm:p-5 p-1">
                     <FileBrowserSection files={files} path={path} token={token}
                                         isAdmin={true} />
                 </div>

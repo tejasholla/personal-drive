@@ -13,12 +13,14 @@ class HandleGuestShareMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         $slug = $request->route('slug') ?? $request->input('slug');
+
         if (!$slug) {
             return redirect()->route('rejected');
         }
         $share = Share::whereBySlug($slug)->first();
-        if (! $share || ! $share->enabled || ($share->expiry && $share->created_at->addDays($share->expiry)->lt(now()))) {
-            return redirect()->route('shared.password', ['slug' => $slug]);
+
+        if (!$share || !$share->enabled || ($share->expiry && $share->created_at->addDays($share->expiry)->lt(now()))) {
+            return redirect()->route('login', ['slug' => $slug]);
         }
         if ($this->isNeedsPassword($share, $slug)) {
             return redirect()->route('shared.password', ['slug' => $slug]);
@@ -29,6 +31,6 @@ class HandleGuestShareMiddleware
 
     public function isNeedsPassword($share, mixed $slug): bool
     {
-        return $share->password && ! Session::get("shared_{$slug}_authenticated");
+        return $share->password && !Session::get("shared_{$slug}_authenticated");
     }
 }

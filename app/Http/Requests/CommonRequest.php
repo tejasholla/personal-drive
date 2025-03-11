@@ -9,7 +9,7 @@ class CommonRequest extends FormRequest
 {
     public static function slugRules(): array
     {
-        return ['required', 'string' , self::slugRegex()];
+        return [ 'required', 'string' , self::slugRegex()];
     }
 
     public static function pathRules(): array

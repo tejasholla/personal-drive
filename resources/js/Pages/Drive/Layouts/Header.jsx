@@ -9,44 +9,46 @@ export default function Header({  }) {
     return (
         <div className="bg-gray-900">
             <nav className="bg-gray-800">
-                <div className="mx-auto max-w-7xl pr-4 sm:px-6 ">
+                <div className="mx-auto max-w-7xl pr-1 md:px-6 ">
                     <div className="flex h-16 justify-between ">
-                        <div className="space-x-4 sm:space-x-8 sm:-my-px pr-3 flex">
+                        <div className="space-x-1 md:space-x-4 sm:space-x-8 sm:-my-px pr-1 sm:pr-3 flex">
                             <NavLink
                                 href={route('drive')}
-
                             >
-                                <img src="/img/logo.png" alt="Logo" className="w-16 inline-block " />
+                                <img src="/img/logo.png" alt="Logo" className="hidden md:inline-block w-16  " />
                             </NavLink>
                             <NavLink
                                 href={route('drive')}
                                 active={route().current('drive')}
+                                className={` text-xs `}
                             >
                                 Files
                             </NavLink>
                             <NavLink
                                 href={route('admin-config')}
                                 active={route().current('admin-config')}
+                                className={` text-xs `}
                             >
                                 Settings
                             </NavLink>
                             <NavLink
                                 href={route('all-shares')}
                                 active={route().current('all-shares')}
+                                className={` text-xs `}
                             >
                                 Shares
                             </NavLink>
                         </div>
 
 
-                        <div className="flex gap-x-2 items-center">
+                        <div className="flex gap-x-1 sm:gap-x-2 items-center">
                             <SearchBar handleSearch={handleSearch}/>
 
                             <div className="">
                                 <div className="relative group text-gray-300">
                                     <button
                                         className="py-2.5 peer rounded font-semibold ">
-                                        <svg className="w-6 h-6 rotate-90"
+                                        <svg className="w-4 h-4 md:w-6 md:h-6 rotate-90"
                                              xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                              stroke="currentColor">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
