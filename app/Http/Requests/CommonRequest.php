@@ -9,7 +9,7 @@ class CommonRequest extends FormRequest
 {
     public static function slugRules(): array
     {
-        return ['required', 'string' , 'regex:/^[a-zA-Z0-9\-\_]{1,20}$/'];
+        return ['required', 'string' , self::slugRegex()];
     }
 
     public static function pathRules(): array
@@ -20,5 +20,10 @@ class CommonRequest extends FormRequest
     public static function passwordRules(): array
     {
         return ['required', 'string', Password::defaults()];
+    }
+
+    public static function slugRegex(): string
+    {
+        return 'regex:/^[a-zA-Z0-9\-\_]{1,20}$/';
     }
 }
