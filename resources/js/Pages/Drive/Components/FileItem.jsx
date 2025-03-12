@@ -5,7 +5,7 @@ import React from 'react';
 import ShowShareModalButton from "@/Pages/Drive/Components/Shares/ShowShareModalButton.jsx";
 
 
-const FileItem = React.memo(function FileItem({ file, isSearch, token, setStatusMessage, handleFileClick, setIsShareModalOpen, setFilesToShare, isAdmin, slug }) {
+const FileItem = React.memo(function FileItem({ file, isSearch, token, setStatusMessage, setAlertStatus, handleFileClick, setIsShareModalOpen, setFilesToShare, isAdmin, slug }) {
     return (
         <div
             className={` flex items-center  hover:bg-gray-900 justify-between`} onClick={(e) => handleFileClick(file)}
@@ -20,7 +20,7 @@ const FileItem = React.memo(function FileItem({ file, isSearch, token, setStatus
             {isAdmin && <DeleteButton classes="hidden group-hover:block mr-2  z-10" selectedFiles={new Set([file.id])}/> }
 
                 <DownloadButton  classes="hidden group-hover:block mr-2" selectedFiles={new Set([file.id])}
-                                token={token} setStatusMessage={setStatusMessage} slug={slug}
+                                token={token} setStatusMessage={setStatusMessage} slug={slug} setAlertStatus={setAlertStatus}
                 />
              {isAdmin && <ShowShareModalButton  classes="hidden group-hover:block mr-2  z-10" setIsShareModalOpen={setIsShareModalOpen} setFilesToShare={setFilesToShare} filesToShare={new Set([file.id])}/> }
 

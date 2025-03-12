@@ -29,6 +29,7 @@ const FileBrowserSection = memo(({files, path, token, isAdmin, slug}) => {
 
     const [isSearch, setIsSearch] = useState(false);
     const [statusMessage, setStatusMessage] = useState('')
+    const [alertStatus, setAlertStatus] = useState(true)
     const [filesToShare, setFilesToShare] = useState(new Set());
     const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
@@ -137,7 +138,7 @@ const FileBrowserSection = memo(({files, path, token, isAdmin, slug}) => {
 
             {/*breadcrumb bar*/}
             <div className="px-1 rounded-md gap-x-2 flex items-start mt-5  justify-between ">
-                <AlertBox message={statusMessage}/>
+                <AlertBox message={statusMessage} alertStatus={alertStatus}/>
 
                 <Breadcrumb path={path} isAdmin={isAdmin}/>
                 <div className="flex gap-x-5">
@@ -145,7 +146,7 @@ const FileBrowserSection = memo(({files, path, token, isAdmin, slug}) => {
                         <div className='flex gap-x-1'>
                             <DownloadButton setSelectedFiles={setSelectedFiles} selectedFiles={selectedFiles}
                                             setStatusMessage={setStatusMessage} statusMessage={statusMessage}
-                                            setSelectAllToggle={setSelectAllToggle} slug={slug}/>
+                                            setSelectAllToggle={setSelectAllToggle} slug={slug} setAlertStatus={setAlertStatus}/>
                             {isAdmin &&
                                 <>
                                     <ShowShareModalButton setIsShareModalOpen={setIsShareModalOpen}/>
@@ -189,6 +190,7 @@ const FileBrowserSection = memo(({files, path, token, isAdmin, slug}) => {
                                 filesCopy={filesCopy}
                                 token={token}
                                 setStatusMessage={setStatusMessage}
+                                setAlertStatus={setAlertStatus}
                                 handleFileClick={handleFileClickM}
                                 isSearch={isSearch}
                                 sortCol={sortCol}
@@ -210,6 +212,7 @@ const FileBrowserSection = memo(({files, path, token, isAdmin, slug}) => {
                                 filesCopy={filesCopy}
                                 token={token}
                                 setStatusMessage={setStatusMessage}
+                                setAlertStatus={setAlertStatus}
                                 handleFileClick={handleFileClickM}
                                 isSearch={isSearch}
                                 sortCol={sortCol}

@@ -12,8 +12,7 @@ class UploadRequest extends FormRequest
         return [
             'files' => 'required|array',
             'files.*' => [
-                'required',
-                'ulid',
+                'required'
             ],
             'path' => CommonRequest::pathRules()
         ];

@@ -7,6 +7,7 @@ const FileListRow = React.memo(function FileListRow({
                                                         isSearch,
                                                         token,
                                                         setStatusMessage,
+                                                        setAlertStatus,
                                                         handleFileClick,
                                                         isSelected,
                                                         handlerSelectFile,
@@ -37,6 +38,7 @@ const FileListRow = React.memo(function FileListRow({
                             isSearch={isSearch}
                             token={token}
                             setStatusMessage={setStatusMessage}
+                            setAlertStatus={setAlertStatus}
                             setIsShareModalOpen={setIsShareModalOpen}
                             setFilesToShare={setFilesToShare}
                             isAdmin={isAdmin}
@@ -49,6 +51,7 @@ const FileListRow = React.memo(function FileListRow({
                             isSearch={isSearch}
                             token={token}
                             setStatusMessage={setStatusMessage}
+                            setAlertStatus={setAlertStatus}
                             handleFileClick={handleFileClick}
                             setIsShareModalOpen={setIsShareModalOpen}
                             setFilesToShare={setFilesToShare}

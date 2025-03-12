@@ -11,6 +11,7 @@ const ListView = ({
                       filesCopy,
                       token,
                       setStatusMessage,
+                      setAlertStatus,
                       handleFileClick,
                       isSearch,
                       sortCol,
@@ -71,6 +72,7 @@ const ListView = ({
                         isSearch={isSearch}
                         token={token}
                         setStatusMessage={setStatusMessage}
+                        setAlertStatus={setAlertStatus}
                         handleFileClick={handleFileClick}
                         isSelected={selectedFiles.has(file.id)}
                         handlerSelectFile={handlerSelectFile}

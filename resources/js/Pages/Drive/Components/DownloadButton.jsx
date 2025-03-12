@@ -1,12 +1,13 @@
 import {DownloadIcon} from "lucide-react";
 import Button from "./Generic/Button.jsx"
 
-const DownloadButton = ({setSelectedFiles, selectedFiles, classes, setStatusMessage, statusMessage, setSelectAllToggle, slug}) => {
+const DownloadButton = ({setSelectedFiles, selectedFiles, classes, setStatusMessage, statusMessage, setSelectAllToggle, slug, setAlertStatus}) => {
     const handleDownload = async (e) => {
         e.stopPropagation();
         let response = {};
         try {
             setStatusMessage('Downloading...');
+            setAlertStatus(true);
             // setIsLoading(true);
             let formData = {
                 fileList: Array.from(selectedFiles),
@@ -35,8 +36,8 @@ const DownloadButton = ({setSelectedFiles, selectedFiles, classes, setStatusMess
             const jsonResponse = JSON.parse(text);
 
             if (!jsonResponse.status && jsonResponse.message) {
+                setAlertStatus(jsonResponse.status);
                 setStatusMessage('Download failed ' + jsonResponse.message);
-                console.error(jsonResponse.message); // Handle the error message
             }
         } else {
 

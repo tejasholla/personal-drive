@@ -2,17 +2,16 @@ import React, {useEffect, useState} from 'react';
 import {usePage} from "@inertiajs/react";
 
 
-const AlertBox = React.memo(function AlertBox({message}) {
+const AlertBox = React.memo(function AlertBox({message, alertStatus = true}) {
     let icon;
     let bgStatus = 'bg-gray-500';
     let {flash, errors} = usePage().props;
-    // flash.message = 'f';
     console.log('flash ', flash)
     const [alertBoxData, setAlertBoxData] = useState(flash);
     // Effect to update messageToPrint when props change
     useEffect(() => {
         if (!flash.message && Object.keys(errors).length === 0 && message) {
-            let alertBoxDataCopy = {message: message, status: true}
+            let alertBoxDataCopy = {message: message, status: alertStatus }
             setAlertBoxData(alertBoxDataCopy);
         } else {
             let alertBoxDataCopy = Object.assign({}, flash);

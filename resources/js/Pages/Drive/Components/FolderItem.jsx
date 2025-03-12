@@ -12,6 +12,7 @@ const FolderItem = React.memo(function FolderItem({
                                                       isSearch,
                                                       token,
                                                       setStatusMessage,
+                                                      setAlertStatus,
                                                       setIsShareModalOpen,
                                                       setFilesToShare,
                                                       isAdmin,
@@ -41,7 +42,8 @@ const FolderItem = React.memo(function FolderItem({
                                           selectedFiles={new Set([file.id])}/>}
                 <DownloadButton classes="hidden  group-hover:block mr-2  z-10"
                                 selectedFiles={new Set([file.id])} token={token}
-                                setStatusMessage={setStatusMessage} slug={slug}/>
+                                setStatusMessage={setStatusMessage} slug={slug}                             setAlertStatus={setAlertStatus}
+                />
                 {isAdmin && <ShowShareModalButton classes="hidden group-hover:block mr-2  z-10"
                                                   setIsShareModalOpen={setIsShareModalOpen}
                                                   setFilesToShare={setFilesToShare} filesToShare={new Set([file.id])}/>}

@@ -10,6 +10,7 @@ const FileTileViewCard = React.memo(function FileTileViewCard({
                                                                   isSearch,
                                                                   token,
                                                                   setStatusMessage,
+                                                                  setAlertStatus,
                                                                   handleFileClick,
                                                                   isSelected,
                                                                   handlerSelectFile,
@@ -103,6 +104,7 @@ const FileTileViewCard = React.memo(function FileTileViewCard({
                                 selectedFiles={selectedFileSet}
                                 token={token}
                                 setStatusMessage={setStatusMessage}
+                                setAlertStatus={setAlertStatus}
                                 slug={slug}/>
                             </div>
                 </div>
