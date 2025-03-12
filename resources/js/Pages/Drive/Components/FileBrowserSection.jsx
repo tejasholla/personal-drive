@@ -130,7 +130,7 @@ const FileBrowserSection = memo(({files, path, token, isAdmin, slug}) => {
     }, [selectedFiles]);
 
     return (
-        <div className=" min-h-screen rounded-md overflow-hidden sm:px-2 ">
+        <div className=" min-h-screen rounded-md overflow-hidden px-1 sm:px-2 ">
 
             <ShareModal isShareModalOpen={isShareModalOpen} setIsShareModalOpen={setIsShareModalOpen}
                         setSelectedFiles={setSelectedFiles} selectedFiles={filesToShare}
@@ -182,7 +182,7 @@ const FileBrowserSection = memo(({files, path, token, isAdmin, slug}) => {
                          previewAbleFiles={previewAbleFiles} slug={slug}/>
             {/*Files viewer*/}
 
-            <div className="my-1 sm:md-3 md:my-8">
+            <div className="px-1 my-1 sm:md-3 md:my-8">
                 {filesCopy.length > 0 && (
                     <>
                         {currentViewMode === 'TileViewOne' &&
