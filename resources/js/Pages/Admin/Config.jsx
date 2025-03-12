@@ -12,7 +12,6 @@ export default function AdminConfig({
                                         setupMode,
                                     }) {
 
-    console.log( storage_path, php_max_upload_size, php_post_max_size, php_max_file_uploads);
     const [formData, setFormData] = useState({
         storage_path: storage_path || '/opt/personaldrive/storage',
         php_max_upload_size: php_max_upload_size,

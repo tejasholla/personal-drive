@@ -29,6 +29,11 @@ class LocalFile extends Model
         return self::whereIn('id', $fileIds);
     }
 
+    public static function setHasThumbnail(array $fileIds): int
+    {
+        return self::getByIds($fileIds)->update(['has_thumbnail' => 1]);
+    }
+
     public function getPublicPathname(): string
     {
         return $this->public_path.DIRECTORY_SEPARATOR.$this->filename;
@@ -74,8 +79,6 @@ class LocalFile extends Model
     {
         return $fileItems->map(function ($item) {
             $item->sizeText = self::getItemSizeText($item);
-            // Prevent infinite loop on failed thumb generation
-            $item->has_thumbnail = 1;
             return $item;
         });
     }

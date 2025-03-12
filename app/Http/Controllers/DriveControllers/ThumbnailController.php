@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\DriveControllers;
 
 use App\Http\Requests\DriveRequests\GenThumbnailRequest;
+use App\Models\LocalFile;
 use App\Services\ThumbnailService;
 use App\Traits\FlashMessages;
 use Illuminate\Http\RedirectResponse;
@@ -26,6 +27,7 @@ class ThumbnailController
         if (!$fileIds) {
             session()->flash('message', 'Could not generate thumbnails');
         }
+        LocalFile::setHasThumbnail($fileIds);
         $thumbsGenerated = $this->thumbnailService->genThumbnailsForFileIds($fileIds);
         if ($thumbsGenerated === 0) {
             session()->flash('message', 'No thumbnails generated. No valid files found');

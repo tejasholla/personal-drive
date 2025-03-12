@@ -28,7 +28,6 @@ const ListView = ({
                       slug
                   }) => {
     const navigate = useNavigate();
-    console.log('path ', path);
 
     function handleSortClick(e, key) {
         let sortedFiles = sortCol(filesCopy, key);

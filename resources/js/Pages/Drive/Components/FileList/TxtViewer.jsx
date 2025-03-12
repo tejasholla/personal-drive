@@ -6,7 +6,6 @@ const TxtViewer = ({id, slug}) => {
     const fetchTextFile = async (src) => {
         try {
             const response = await axios.get(src);
-            console.log('response response', response);
             setContent(response.data || '');
         } catch (err) {
         }

@@ -64,7 +64,7 @@ class ThumbnailService
     private function generateVideoThumbnail(LocalFile $file): bool
     {
         $privateFilePath = $file->getPrivatePathNameForFile();
-        $this->setHasThumbnail($file);
+
         if (! file_exists($privateFilePath)) {
             return false;
         }
@@ -108,7 +108,6 @@ class ThumbnailService
     private function generateImageThumbnail(LocalFile $file): bool
     {
         $privateFilePath = $file->getPrivatePathNameForFile();
-        $this->setHasThumbnail($file);
         if (! file_exists($privateFilePath)) {
             return false;
         }
@@ -117,7 +116,7 @@ class ThumbnailService
         return $this->imageResize($privateFilePath, $fullFileThumbnailPath, self::IMAGESIZE);
     }
 
-    private function setHasThumbnail($file)
+    private function setHasThumbnail($file): void
     {
         // deliberately has_thumbnail true, to prevent repeated thumb gen
         $file->has_thumbnail = true;
