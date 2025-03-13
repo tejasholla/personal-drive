@@ -72,7 +72,7 @@ const DownloadButton = ({setSelectedFiles, selectedFiles, classes, setStatusMess
                     <div className="w-5 h-5 border-t-2 border-blue-300 border-solid rounded-full animate-spin"></div>
                 ) :
                 <>
-                    <DownloadIcon className="text-center text-green-500 inline" size={22}/> {!classes &&
+                    <DownloadIcon className="text-center text-green-500  hidden sm:inline  w-4 h-4" /> {!classes &&
                     <span className="mx-1 ">Download</span>}
                 </>
             }

@@ -10,7 +10,7 @@ export default function SearchBar({handleSearch}) {
             <div className="relative">
                 <input type="text" id="searchbox"
                        className="border border-gray-300 rounded-md p-2 sm:pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-700 w-28 sm:w-44 md:w-52"
-                       placeholder="query &#128270;"
+                       placeholder="&#128270;"
                        value={searchValue}
                        onChange={(e) => setSearchValue(e.target.value)}
 

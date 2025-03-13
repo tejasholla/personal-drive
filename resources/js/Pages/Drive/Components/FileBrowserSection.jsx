@@ -136,14 +136,13 @@ const FileBrowserSection = memo(({files, path, token, isAdmin, slug}) => {
                         setSelectedFiles={setSelectedFiles} selectedFiles={filesToShare}
                         setSelectAllToggle={setSelectAllToggle} path={path}/>
 
-            {/*breadcrumb bar*/}
-            <div className="px-1 rounded-md gap-x-2 flex items-start mt-5  justify-between ">
-                <AlertBox message={statusMessage} alertStatus={alertStatus}/>
+            <AlertBox message={statusMessage} alertStatus={alertStatus}/>
 
+            <div className="rounded-md gap-x-2 flex sm:flex-row flex-col items-start mt-5  justify-between ">
                 <Breadcrumb path={path} isAdmin={isAdmin}/>
-                <div className="flex gap-x-5">
+                <div className="flex w-full justify-between md:justify-end items-center">
                     {selectedFiles.size > 0 &&
-                        <div className='flex gap-x-1'>
+                        <div className='flex gap-x-1 mt-1 sm:mt-0'>
                             <DownloadButton setSelectedFiles={setSelectedFiles} selectedFiles={selectedFiles}
                                             setStatusMessage={setStatusMessage} statusMessage={statusMessage}
                                             setSelectAllToggle={setSelectAllToggle} slug={slug} setAlertStatus={setAlertStatus}/>
@@ -154,24 +153,27 @@ const FileBrowserSection = memo(({files, path, token, isAdmin, slug}) => {
                                                   setSelectAllToggle={setSelectAllToggle}/></>
                             }
                         </div>
+                    }
+                    <div className=" w-full sm:w-auto sm:ml-1 justify-end items-center flex ">
 
-                    }
-                    {!isSearch && isAdmin &&
-                        <UploadMenu path={path} setStatusMessage={setStatusMessage} files={files}/>
-                    }
-                    <div>
-                        <button
-                            className={`p-2 mx-1 rounded-md ${currentViewMode === 'TileViewOne' ? 'bg-gray-900 border border-gray-600' : 'bg-gray-600'} hover:bg-gray-500 active:bg-gray-800`}
-                            onClick={() => handleViewModeClick('TileViewOne')}
-                        >
-                            <Grid/>
-                        </button>
-                        <button
-                            className={`p-2 ml-1 rounded-md ${currentViewMode === 'ListView' ? 'bg-gray-900 border border-gray-600' : 'bg-gray-600'} hover:bg-gray-500 active:bg-gray-800`}
-                            onClick={() => handleViewModeClick('ListView')}
-                        >
-                            <List/>
-                        </button>
+                        {!isSearch && isAdmin &&
+                            <UploadMenu path={path} setStatusMessage={setStatusMessage} files={files}/>
+                        }
+                        <div className="flex">
+
+                            <button
+                                className={`p-2 mx-1 rounded-md ${currentViewMode === 'TileViewOne' ? 'bg-gray-900 border border-gray-600' : 'bg-gray-600'} hover:bg-gray-500 active:bg-gray-800`}
+                                onClick={() => handleViewModeClick('TileViewOne')}
+                            >
+                                <Grid className="w-5 h-5"/>
+                            </button>
+                            <button
+                                className={`p-2 ml-1 rounded-md ${currentViewMode === 'ListView' ? 'bg-gray-900 border border-gray-600' : 'bg-gray-600'} hover:bg-gray-500 active:bg-gray-800`}
+                                onClick={() => handleViewModeClick('ListView')}
+                            >
+                                <List className="w-5 h-5"/>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -182,7 +184,7 @@ const FileBrowserSection = memo(({files, path, token, isAdmin, slug}) => {
                          previewAbleFiles={previewAbleFiles} slug={slug}/>
             {/*Files viewer*/}
 
-            <div className="px-1 my-1 sm:md-3 md:my-8">
+            <div className="my-1 sm:md-3 md:my-8">
                 {filesCopy.length > 0 && (
                     <>
                         {currentViewMode === 'TileViewOne' &&

@@ -65,14 +65,14 @@ const UploadMenu = ({path, setStatusMessage, files}) => {
         }
     }, [uploadedFiles]);
     return (
-        <div ref={menuRef} className='relative  m-0 p-0'>
-            <button className="inline-flex gap-x-1 bg-blue-700 text-white font-bold py-2 px-2 rounded hover:bg-blue-600 active:bg-blue-800
+        <div ref={menuRef} className='relative m-0 p-0'>
+            <button className="inline-flex gap-x-1 bg-blue-700 text-white font-bold p-1 md:p-2 rounded hover:bg-blue-600 active:bg-blue-800 items-center
 "
                     onClick={() => {
                         setIsMenuOpen(!isMenuOpen)
                     }}
             >
-                <UploadCloudIcon/>
+                <UploadCloudIcon className="w-4 h-4 inline"/>
                 New
             </button>
             {isMenuOpen && (

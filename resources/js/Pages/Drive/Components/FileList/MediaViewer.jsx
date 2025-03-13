@@ -80,7 +80,7 @@ const MediaViewer = ({
 
                 {previewAbleFiles && previewAbleFiles.current[currentFileIndex] && previewAbleFiles.current[currentFileIndex].next &&
                     <button onClick={nextClick}
-                            className={`absolute ${isActive ? 'block' : 'hidden'}  left-8 sm:left-20 md:right-32 top-1/2   p-2 rounded-full hover:bg-gray-500 bg-gray-500  opacity-60  focus:outline-none z-50`}
+                            className={`absolute ${isActive ? 'block' : 'hidden'}  right-8 sm:right-20 md:right-32 top-1/2   p-2 rounded-full hover:bg-gray-500 bg-gray-500  opacity-60  focus:outline-none z-50`}
                     >
                         <ChevronRight className="text-white h-8 w-8 rounded-full"/>
                     </button>}

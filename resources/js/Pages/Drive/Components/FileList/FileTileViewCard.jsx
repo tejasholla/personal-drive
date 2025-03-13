@@ -32,7 +32,7 @@ const FileTileViewCard = React.memo(function FileTileViewCard({
                 <div className="">
                     {/* Filename and Checkbox Header */}
                     <div className="flex items-center justify-between relative">
-                        <h3 className=" font-medium truncate max-w-[120px] sm:max-w-[180px] md:max-w-[220px] text-sm text-gray-400 mb-3 mt-1 overflow-hidden" title={(isSearch ? file.public_path + '/' : '') + file.filename}>
+                        <h3 className=" font-medium truncate max-w-[120px] sm:max-w-[160px] md:max-w-[200px] text-sm text-gray-400 mb-3 mt-1 overflow-hidden" title={(isSearch ? file.public_path + '/' : '') + file.filename}>
                             {(isSearch ? file.public_path + '/' : '') + file.filename}
                         </h3>
                         <div
