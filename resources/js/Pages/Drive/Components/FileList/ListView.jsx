@@ -28,7 +28,7 @@ const ListView = ({
                       slug
                   }) => {
     const navigate = useNavigate();
-
+    console.log('pathpath ', path);
     function handleSortClick(e, key) {
         let sortedFiles = sortCol(filesCopy, key);
         setFilesCopy(sortedFiles);
@@ -58,7 +58,7 @@ const ListView = ({
                     <SortIcon classes={`${sortDetails.key === 'file_type' ? 'text-blue-500' : 'gray'} `}/>
                 </div>
             </div>
-            {(isSearch || (path && !path.match(/\/shared\/[A-Za-z0-9\-_]$/) && path !== '/drive')) && (
+            {(isSearch || (path && !path.match(/shared\/[A-Za-z0-9\-_]+$/) && path !== '/drive')) && (
                 <div>
                     <Link className="cursor-pointer hover:bg-gray-700 p-4 px-8 w-full block" title="Go Up" href={path ? path.substring(0, path.lastIndexOf('/')) : `/drive`} >..</Link>
                 </div>
