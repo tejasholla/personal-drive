@@ -1,7 +1,38 @@
 import {DownloadIcon} from "lucide-react";
 import Button from "./Generic/Button.jsx"
 
-const DownloadButton = ({setSelectedFiles, selectedFiles, classes, setStatusMessage, statusMessage, setSelectAllToggle, slug, setAlertStatus}) => {
+const DownloadButton = ({
+                            setSelectedFiles,
+                            selectedFiles,
+                            classes,
+                            setStatusMessage,
+                            statusMessage,
+                            setSelectAllToggle,
+                            slug,
+                            setAlertStatus
+                        }) => {
+    function generateAndClickDownloadLink(response) {
+        // Create blob link to download
+        const blob = new Blob([response.data], {
+            type: response.headers['content-type']
+        });
+        const url = window.URL.createObjectURL(blob);
+        // Create temporary link and trigger download
+        const link = document.createElement('a');
+        link.href = url;
+        // Try to get filename from response headers
+        const contentDisposition = response.headers['content-disposition'];
+        const fileName = contentDisposition
+            ? contentDisposition.split('filename=')[1].replace(/['"]/g, '')
+            : 'download';
+        link.setAttribute('download', fileName);
+        document.body.appendChild(link);
+        link.click();
+        // Cleanup
+        link.parentNode.removeChild(link);
+        window.URL.revokeObjectURL(url);
+    }
+
     const handleDownload = async (e) => {
         e.stopPropagation();
         let response = {};
@@ -12,7 +43,7 @@ const DownloadButton = ({setSelectedFiles, selectedFiles, classes, setStatusMess
             let formData = {
                 fileList: Array.from(selectedFiles),
             };
-            if (slug){
+            if (slug) {
                 formData['slug'] = slug;
             }
             response = await axios({
@@ -21,8 +52,7 @@ const DownloadButton = ({setSelectedFiles, selectedFiles, classes, setStatusMess
                 responseType: 'blob',
                 data: formData
             });
-        }
-        finally {
+        } finally {
 
             setStatusMessage('');
             setSelectedFiles?.(new Set());
@@ -30,49 +60,34 @@ const DownloadButton = ({setSelectedFiles, selectedFiles, classes, setStatusMess
         }
         // Check if the response is JSON
         const contentType = response.headers['content-type'];
-        if (contentType && contentType.includes('application/json')) {
+        if (contentType && contentType == 'application/json') {
             // Convert blob to JSON
             const text = await response.data.text();
             const jsonResponse = JSON.parse(text);
-
+            if (!jsonResponse.status && !jsonResponse.message) {
+                generateAndClickDownloadLink(response);
+            }
             if (!jsonResponse.status && jsonResponse.message) {
                 setAlertStatus(jsonResponse.status);
                 setStatusMessage('Download failed ' + jsonResponse.message);
             }
-        } else {
 
-            // Create blob link to download
-            const blob = new Blob([response.data], {
-                type: response.headers['content-type']
-            });
-            const url = window.URL.createObjectURL(blob);
-            // Create temporary link and trigger download
-            const link = document.createElement('a');
-            link.href = url;
-            // Try to get filename from response headers
-            const contentDisposition = response.headers['content-disposition'];
-            const fileName = contentDisposition
-                ? contentDisposition.split('filename=')[1].replace(/['"]/g, '')
-                : 'download';
-            link.setAttribute('download', fileName);
-            document.body.appendChild(link);
-            link.click();
-            // Cleanup
-            link.parentNode.removeChild(link);
-            window.URL.revokeObjectURL(url);
+        } else {
+            generateAndClickDownloadLink(response);
         }
 
     };
     return (
-        <Button classes={`border border-green-800 text-green-200 hover:bg-green-950 active:bg-gray-900 ${classes} ${statusMessage ? 'cursor-not-allowed' : ''}`}
-                disabled={statusMessage}
-                onClick={handleDownload}
+        <Button
+            classes={`border border-green-800 text-green-200 hover:bg-green-950 active:bg-gray-900 ${classes} ${statusMessage ? 'cursor-not-allowed' : ''}`}
+            disabled={statusMessage}
+            onClick={handleDownload}
         >
             {statusMessage ? (
                     <div className="w-5 h-5 border-t-2 border-blue-300 border-solid rounded-full animate-spin"></div>
                 ) :
                 <>
-                    <DownloadIcon className="text-center text-green-500  hidden sm:inline  w-4 h-4" /> {!classes &&
+                    <DownloadIcon className="text-center text-green-500  hidden sm:inline  w-4 h-4"/> {!classes &&
                     <span className="mx-1 ">Download</span>}
                 </>
             }
