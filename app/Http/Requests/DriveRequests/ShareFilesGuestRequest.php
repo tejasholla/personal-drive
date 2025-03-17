@@ -19,7 +19,7 @@ class ShareFilesGuestRequest extends FormRequest
     {
         $this->merge([
             'slug' => $this->input('slug', '') ?: $this->route('slug', ''),
-            'path' => $this->input('path', '') ?:  $this->route('path', ''),
+            'path' => $this->input('path', '') ?: $this->route('path', ''),
         ]);
     }
 }

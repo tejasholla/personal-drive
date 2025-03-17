@@ -4,7 +4,6 @@ namespace App\Http\Requests\DriveRequests;
 
 use App\Http\Requests\CommonRequest;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\Password;
 
 class ShareFilesGuestPasswordRequest extends FormRequest
 {
