@@ -29,7 +29,6 @@ WEB_GROUP=$(ask_for_value "Enter the web server group" "$WEB_GROUP")
 #fi
 
 
-
 echo "Installing composer dependencies..."
 composer install --no-interaction --prefer-dist
 
@@ -56,17 +55,6 @@ if sudo chmod -R 770 storage bootstrap/cache database 2>/dev/null; then
 else
     echo "Could not change permissions. Please update manually."
 fi
-
-
-if [ ! -f database/database.sqlite ]; then
-    echo "Creating SQLite database file..."
-    touch database/database.sqlite
-fi
-
-# Set proper permissions for the database file
-chmod -R 775 database
-chmod 664 database/database.sqlite
-
 
 
 echo "Clearing and caching config..."
