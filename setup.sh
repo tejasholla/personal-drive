@@ -29,16 +29,6 @@ WEB_GROUP=$(ask_for_value "Enter the web server group" "$WEB_GROUP")
 #fi
 
 
-echo "Setting up database..."
-mkdir -p database
-if [ ! -f database/database.sqlite ]; then
-    echo "Creating SQLite database file..."
-    touch database/database.sqlite
-fi
-
-# Set proper permissions for the database file
-chmod -R 775 database
-chmod 664 database/database.sqlite
 
 echo "Installing composer dependencies..."
 composer install --no-interaction --prefer-dist
@@ -54,18 +44,28 @@ php artisan key:generate
 
 # Set permissions
 echo "Attempting to change ownership to $WEB_USER:$WEB_GROUP..."
-if sudo chown -R $WEB_USER:$WEB_GROUP storage bootstrap/cache 2>/dev/null; then
+if sudo chown -R $WEB_USER:$WEB_GROUP storage bootstrap/cache database 2>/dev/null; then
     echo "Ownership changed successfully."
 else
     echo "Could not change owner. Insufficient permissions. Please fix manually."
 fi
 
 echo "Setting directory permissions..."
-if sudo chmod -R 775 storage bootstrap/cache 2>/dev/null; then
+if sudo chmod -R 770 storage bootstrap/cache database 2>/dev/null; then
     echo "Permissions updated successfully."
 else
     echo "Could not change permissions. Please update manually."
 fi
+
+
+if [ ! -f database/database.sqlite ]; then
+    echo "Creating SQLite database file..."
+    touch database/database.sqlite
+fi
+
+# Set proper permissions for the database file
+chmod -R 775 database
+chmod 664 database/database.sqlite
 
 
 
