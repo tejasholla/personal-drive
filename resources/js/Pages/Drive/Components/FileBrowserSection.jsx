@@ -207,6 +207,7 @@ const FileBrowserSection = memo(({files, path, token, isAdmin, slug}) => {
                                 setFilesToShare={setFilesToShare}
                                 isAdmin={isAdmin}
                                 slug={slug}
+                                setSelectedFiles={setSelectedFiles}
                             />
                         }
                         {currentViewMode === 'ListView' &&
@@ -229,6 +230,7 @@ const FileBrowserSection = memo(({files, path, token, isAdmin, slug}) => {
                                 setFilesToShare={setFilesToShare}
                                 isAdmin={isAdmin}
                                 slug={slug}
+                                setSelectedFiles={setSelectedFiles}
                             />
                         }
                     </>

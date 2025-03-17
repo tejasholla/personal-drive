@@ -17,7 +17,8 @@ const FolderItem = React.memo(function FolderItem({
                                                       setFilesToShare,
                                                       isAdmin,
                                                       path,
-                                                      slug
+                                                      slug,
+                                                      setSelectedFiles
                                                   }) {
 
     return (
@@ -39,7 +40,8 @@ const FolderItem = React.memo(function FolderItem({
 
             <div className="flex gap-x-1">
                 {isAdmin && <DeleteButton classes="hidden group-hover:block mr-2  z-10"
-                                          selectedFiles={new Set([file.id])}/>}
+                                          selectedFiles={new Set([file.id])} setSelectedFiles={setSelectedFiles} />
+                }
                 <DownloadButton classes="hidden  group-hover:block mr-2  z-10"
                                 selectedFiles={new Set([file.id])} token={token}
                                 setStatusMessage={setStatusMessage} slug={slug}                             setAlertStatus={setAlertStatus}

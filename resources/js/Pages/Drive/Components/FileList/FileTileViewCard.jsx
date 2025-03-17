@@ -18,7 +18,8 @@ const FileTileViewCard = React.memo(function FileTileViewCard({
                                                                   setFilesToShare,
                                                                   isAdmin,
                                                                   path,
-                                                                  slug
+                                                                  slug,
+                                                                  setSelectedFiles
                                                               }) {
         const selectedFileSet = new Set([file.id]);
         let imageSrc = '/fetch-thumb/' + file.id;
@@ -92,7 +93,8 @@ const FileTileViewCard = React.memo(function FileTileViewCard({
                         <div className="flex-1">
                             <DeleteButton
                                 classes=" bg-red-500/10 hover:bg-red-500/20 text-red-500 py-2 px-4 rounded-md transition-colors duration-200"
-                                selectedFiles={selectedFileSet}/></div>
+                                selectedFiles={selectedFileSet} setSelectedFiles={setSelectedFiles}/>
+                        </div>
                     }
                         <div className="flex-1 flex ">
                             {isAdmin && <ShowShareModalButton classes="hidden group-hover:block mr-2  z-10"

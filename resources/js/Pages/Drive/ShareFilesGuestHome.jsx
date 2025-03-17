@@ -11,8 +11,6 @@ export default function ShareFilesGuestHome({files, path, token, slug}) {
         selectAllToggle,
         handleSelectAllToggle,
         selectedFiles,
-        setSelectedFiles,
-        setSelectAllToggle,
         handlerSelectFileMemo
     } = useSelectionUtil();
     const [statusMessage, setStatusMessage] = useState('')

@@ -25,7 +25,8 @@ const ListView = ({
                       setIsShareModalOpen,
                       setFilesToShare,
                       isAdmin,
-                      slug
+                      slug,
+                      setSelectedFiles
                   }) => {
     const navigate = useNavigate();
     console.log('pathpath ', path);
@@ -80,6 +81,7 @@ const ListView = ({
                         isAdmin={isAdmin}
                         path={path}
                         slug={slug}
+                        setSelectedFiles={setSelectedFiles}
                     />
                 ))}
             </div>

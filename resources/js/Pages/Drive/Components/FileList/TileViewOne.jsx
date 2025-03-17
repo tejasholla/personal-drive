@@ -23,6 +23,7 @@ const TileViewOne = ({
                          setFilesToShare,
                          isAdmin,
                          slug,
+                         setSelectedFiles,
                      }) => {
 
     useEffect(() => {
@@ -85,6 +86,7 @@ const TileViewOne = ({
                         isAdmin={isAdmin}
                         path={path}
                         slug={slug}
+                        setSelectedFiles={setSelectedFiles}
                     />
                 ))}
             </div>

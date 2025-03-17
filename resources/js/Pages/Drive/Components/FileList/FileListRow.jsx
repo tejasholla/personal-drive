@@ -15,7 +15,8 @@ const FileListRow = React.memo(function FileListRow({
                                                         setFilesToShare,
                                                         isAdmin,
                                                         path,
-                                                        slug
+                                                        slug,
+                                                        setSelectedFiles
                                                     }) {
 
         return (
@@ -44,6 +45,7 @@ const FileListRow = React.memo(function FileListRow({
                             isAdmin={isAdmin}
                             path={path}
                             slug={slug}
+                            setSelectedFiles={setSelectedFiles}
                         />
                     ) : (
                         <FileItem
@@ -58,6 +60,7 @@ const FileListRow = React.memo(function FileListRow({
                             isAdmin={isAdmin}
                             path={path}
                             slug={slug}
+                            setSelectedFiles={setSelectedFiles}
                         />
                     )}
                 </div>
