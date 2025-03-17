@@ -23,10 +23,10 @@ WEB_USER=$(ask_for_value "Enter the web server user" "$WEB_USER")
 WEB_GROUP=$(ask_for_value "Enter the web server group" "$WEB_GROUP")
 
 # Ask for APP_URL
-APP_URL=$(ask_for_value "Enter the application URL (leave empty to skip)" "")
-if [ -n "$APP_URL" ]; then
-    sed -i "s|^APP_URL=.*|APP_URL=$APP_URL|" .env
-fi
+#APP_URL=$(ask_for_value "Enter the application URL (leave empty to skip)" "")
+#if [ -n "$APP_URL" ]; then
+##    sed -i "s|^APP_URL=.*|APP_URL=$APP_URL|" .env
+#fi
 
 
 echo "Setting up database..."
@@ -53,24 +53,20 @@ echo "Generating application key..."
 php artisan key:generate
 
 # Set permissions
-echo "Checking storage and bootstrap/cache permissions..."
-if [ ! -w storage ] || [ ! -w bootstrap/cache ]; then
-    echo "Attempting to change ownership to $WEB_USER:$WEB_GROUP..."
-    if sudo chown -R $WEB_USER:$WEB_GROUP storage bootstrap/cache 2>/dev/null; then
-        echo "Ownership changed successfully."
-    else
-        echo "Could not change owner. Insufficient permissions. Please fix manually."
-    fi
-
-    echo "Setting directory permissions..."
-    if sudo chmod -R 775 storage bootstrap/cache 2>/dev/null; then
-        echo "Permissions updated successfully."
-    else
-        echo "Could not change permissions. Please update manually."
-    fi
+echo "Attempting to change ownership to $WEB_USER:$WEB_GROUP..."
+if sudo chown -R $WEB_USER:$WEB_GROUP storage bootstrap/cache 2>/dev/null; then
+    echo "Ownership changed successfully."
 else
-    echo "Storage and cache directories already have write permissions. Skipping chmod/chown."
+    echo "Could not change owner. Insufficient permissions. Please fix manually."
 fi
+
+echo "Setting directory permissions..."
+if sudo chmod -R 775 storage bootstrap/cache 2>/dev/null; then
+    echo "Permissions updated successfully."
+else
+    echo "Could not change permissions. Please update manually."
+fi
+
 
 
 echo "Clearing and caching config..."
