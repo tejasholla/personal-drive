@@ -79,8 +79,8 @@ export default function AdminConfig({
                         </div>
                     </form>
                     <div>
-                        <h2 className=" text-blue-200 text-2xl font-bold mt-2 mb-2 ">Server Settings</h2>
-                        <p className=" mb-6 ">PHP's default upload limits may be too less for most people. Please configure your server accordingly</p>
+                        <h2 className=" text-blue-200 text-2xl font-bold mt-2 mb-2 ">Increase upload limits</h2>
+                        <p className=" mb-6 ">PHP OR your webserver default upload limits are too less for most people. </p>
 
                         <p className=" text-blue-200 text-lg font-bold mt-10 mb-5  ">
                             Current Server PHP Upload Size Limits
@@ -110,33 +110,50 @@ export default function AdminConfig({
                             </p>
                         </div>
 
-                        <p className="text-lg text-blue-200 mt-10 mb-5 font-bold">Configure :</p>
-                        <div className="flex flex-col ">
-                            If you are on a VPS and using php-fpm. Edit the www.conf file. restart php-fpm
+                        <p className="text-lg text-blue-200 mt-10 mb-5 font-bold">Instructions for various apps :</p>
+                        <div className="flex flex-col text-gray-300">
+
+                            <div><span className="font-bold text-lg text-gray-100"> php-fpm:</span> Edit the www.conf file
                             <pre className="mt-1 mb-5 text-sm text-gray-400">
-                                {`php_value[upload_max_filesize] = 64M
-php_value[post_max_size] = 64M
-php_value[php_max_file_uploads] = 10000`}
+                                {`php_value[upload_max_filesize] = 1G
+php_value[post_max_size] = 1G
+php_value[max_file_uploads] = 1000`}
                             </pre>
-                            If you are on a VPS and can edit the ini file. Set these 2 variables
-                            <pre className="mt-1 mb-5 text-sm text-gray-400">
+                            </div>
+                            <div><span className="font-bold text-lg text-gray-100"> PHP:</span> Edit 3 variables in php.ini file
+                                <pre className="mt-1 mb-5 text-sm text-gray-400">
                                 {`upload_max_filesize = 1G
 post_max_size = 1G
 max_file_uploads = 10000`}
                             </pre>
-
-                            If you are running apache, try editing the .htaccess file in /public directory
+                            </div>
+                            <div><span className="font-bold text-lg text-gray-100"> apache:</span> edit the .htaccess file in /public
                             <pre className="mt-1 mb-5 text-sm text-gray-400">
                                 {`php_value upload_max_filesize 64M
 php_value post_max_size 64M
 php_value max_file_uploads 10000`}
                             </pre>
-                            If you are running nginx, client_max_body_size param may need to be increased
+                            </div>
+                            <div><span className="font-bold text-lg text-gray-100"> nginx:</span> Increase client_max_body_size param
                             <pre className="mt-1 mb-5 text-sm text-gray-400">
                                 {`http {
-client_max_body_size 100M;
+    client_max_body_size 1000M;
 }`}
                             </pre>
+                            </div>
+                            <div><span className="font-bold text-lg text-gray-100"> Caddy:</span> Increase request_timeout param
+                            <pre className="mt-1 mb-5 text-sm text-gray-400">
+                                {`demo.personaldrive.xyz {
+    root * /some/folder
+    php_fastcgi unix/{{ php_fpm_socket.stdout }}
+    file_server
+    request_body {
+        max_size 1G
+        timeout 1000s
+    }
+}`}
+                            </pre>
+                            </div>
                         </div>
                     </div>
 

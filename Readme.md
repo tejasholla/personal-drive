@@ -4,6 +4,8 @@
  <p align="center">A self hosted alternative to google drive and dropbox. 
 </p>
 
+## Demo:
+https://demo.personaldrive.xyz/
 
 ## Requirements:
 - A server running PHP with sqlite, nodejs, npm.
