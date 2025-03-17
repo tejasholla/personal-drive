@@ -23,10 +23,10 @@ WEB_USER=$(ask_for_value "Enter the web server user" "$WEB_USER")
 WEB_GROUP=$(ask_for_value "Enter the web server group" "$WEB_GROUP")
 
 # Ask for APP_URL
-#APP_URL=$(ask_for_value "Enter the application URL (leave empty to skip)" "")
-#if [ -n "$APP_URL" ]; then
-##    sed -i "s|^APP_URL=.*|APP_URL=$APP_URL|" .env
-#fi
+APP_URL=$(ask_for_value "Enter the application URL (leave empty to skip)" "")
+if [ -n "$APP_URL" ]; then
+    sed -i "s|^APP_URL=.*|APP_URL=$APP_URL|" .env
+fi
 
 
 echo "Installing composer dependencies..."

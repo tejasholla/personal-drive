@@ -144,8 +144,7 @@ client_max_body_size 100M;
 
                         <h2 className=" text-blue-200 text-xl font-bold mb-2 ">Refresh Database and cancel all
                             Shares </h2>
-                        <p className="mb-4">This is a 'reset' option, and will reindex all files, remove all
-                            shares</p>
+                        <p className="mb-4">'Reset' option. This will reindex all files, remove all shares, regenerate thumbnail</p>
                         <RefreshButton/>
 
                     </div>
