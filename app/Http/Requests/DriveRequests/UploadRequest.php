@@ -11,10 +11,17 @@ class UploadRequest extends FormRequest
     {
         return [
             'files' => 'required|array',
-            'files.*' => [
-                'required'
-            ],
+            'files.*' => 'required|file',
             'path' => CommonRequest::pathRules()
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'uploaded' => 'The :attribute failed to upload. Check settings. Configure upload limits.',
+            'files.*.uploaded' => 'The :attribute failed to upload. Check settings. Configure upload limits',
+        ];
+    }
+
 }
