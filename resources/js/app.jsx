@@ -22,6 +22,8 @@ createInertiaApp({
             <App {...props} /></BrowserRouter>);
     },
     progress: {
-        color: '#4B5563',
+        color: '#22BFFA',
+        showSpinner: true,
+
     },
 });
