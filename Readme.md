@@ -4,7 +4,7 @@ A self hosted alternative to google drive. For those who can setup their own ser
 
 
 ## Requirements:
-- PHP 8, sqlite
+- PHP 8, node, npm, sqlite
 
 ### Installation:
 - copy or clone repo

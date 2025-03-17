@@ -20,7 +20,7 @@ class SetupController extends Controller
 
     public function update(SetupAccountRequest $request): RedirectResponse
     {
-        Artisan::call('migrate:fresh');
+        Artisan::call('migrate:fresh', ['--force' => true]);
         $status = false;
         $message = 'Error. could not create user. Try re-installing, checking permissions for storage folder';
         if ($user = User::create([
