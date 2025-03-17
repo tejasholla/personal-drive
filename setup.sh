@@ -22,6 +22,10 @@ ask_for_value() {
 WEB_USER=$(ask_for_value "Enter the web server user" "$WEB_USER")
 WEB_GROUP=$(ask_for_value "Enter the web server group" "$WEB_GROUP")
 
+
+echo "Setting up environment file..."
+cp .env.example .env
+
 # Ask for APP_URL
 APP_URL=$(ask_for_value "Enter the application URL (leave empty to skip)" "")
 if [ -n "$APP_URL" ]; then
@@ -35,8 +39,6 @@ composer install --no-interaction --prefer-dist
 echo "Installing npm dependencies..."
 npm install && npm run build
 
-echo "Setting up environment file..."
-cp .env.example .env
 
 echo "Generating application key..."
 php artisan key:generate
