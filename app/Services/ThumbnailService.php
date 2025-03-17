@@ -74,7 +74,7 @@ class ThumbnailService
         $video = $ffmpeg->open($privateFilePath);
         $video->frame(TimeCode::fromSeconds(1))->save($fullFileThumbnailPath);
 
-        return $this->imageResize($privateFilePath, $fullFileThumbnailPath, self::IMAGESIZE);
+        return $this->imageResize($fullFileThumbnailPath, $fullFileThumbnailPath, self::IMAGESIZE);
     }
 
     public function getFullFileThumbnailPath(LocalFile $file): string
