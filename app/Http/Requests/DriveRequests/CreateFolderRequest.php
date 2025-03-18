@@ -10,7 +10,7 @@ class CreateFolderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'folderName' => 'required|string|max:255',
+            'folderName' => 'required|string|max:255|regex:/^[a-zA-Z0-9_\- ]+$/',
             'path' => CommonRequest::pathRules()
         ];
     }
