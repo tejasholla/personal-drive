@@ -16,7 +16,8 @@ https://demo.personaldrive.xyz/
 
 ### Installation:
 #### Use from Docker Hub 
-Personal Drive is hosted on docker hub 
+Personal Drive is hosted on docker hub.  
+Make a new directory, cd into it, then:
 ```bash
 mkdir storage
 touch database.sqlite

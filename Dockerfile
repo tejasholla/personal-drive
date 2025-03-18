@@ -5,7 +5,7 @@ WORKDIR /var/www/html/personal-drive
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
-    unzip curl sudo sqlite3 libsqlite3-dev \
+    unzip curl sudo sqlite3 libsqlite3-dev ffmpeg \
     libjpeg-dev libpng-dev libwebp-dev libfreetype6-dev zlib1g-dev libzip-dev nginx \
     && docker-php-ext-configure gd --with-jpeg --with-webp --with-freetype \
     && docker-php-ext-install pdo pdo_sqlite gd zip exif \
@@ -49,6 +49,10 @@ COPY docker/nginx.conf /etc/nginx/nginx.conf
 
 # Expose ports
 EXPOSE 80
+
+# Upload limits
+RUN echo "upload_max_filesize=1000M\npost_max_size=1000M\nmax_file_uploads=100" > /usr/local/etc/php/conf.d/uploads.ini
+
 
 # Start Nginx & PHP-FPM together
 CMD ["sh", "-c", "service nginx start && php-fpm"]
