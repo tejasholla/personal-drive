@@ -13,7 +13,7 @@ export default function AdminConfig({
                                     }) {
 
     const [formData, setFormData] = useState({
-        storage_path: storage_path || '/var/www/personal-drive-storage-folder',
+        storage_path: storage_path || '/var/www/html/personal-drive-storage-folder',
         php_max_upload_size: php_max_upload_size,
         php_post_max_size: php_post_max_size,
         php_max_file_uploads: php_max_file_uploads

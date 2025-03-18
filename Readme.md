@@ -18,16 +18,16 @@ https://demo.personaldrive.xyz/
 #### Use from Docker Hub 
 Personal Drive is hosted on docker hub 
 ```bash
-mkdir some/path
+mkdir storage
 touch database.sqlite
 docker run \
-    -v .:/var/www/html/personal-drive-storage-folder \
+    -v storage:/var/www/html/personal-drive-storage-folder \
     -v database.sqlite:/database/database.sqlite \
     -p 8080:80 \
     docker.io/personaldrive/personaldrive
 ```
 **`docker run`** → Starts a new container.  
-**`-v .:/var/www/html/personal-drive-storage-folder`** → Maps the current folder to a path inside the container (for storage).  
+**`-v storage:/var/www/html/personal-drive-storage-folder`** → Maps the storage folder to a path inside the container (for storage).  
 **`-v database.sqlite:/database/database.sqlite`** → Maps the SQLite database file to the container.  
 **`-p 8080:80`** → Exposes the container’s port 80 to your computer’s port 8080.  
 Now open http://localhost:8080  
@@ -87,8 +87,10 @@ The setup script adjusts permissions and ownership if provided with root access
 Built with Laravel 11 and React. Inertia.js connects React components to the Laravel backend. Uses SQLite as the database.
 PHP code follows psr-12 standard
 
-### Security: 
-Admin Password cannot be changed. This is done to reduce attack surface. If you forget your password, reinstall the app. Your files will be safe on your disk
+### Forgot password: 
+Admin Password cannot be changed. This is done to reduce attack surface. If you forget your password: 
+- reinstall the app OR delete the `database/database.sqlite` file -> This will remove all 'shares'
+- Manually edit the password in the above database file
 
 ### Known Issues:
 - Files overwrite existing ones without rename options
