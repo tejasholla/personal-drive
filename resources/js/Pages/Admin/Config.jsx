@@ -80,7 +80,7 @@ export default function AdminConfig({
                     </form>
                     <div>
                         <h2 className=" text-blue-200 text-2xl font-bold mt-2 mb-2 ">Increase upload limits</h2>
-                        <p className=" mb-6 ">PHP OR your webserver default upload limits are too less for most people. </p>
+                        <p className=" mb-6 ">PHP OR your webserver default upload limits are too small for most people. </p>
 
                         <p className=" text-blue-200 text-lg font-bold mt-10 mb-5  ">
                             Current Server PHP Upload Size Limits
