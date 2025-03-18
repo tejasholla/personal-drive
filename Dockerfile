@@ -19,7 +19,7 @@ COPY . .
 
 # Set up environment file
 RUN cp .env.example .env
-RUN  -i 's/^APP_ENV=.*/APP_ENV=development/' .env
+RUN sed -i 's/^APP_ENV=.*/APP_ENV=development/' .env
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
@@ -47,4 +47,4 @@ COPY docker/nginx.conf /etc/nginx/nginx.conf
 EXPOSE 80
 
 # Start Nginx & PHP-FPM together
-CMD service nginx start && php-fpm
+CMD ["sh", "-c", "service nginx start && php-fpm"]
