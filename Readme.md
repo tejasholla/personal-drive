@@ -15,16 +15,35 @@ https://demo.personaldrive.xyz/
 - Friends to share files with
 
 ### Installation:
-Installing this Laravel app is straightforward. Ensure PHP and the webserver allow large uploads.   
-**It is vital that the 'storage, bootstrap/cache and database' folders are writable for the webserver** . The setup script attempts to set these permissions.
+#### Use from Docker Hub 
+Personal Drive is hosted on docker hub 
+```bash
+mkdir some/path
+touch database.sqlite
+docker run \
+    -v .:/var/www/html/personal-drive-storage-folder \
+    -v database.sqlite:/database/database.sqlite \
+    -p 8080:80 \
+    docker.io/personaldrive/personaldrive
+```
+**`docker run`** → Starts a new container.  
+**`-v .:/var/www/html/personal-drive-storage-folder`** → Maps the current folder to a path inside the container (for storage).  
+**`-v database.sqlite:/database/database.sqlite`** → Maps the SQLite database file to the container.  
+**`-p 8080:80`** → Exposes the container’s port 80 to your computer’s port 8080.  
+Now open http://localhost:8080  
 
-##### Commands: Clones the repo and runs the guided setup script.
+#### Regular Installation
+Clone the repo and runs the guided setup script.
 ```bash
  git clone git@github.com:gyaaniguy/personal-drive.git
  cd personal-drive
  chmod +x setup.sh
  ./setup.sh
 ```
+
+Ensure PHP and the webserver allow large uploads.   
+**It is vital that the 'storage, bootstrap/cache and database' folders are writable for the webserver** . The setup script attempts to set these permissions.
+
  
 Next :
 - Set up your webserver to point your site to personal-drive/public

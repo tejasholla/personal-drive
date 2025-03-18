@@ -1,7 +1,7 @@
 FROM php:8.2-fpm
 
 # Set working directory
-WORKDIR /var/www/html
+WORKDIR /var/www/html/personal-drive
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -33,9 +33,12 @@ RUN npm install && npm run build
 # Generate application key
 RUN php artisan key:generate
 
+# Create new directory and set permissions
+RUN mkdir -p /var/www/html/personal-drive-storage-folder
+
 # Set permissions
 RUN chown -R www-data:www-data storage bootstrap/cache database && \
-    chmod -R 770 storage bootstrap/cache database
+    chmod -R 770 storage bootstrap/cache database /var/www/html/personal-drive-storage-folder
 
 # Clear & cache config
 RUN php artisan config:clear && php artisan config:cache
