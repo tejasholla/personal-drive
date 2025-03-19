@@ -8,7 +8,7 @@
 https://demo.personaldrive.xyz/
 
 ## Requirements:
-- A server running PHP with sqlite, nodejs, npm.
+- A server running PHP with sqlite, PHP composer, nodejs, npm.
 - Sudo access for setting permissions.
 - Webserver user name (if not www-data)
 - Files for upload
