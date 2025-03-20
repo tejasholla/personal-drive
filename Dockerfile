@@ -20,9 +20,10 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
 # Copy app files
 COPY . .
 
+
 # Set up environment file
+ENV RUNNING_IN_DOCKER=true
 RUN cp .env.example .env
-RUN sed -i 's/^APP_ENV=.*/APP_ENV=development/' .env
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer

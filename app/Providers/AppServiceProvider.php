@@ -30,10 +30,9 @@ class AppServiceProvider extends ServiceProvider
     {
         URL::forceScheme('http');
 
-        if (config('app.env') === 'production') {
+        if (config('app.env') === 'production' && !env('RUNNING_IN_DOCKER')) {
             URL::forceScheme('https');
         }
-        Vite::prefetch(concurrency: 3);
         if (! Schema::hasTable('sessions')) {
             config(['session.driver' => 'file']);
         }
