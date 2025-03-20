@@ -1,4 +1,4 @@
-FROM php:8.2-fpm
+FROM php:8.2-apache
 
 # Set working directory
 WORKDIR /var/www/html/personal-drive
@@ -6,7 +6,7 @@ WORKDIR /var/www/html/personal-drive
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     unzip curl sudo sqlite3 libsqlite3-dev ffmpeg \
-    libjpeg-dev libpng-dev libwebp-dev libfreetype6-dev zlib1g-dev libzip-dev nginx \
+    libjpeg-dev libpng-dev libwebp-dev libfreetype6-dev zlib1g-dev libzip-dev \
     && docker-php-ext-configure gd --with-jpeg --with-webp --with-freetype \
     && docker-php-ext-install pdo pdo_sqlite gd zip exif \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -16,10 +16,8 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y nodejs \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-
 # Copy app files
 COPY . .
-
 
 # Set up environment file
 ENV RUNNING_IN_DOCKER=true
@@ -45,8 +43,11 @@ RUN mkdir /var/www/html/personal-drive-storage-folder \
 # Clear & cache config
 RUN php artisan config:clear && php artisan config:cache
 
-# Copy Nginx config
-COPY docker/nginx.conf /etc/nginx/nginx.conf
+# Copy Apache config
+COPY docker/apache.conf /etc/apache2/sites-available/000-default.conf
+
+# Enable Apache modules
+RUN a2enmod rewrite
 
 # Expose ports
 EXPOSE 80
@@ -54,6 +55,5 @@ EXPOSE 80
 # Upload limits
 RUN echo "upload_max_filesize=1000M\npost_max_size=1000M\nmax_file_uploads=100" > /usr/local/etc/php/conf.d/uploads.ini
 
-
-# Start Nginx & PHP-FPM together
-CMD ["sh", "-c", "service nginx start && php-fpm"]
+# Start Apache
+CMD ["apache2-foreground"]
