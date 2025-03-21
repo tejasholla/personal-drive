@@ -14,10 +14,10 @@ class UUIDService
     /**
      * @throws UUIDException
      */
-    public function __construct()
+    public function __construct(Setting $setting)
     {
-        $this->storageFilesUUID = Setting::getSettingByKeyName('uuidForStorageFiles') ?: '';
-        $this->thumbnailsUUID = Setting::getSettingByKeyName('uuidForThumbnails') ?: '';
+        $this->storageFilesUUID = $setting->getSettingByKeyName('uuidForStorageFiles') ?: '';
+        $this->thumbnailsUUID = $setting->getSettingByKeyName('uuidForThumbnails') ?: '';
 
         if (! $this->storageFilesUUID || ! $this->thumbnailsUUID) {
             throw UUIDException::nouuid();

@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Setting extends Model
 {
     public static string $storagePath = 'storage_path';
+    use HasFactory;
 
     protected $fillable = ['key', 'value'];
 

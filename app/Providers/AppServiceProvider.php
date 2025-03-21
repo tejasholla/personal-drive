@@ -2,13 +2,13 @@
 
 namespace App\Providers;
 
+use App\Models\Setting;
 use App\Services\UUIDService;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,7 +19,8 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(UUIDService::class, function () {
-            return new UUIDService();
+            $setting = $this->app->make(Setting::class);
+            return new UUIDService($setting);
         });
     }
 
