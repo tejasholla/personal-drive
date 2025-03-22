@@ -138,9 +138,9 @@ const FileBrowserSection = memo(({files, path, token, isAdmin, slug}) => {
 
             <AlertBox message={statusMessage} alertStatus={alertStatus}/>
 
-            <div className="rounded-md gap-x-2 flex sm:flex-row flex-col items-start mt-5  justify-between ">
+            <div className="rounded-md gap-x-2 flex sm:flex-row flex-col items-start md:mt-5  justify-between ">
                 <Breadcrumb path={path} isAdmin={isAdmin}/>
-                <div className="flex w-full justify-between md:justify-end items-center">
+                <div className="flex w-full justify-between sm:justify-end items-center">
                     {selectedFiles.size > 0 &&
                         <div className='flex gap-x-1 mt-1 sm:mt-0'>
                             <DownloadButton setSelectedFiles={setSelectedFiles} selectedFiles={selectedFiles}
@@ -184,7 +184,7 @@ const FileBrowserSection = memo(({files, path, token, isAdmin, slug}) => {
                          previewAbleFiles={previewAbleFiles} slug={slug}/>
             {/*Files viewer*/}
 
-            <div className="my-1 sm:md-3 md:my-8">
+            <div className="my-3 md:my-8">
                 {filesCopy.length > 0 && (
                     <>
                         {currentViewMode === 'TileViewOne' &&

@@ -39,7 +39,7 @@ const ListView = ({
         <div className="w-full">
             <hr className=" text-gray-500 border-gray-600"/>
             <div className="flex items-center justify-between text-gray-400 border-b border-b-gray-600 w-full">
-                <div className="p-2 px-6 w-20 text-center hover:bg-gray-900 hover:cursor-pointer"
+                <div className="p-2 md:px-6 w-20 text-center hover:bg-gray-900 hover:cursor-pointer"
                      onClick={(e) => handleSelectAllToggle(filesCopy)}>
                     <input type="checkbox" checked={selectAllToggle} readOnly/>
                 </div>
@@ -64,7 +64,7 @@ const ListView = ({
                     <Link className="cursor-pointer hover:bg-gray-700 p-4 px-8 w-full block" title="Go Up" href={path ? path.substring(0, path.lastIndexOf('/')) : `/drive`} >..</Link>
                 </div>
             )}
-            <div className=" flex flex-wrap">
+            <div className=" flex flex-wrap text-sm sm:text-base">
                 {filesCopy.map((file) => (
                     <FileListRow
                         key={file.id}

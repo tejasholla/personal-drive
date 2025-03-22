@@ -66,7 +66,7 @@ const UploadMenu = ({path, setStatusMessage, files}) => {
     }, [uploadedFiles]);
     return (
         <div ref={menuRef} className='relative mr-1 p-0'>
-            <button className="inline-flex gap-x-1 bg-blue-700 text-white font-bold p-1 md:p-2 rounded hover:bg-blue-600 active:bg-blue-800 items-center
+            <button className="inline-flex gap-x-1 bg-blue-700 text-white font-bold p-1 md:p-2 rounded hover:bg-blue-600 active:bg-blue-800 items-center text-sm md:text-base
 "
                     onClick={() => {
                         setIsMenuOpen(!isMenuOpen)

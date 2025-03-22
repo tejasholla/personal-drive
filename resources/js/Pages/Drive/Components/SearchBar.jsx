@@ -9,7 +9,7 @@ export default function SearchBar({handleSearch}) {
         <form className="flex space-x-2 items-center text-gray-300" >
             <div className="relative">
                 <input type="text" id="searchbox"
-                       className="border border-gray-300 rounded-md p-2 sm:pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-700 w-28 sm:w-44 md:w-52"
+                       className="border border-gray-300 rounded-md p-1 md:p-2 sm:pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-700 w-28 sm:w-44 md:w-52"
                        placeholder="&#128270;"
                        value={searchValue}
                        onChange={(e) => setSearchValue(e.target.value)}
@@ -25,7 +25,7 @@ export default function SearchBar({handleSearch}) {
             </div>
 
             <button onClick={(e) => handleSearch(e, searchValue)}
-                    className="bg-blue-700 text-gray-200 font-bold py-2 px-4 rounded hover:bg-blue-600 active:bg-blue-800">Search
+                    className="bg-blue-700 text-gray-200 font-bold p-1 md:p-2 text-sm md:text-base rounded hover:bg-blue-600 active:bg-blue-800">Search
             </button>
         </form>
     </div>);
