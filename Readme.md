@@ -14,10 +14,18 @@ https://demo.personaldrive.xyz/
 - Files for upload
 - Friends to share files with
 
-### Installation:
-#### Use from Docker Hub 
-Personal Drive is hosted on docker hub.  
-Make a new directory, cd into it, then:
+## Installation:
+### Use from Docker Hub 
+Personal Drive is hosted on docker hub.  Please read the following carefully, as below config will need changes for your setup.
+
+Make a new directory, cd into it, then create a new file docker-compose.yml.
+```bash
+mkdir personaldrive ; cd personaldive ; touch docker-compose.yml
+```
+
+Below is docker-compose.yml. Modify it in the following way:
+- /absolute/path/to/store/data/on/host - Change this to the location where you intended to save your data. Make sure it is writable. In my case I had to give 777 permissions. 
+- https://sub.yoursite.com - set your real site.
 ```bash
 services:
   personal-drive:
@@ -36,13 +44,16 @@ services:
 volumes:
   personal-drive-data:
 ```
-**`docker run`** → Starts a new container.  
-**`-v storage:/var/www/html/personal-drive-storage-folder`** → Maps the storage folder to a path inside the container (for storage).  
-**`-v database.sqlite:/database/database.sqlite`** → Maps the SQLite database file to the container.  
-**`-p 8080:80`** → Exposes the container’s port 80 to your computer’s port 8080.  
-Now open http://localhost:8080  
+After running the above with `docker compose up` , you will need a web-server to point to this container.
+Config depends on the webserver. 
+1. For **caddy**, its simple. It handles https automagically. Highly recommended for personal sites !
+```
+sub.yoursite.com {
+    reverse_proxy localhost:8080
+} 
+```
 
-#### Regular Installation
+### Regular Installation
 Clone the repo and runs the guided setup script.
 ```bash
  git clone git@github.com:gyaaniguy/personal-drive.git
