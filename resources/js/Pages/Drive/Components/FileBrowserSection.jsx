@@ -140,9 +140,9 @@ const FileBrowserSection = memo(({files, path, token, isAdmin, slug}) => {
 
             <div className="rounded-md gap-x-2 flex sm:flex-row flex-col items-start md:mt-5  justify-between ">
                 <Breadcrumb path={path} isAdmin={isAdmin}/>
-                <div className="flex w-full justify-between sm:justify-end items-center">
+                <div className="flex w-full justify-between sm:justify-end items-stretch ">
                     {selectedFiles.size > 0 &&
-                        <div className='flex gap-x-1 mt-1 sm:mt-0'>
+                        <div className='flex gap-x-1 h-10'>
                             <DownloadButton setSelectedFiles={setSelectedFiles} selectedFiles={selectedFiles}
                                             setStatusMessage={setStatusMessage} statusMessage={statusMessage}
                                             setSelectAllToggle={setSelectAllToggle} slug={slug} setAlertStatus={setAlertStatus}/>
@@ -154,7 +154,7 @@ const FileBrowserSection = memo(({files, path, token, isAdmin, slug}) => {
                             }
                         </div>
                     }
-                    <div className=" w-full sm:w-auto sm:ml-1 justify-end items-center flex ">
+                    <div className=" w-full sm:w-auto sm:ml-1 justify-end items-center flex h-10">
 
                         {!isSearch && isAdmin &&
                             <UploadMenu path={path} setStatusMessage={setStatusMessage} files={files}/>
