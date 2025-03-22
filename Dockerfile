@@ -20,7 +20,7 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
 COPY . .
 
 # Set up environment file
-ENV RUNNING_IN_DOCKER=true
+ENV DISABLE_HTTPS=true
 RUN cp .env.example .env
 
 # Install Composer

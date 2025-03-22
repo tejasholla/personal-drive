@@ -19,13 +19,22 @@ https://demo.personaldrive.xyz/
 Personal Drive is hosted on docker hub.  
 Make a new directory, cd into it, then:
 ```bash
-mkdir storage
-touch database.sqlite
-docker run \
-    -v storage:/var/www/html/personal-drive-storage-folder \
-    -v database.sqlite:/database/database.sqlite \
-    -p 8080:80 \
-    docker.io/personaldrive/personaldrive
+services:
+  personal-drive:
+    image: docker.io/personaldrive/personaldrive
+    container_name: personal-drive
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - /absolute/path/to/store/data/on/host:/var/www/html/personal-drive-storage-folder
+      - personal-drive-data:/var/www/html/personal-drive/database
+    environment:
+      APP_ENV: production
+      APP_URL: https://sub.yoursite.com
+      DISABLE_HTTPS: false
+volumes:
+  personal-drive-data:
 ```
 **`docker run`** → Starts a new container.  
 **`-v storage:/var/www/html/personal-drive-storage-folder`** → Maps the storage folder to a path inside the container (for storage).  

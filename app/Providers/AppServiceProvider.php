@@ -31,7 +31,7 @@ class AppServiceProvider extends ServiceProvider
     {
         URL::forceScheme('http');
 
-        if (config('app.env') === 'production' && !env('RUNNING_IN_DOCKER')) {
+        if (config('app.env') === 'production' && !env('DISABLE_HTTPS')) {
             URL::forceScheme('https');
         }
         if (! Schema::hasTable('sessions')) {
