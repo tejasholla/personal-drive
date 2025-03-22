@@ -26,6 +26,8 @@ mkdir personaldrive ; cd personaldive ; touch docker-compose.yml
 Below is docker-compose.yml. Modify it in the following way:
 - /absolute/path/to/store/data/on/host - Change this to the location where you intended to save your data. Make sure it is writable. In my case I had to give 777 permissions. 
 - https://sub.yoursite.com - set your real site.
+- Set `DISABLE_HTTPS: true` If running on localhost, without a webserver. 
+- Also note the port
 ```bash
 services:
   personal-drive:
@@ -52,6 +54,7 @@ sub.yoursite.com {
     reverse_proxy localhost:8080
 } 
 ```
+The app will also be available on http://localhost:8080 
 
 ### Regular Installation
 Clone the repo and runs the guided setup script.
