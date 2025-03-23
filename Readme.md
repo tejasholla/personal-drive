@@ -20,7 +20,7 @@ Personal Drive is hosted on docker hub.  Please read the following carefully, as
 
 Make a new directory, cd into it, then create a new file docker-compose.yml.
 ```bash
-mkdir personaldrive ; cd personaldive ; touch docker-compose.yml
+mkdir personaldrive ; cd personaldrive ; touch docker-compose.yml
 ```
 
 Below is docker-compose.yml. Modify it in the following way:
@@ -65,7 +65,9 @@ services:
 volumes:
   personal-drive-data:
 ```
-you will need a web-server to point to this container.
+Run `docker compose up`
+
+Next we need a web-server to point to this container.
 Config depends on the webserver. 
 1. For **caddy**, its simple if we use reverse_proxy. It handles https automagically. Highly recommended for personal sites !
 ```
