@@ -24,11 +24,11 @@ mkdir personaldrive ; cd personaldive ; touch docker-compose.yml
 ```
 
 Below is docker-compose.yml. Modify it in the following way:
-- /absolute/path/to/store/data/on/host - Change this to the location where you intended to save your data. Make sure it is writable. In my case I had to give 777 permissions. 
-- https://sub.yoursite.com - set your real site.
-- Set `DISABLE_HTTPS: true` If running on localhost, without a webserver. 
-- Also note the port
-```bash
+- /absolute/path/to/store/data/on/host - Change to the location where you intended to save your data. **Make sure it is writable.** In my case I had to give 777 permissions.
+
+#### For Localhost 
+
+```
 services:
   personal-drive:
     image: docker.io/personaldrive/personaldrive
@@ -40,15 +40,34 @@ services:
       - /absolute/path/to/store/data/on/host:/var/www/html/personal-drive-storage-folder
       - personal-drive-data:/var/www/html/personal-drive/database
     environment:
-      APP_ENV: production
-      APP_URL: https://sub.yoursite.com
-      DISABLE_HTTPS: false
+      DISABLE_HTTPS: true
 volumes:
   personal-drive-data:
 ```
-After running the above with `docker compose up` , you will need a web-server to point to this container.
+Run `docker compose up` 
+Open http://localhost:8080
+
+#### Server Instructions
+- https://sub.yoursite.com - set your real site.
+```
+services:
+  personal-drive:
+    image: docker.io/personaldrive/personaldrive
+    container_name: personal-drive
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - /absolute/path/to/store/data/on/host:/var/www/html/personal-drive-storage-folder
+      - personal-drive-data:/var/www/html/personal-drive/database
+    environment:
+      APP_URL: https://sub.yoursite.com
+volumes:
+  personal-drive-data:
+```
+you will need a web-server to point to this container.
 Config depends on the webserver. 
-1. For **caddy**, its simple. It handles https automagically. Highly recommended for personal sites !
+1. For **caddy**, its simple if we use reverse_proxy. It handles https automagically. Highly recommended for personal sites !
 ```
 sub.yoursite.com {
     reverse_proxy localhost:8080
@@ -110,6 +129,13 @@ The setup script adjusts permissions and ownership if provided with root access
 ### Development:
 Built with Laravel 11 and React. Inertia.js connects React components to the Laravel backend. Uses SQLite as the database.
 PHP code follows psr-12 standard
+For local dev Please check the following env vars
+```
+DISABLE_HTTPS=true
+APP_ENV=development
+```
+To build frontend components run `npm run build ; npm run dev`
+
 
 ### Forgot password: 
 Admin Password cannot be changed. This is done to reduce attack surface. If you forget your password: 
