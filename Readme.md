@@ -24,7 +24,7 @@ mkdir personaldrive ; cd personaldrive ; touch docker-compose.yml
 ```
 
 Below is docker-compose.yml. Modify it in the following way:
-- /absolute/path/to/store/data/on/host - Change to the location where you intended to save your data. **Make sure it is writable.** In my case I had to give 777 permissions.
+- /absolute/path/to/store/data/on/host - Change to the location where you intended to save your data. **Make sure dir is writable.** In my case I had to give 777 permissions.
 
 #### For Localhost 
 

@@ -11,7 +11,15 @@ use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
 use Illuminate\Validation\ValidationException;
 
+use Illuminate\Filesystem\Filesystem;
+
+
+
 return Application::configure(basePath: dirname(__DIR__))
+    ->withProviders([
+        // Add your service provider here
+        App\Providers\DatabaseFileServiceProvider::class,
+    ])
     ->withRouting(
         web: __DIR__.'/../routes/web.php',
         commands: __DIR__.'/../routes/console.php',
