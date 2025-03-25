@@ -41,7 +41,7 @@ npm install && npm run build
 
 
 echo "Generating application key..."
-php artisan key:generate
+php artisan key:generate --force
 
 # Set permissions
 echo "Attempting to change ownership to $WEB_USER:$WEB_GROUP..."

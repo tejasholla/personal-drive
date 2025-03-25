@@ -55,4 +55,4 @@ EXPOSE 80
 RUN echo "upload_max_filesize=1000M\npost_max_size=1000M\nmax_file_uploads=100" > /usr/local/etc/php/conf.d/uploads.ini
 
 # Start Apache
-CMD ["apache2-foreground"]
+CMD ["sh", "-c", "php artisan key:generate --force && apache2-foreground"]
