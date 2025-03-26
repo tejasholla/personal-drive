@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\Setting;
 use App\Services\UUIDService;
 use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Database\SQLiteDatabaseDoesNotExistException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Schema;
@@ -34,9 +35,14 @@ class AppServiceProvider extends ServiceProvider
         if (config('app.env') === 'production' && !env('DISABLE_HTTPS')) {
             URL::forceScheme('https');
         }
-        if (! Schema::hasTable('sessions')) {
-            config(['session.driver' => 'file']);
+        try {
+            if (!Schema::hasTable('sessions')) {
+                config(['session.driver' => 'file']);
+            }
+        } catch (SQLiteDatabaseDoesNotExistException $e) {
+            redirect('/error?message=' . urlencode('Frontend not built. Ensure node, npm are installed Run "npm install && npm run build"'))->send();
         }
+
         RateLimiter::for('login', function (Request $request) {
             return [
                 Limit::perMinute(9)->response(function () {
