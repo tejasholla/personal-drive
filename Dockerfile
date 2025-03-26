@@ -31,8 +31,6 @@ RUN composer install --no-interaction --prefer-dist --no-dev && rm -rf /root/.co
 # Install npm dependencies
 RUN npm ci && npm run build
 
-# Generate application key
-RUN php artisan key:generate
 
 # Create new directory and set permissions
 RUN mkdir /var/www/html/personal-drive-storage-folder \
@@ -54,5 +52,10 @@ EXPOSE 80
 # Upload limits
 RUN echo "upload_max_filesize=1000M\npost_max_size=1000M\nmax_file_uploads=100" > /usr/local/etc/php/conf.d/uploads.ini
 
-# Start Apache
-CMD ["sh", "-c", "php artisan key:generate --force && apache2-foreground"]
+# Entrypoint script will handle first-run setup
+COPY docker/entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/entrypoint.sh
+ENTRYPOINT ["entrypoint.sh"]
+
+# Default command
+CMD ["apache2-foreground"]
