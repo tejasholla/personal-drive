@@ -1,11 +1,10 @@
 <?php
 
-use App\Http\Controllers\AdminController\AdminConfigController;
-use App\Http\Controllers\AdminController\SetupController;
+use App\Http\Controllers\AdminControllers;
 use App\Http\Controllers\DriveControllers;
 use App\Http\Controllers\ShareControllers;
-use App\Http\Controllers\ShareControllers\ShareFilesGuestController;
 use App\Http\Middleware\CheckAdmin;
+use App\Http\Middleware\EnsureFrontendBuilt;
 use App\Http\Middleware\HandleAuthOrGuestMiddleware;
 use App\Http\Middleware\HandleGuestShareMiddleware;
 use App\Http\Middleware\PreventSetupAccess;
@@ -14,8 +13,8 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::middleware(['auth', CheckAdmin::class])->group(callback: function () {
-    Route::get('/admin-config', [AdminConfigController::class, 'index'])->name('admin-config');
-    Route::post('/admin-config/update', [AdminConfigController::class, 'update']);
+    Route::get('/admin-config', [AdminControllers\AdminConfigController::class, 'index'])->name('admin-config');
+    Route::post('/admin-config/update', [AdminControllers\AdminConfigController::class, 'update']);
     // Drive routes
     Route::get('/drive/{path?}', [DriveControllers\FileManagerController::class, 'index'])
         ->where('path', '.*')
@@ -47,18 +46,18 @@ Route::post('/download-files', [DriveControllers\DownloadController::class, 'ind
 // shared guest routes
 Route::post(
     '/shared-check-password',
-    [ShareFilesGuestController::class, 'checkPassword']
+    [ShareControllers\ShareFilesGuestController::class, 'checkPassword']
 )->middleware(['throttle:shared']);
-Route::get('/shared-password/{slug}', [ShareFilesGuestController::class, 'passwordPage'])
-    ->name('shared.password'); // ->middleware(['throttle:shared'])
+Route::get('/shared-password/{slug}', [ShareControllers\ShareFilesGuestController::class, 'passwordPage'])
+    ->name('shared.password')->middleware(['throttle:shared']);
 Route::get('/shared/{slug}/{path?}', [ShareControllers\ShareFilesGuestController::class, 'index'])->where(
     'path',
     '.*'
 )->middleware([HandleGuestShareMiddleware::class])->name('shared');
 
 // Rejects
-Route::get('/', fn () => to_route('drive'));
-Route::fallback(fn () => to_route('rejected'));
+Route::get('/', fn () => redirect('/drive'));
+Route::fallback(fn () => redirect('/rejected'));
 Route::get(
     '/rejected',
     fn (Request $request) => Inertia::render('Rejected', [
@@ -68,9 +67,9 @@ Route::get(
 
 // Setup
 Route::middleware([PreventSetupAccess::class])->group(function () {
-    Route::get('/setup/account', [SetupController::class, 'show']);
-    Route::post('/setup/account', [SetupController::class, 'update']);
-    Route::post('/setup/storage', [AdminConfigController::class, 'update']);
+    Route::get('/setup/account', [AdminControllers\SetupController::class, 'show'])->middleware(EnsureFrontendBuilt::class);
+    Route::post('/setup/account', [AdminControllers\SetupController::class, 'update']);
+    Route::post('/setup/storage', [AdminControllers\AdminConfigController::class, 'update']);
 });
 
 require __DIR__ . '/auth.php';
