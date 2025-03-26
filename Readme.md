@@ -80,7 +80,7 @@ The app will also be available on http://localhost:8080
 ### Regular Installation
 Clone the repo and runs the guided setup script.
 ```bash
- git clone git@github.com:gyaaniguy/personal-drive.git
+ git clone https://github.com/gyaaniguy/personal-drive.git
  cd personal-drive
  chmod +x setup.sh
  ./setup.sh

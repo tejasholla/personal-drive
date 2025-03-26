@@ -2,6 +2,15 @@
 
 # Exit on error
 set -e
+# Check dependencies
+REQUIRED_TOOLS=(npm node php composer)
+for tool in "${REQUIRED_TOOLS[@]}"; do
+    if ! command -v $tool &>/dev/null; then
+        echo "Error: $tool is not installed. Please install it first."
+        exit 1
+    fi
+done
+
 
 # Default values
 WEB_USER="www-data"
