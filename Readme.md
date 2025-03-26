@@ -35,7 +35,7 @@ services:
     container_name: personal-drive
     restart: unless-stopped
     ports:
-      - "8080:80"
+      - "127.0.0.1:8080:80"
     volumes:
       - /absolute/path/to/store/data/on/host:/var/www/html/personal-drive-storage-folder
       - personal-drive-data:/var/www/html/personal-drive/database
