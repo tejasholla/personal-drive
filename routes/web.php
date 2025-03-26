@@ -57,8 +57,7 @@ Route::get('/shared/{slug}/{path?}', [ShareControllers\ShareFilesGuestController
 
 // Rejects
 Route::get('/error', function(Request $request) {
-    $message = $request->query('message', 'An error occurred.');
-    return '<h1>Error</h1><p>' . htmlspecialchars($message) . '</p>';
+    return '<h1>Error</h1><p>' . htmlspecialchars($request->query('message', 'An error occurred.')) . '</p>';
 })->name('error');
 Route::get('/', fn () => redirect('/drive'));
 Route::fallback(fn () => redirect('/rejected'));
