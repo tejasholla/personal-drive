@@ -41,6 +41,7 @@ if [ -n "$APP_URL" ]; then
     sed -i "s|^APP_URL=.*|APP_URL=$APP_URL|" .env
 fi
 
+touch database/database.sqlite
 
 echo "Installing composer dependencies..."
 composer install --no-interaction --prefer-dist
