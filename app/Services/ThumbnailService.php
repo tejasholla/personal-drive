@@ -68,8 +68,6 @@ class ThumbnailService
      */
     private function generateVideoThumbnail(LocalFile $file): bool
     {
-        throw ThumbnailException::noffmpeg();
-
         $privateFilePath = $file->getPrivatePathNameForFile();
 
         if (!file_exists($privateFilePath)) {

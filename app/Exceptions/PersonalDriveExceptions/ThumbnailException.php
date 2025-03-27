@@ -6,6 +6,6 @@ class ThumbnailException extends PersonalDriveException
 {
     public static function noffmpeg(): ThumbnailException
     {
-        return new self('FFMpeg not found ! Please install video thumbnails');
+        return new self('FFMpeg not found ! Install for video thumbnails');
     }
 }
