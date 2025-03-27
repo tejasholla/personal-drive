@@ -2,6 +2,7 @@
 
 use App\Exceptions\PersonalDriveExceptions\FetchFileException;
 use App\Exceptions\PersonalDriveExceptions\PersonalDriveException;
+use App\Exceptions\PersonalDriveExceptions\ThumbnailException;
 use App\Http\Middleware\CheckSetup;
 use App\Http\Middleware\HandleInertiaMiddlware;
 use Illuminate\Auth\AuthenticationException;
@@ -10,10 +11,6 @@ use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
 use Illuminate\Validation\ValidationException;
-
-use Illuminate\Filesystem\Filesystem;
-
-
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -34,6 +31,10 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->render(function (Throwable $e) {
             if ($e instanceof FetchFileException) {
                 return redirect()->route('rejected', ['message' => $e->getMessage()]);
+            }
+            if ($e instanceof ThumbnailException) {
+                session()->flash('message', $e->getMessage());
+                session()->flash('status', false);
             }
             if ($e instanceof PersonalDriveException) {
                 session()->flash('message', $e->getMessage());

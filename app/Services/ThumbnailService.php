@@ -3,10 +3,12 @@
 namespace App\Services;
 
 use App\Exceptions\PersonalDriveExceptions\ImageRelatedException;
+use App\Exceptions\PersonalDriveExceptions\ThumbnailException;
 use App\Helpers\UploadFileHelper;
 use App\Models\LocalFile;
 use Exception;
 use FFMpeg\Coordinate\TimeCode;
+use FFMpeg\Exception\ExecutableNotFoundException;
 use FFMpeg\FFMpeg;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
@@ -43,7 +45,7 @@ class ThumbnailService
 
     public function generateThumbnailsForFiles(Collection $files): int
     {
-        if (! extension_loaded('gd')) {
+        if (!extension_loaded('gd')) {
             throw ImageRelatedException::invalidImageDriver();
         }
         $thumbsGenerated = 0;
@@ -61,20 +63,29 @@ class ThumbnailService
         return $thumbsGenerated;
     }
 
+    /**
+     * @throws ThumbnailException
+     */
     private function generateVideoThumbnail(LocalFile $file): bool
     {
+        throw ThumbnailException::noffmpeg();
+
         $privateFilePath = $file->getPrivatePathNameForFile();
 
-        if (! file_exists($privateFilePath)) {
+        if (!file_exists($privateFilePath)) {
             return false;
         }
 
         $fullFileThumbnailPath = $this->getFullFileThumbnailPath($file);
-        $ffmpeg = FFMpeg::create();
-        $video = $ffmpeg->open($privateFilePath);
-        $video->frame(TimeCode::fromSeconds(1))->save($fullFileThumbnailPath);
+        try {
+            $ffmpeg = FFMpeg::create();
+            $video = $ffmpeg->open($privateFilePath);
+            $video->frame(TimeCode::fromSeconds(1))->save($fullFileThumbnailPath);
 
-        return $this->imageResize($fullFileThumbnailPath, $fullFileThumbnailPath, self::IMAGESIZE);
+            return $this->imageResize($fullFileThumbnailPath, $fullFileThumbnailPath, self::IMAGESIZE);
+        } catch (ExecutableNotFoundException $e) {
+            throw ThumbnailException::noffmpeg();
+        }
     }
 
     public function getFullFileThumbnailPath(LocalFile $file): string
@@ -82,7 +93,7 @@ class ThumbnailService
         $thumbnailPathDir = $this->pathService->getThumbnailDirPath();
         $fileThumbnailDirPath = $thumbnailPathDir.($file->public_path ? DIRECTORY_SEPARATOR.$file->public_path : '');
 
-        if (! file_exists($fileThumbnailDirPath)) {
+        if (!file_exists($fileThumbnailDirPath)) {
             UploadFileHelper::makeFolder($fileThumbnailDirPath);
         }
         $imageExt = $file->file_type === 'video' ? $this->imageExt : '';
@@ -108,7 +119,7 @@ class ThumbnailService
     private function generateImageThumbnail(LocalFile $file): bool
     {
         $privateFilePath = $file->getPrivatePathNameForFile();
-        if (! file_exists($privateFilePath)) {
+        if (!file_exists($privateFilePath)) {
             return false;
         }
         $fullFileThumbnailPath = $this->getFullFileThumbnailPath($file);

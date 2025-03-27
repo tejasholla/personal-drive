@@ -56,7 +56,7 @@ Route::get('/shared/{slug}/{path?}', [ShareControllers\ShareFilesGuestController
 )->middleware([HandleGuestShareMiddleware::class])->name('shared');
 
 // Rejects
-Route::get('/error', function(Request $request) {
+Route::get('/error', function (Request $request) {
     return '<h1>Error</h1><p>' . htmlspecialchars($request->query('message', 'An error occurred.')) . '</p>';
 })->name('error');
 Route::get('/', fn () => redirect('/drive'));

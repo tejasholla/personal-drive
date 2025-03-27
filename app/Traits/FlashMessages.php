@@ -6,7 +6,6 @@ use Illuminate\Http\RedirectResponse;
 
 trait FlashMessages
 {
-
     public function success(string $message): RedirectResponse
     {
         session()->flash('message', $message);

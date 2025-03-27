@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Session;
 
 beforeEach(function () {
     Session::flush();
-    $this->flashMessages = new class {
+    $this->flashMessages = new class () {
         use FlashMessages;
     };
 });

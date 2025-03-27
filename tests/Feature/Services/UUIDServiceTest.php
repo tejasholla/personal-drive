@@ -1,7 +1,7 @@
 <?php
+
 use App\Services\UUIDService;
 use App\Models\Setting;
-use App\Exceptions\PersonalDriveExceptions\UUIDException;
 
 beforeEach(function () {
     $this->settingMock = mock(Setting::class);
@@ -25,5 +25,3 @@ it('successfully initializes with valid UUIDs', function () {
     expect($service->getStorageFilesUUID())->toBe('storage-123')
         ->and($service->getThumbnailsUUID())->toBe('thumb-456');
 });
-
-
