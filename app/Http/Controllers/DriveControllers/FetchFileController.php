@@ -47,7 +47,9 @@ class FetchFileController extends Controller
             throw FetchFileException::notFoundStream();
         }
         $filePrivatePathName = $this->thumbnailService->getFullFileThumbnailPath($file);
-        VideoStreamer::streamFile($filePrivatePathName);
+        if (file_exists($filePrivatePathName)) {
+            VideoStreamer::streamFile($filePrivatePathName);
+        }
     }
 
     /**
